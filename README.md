@@ -1,10 +1,11 @@
 # ProgettoMilani
-TODO
 
-[]
-[]
-[]
-[]
-[]
-[]
-[]
+- [ ] Ambiente
+- [ ] Agente
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
