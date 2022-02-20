@@ -16,5 +16,3 @@ class Mouse():
         self.DISPLAY.blit(self.IMG, (x*self.WIDTH, y*self.HEIGHT))
         
         #pygame.draw.rect(self.DISPLAY, GREEN, [x*self.WIDTH, y*self.HEIGHT, self.WIDTH, self.HEIGHT])
-
-        
