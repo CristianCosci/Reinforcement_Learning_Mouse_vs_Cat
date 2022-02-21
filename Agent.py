@@ -34,7 +34,7 @@ class Agent:
     
     def set_policy(self):
         '''
-            sets the optimal policy of agent
+            setta la policy ottimale per l'agente
         '''
         policy = defaultdict(lambda: 0)
         for state, action in self.Q.items():
@@ -44,22 +44,25 @@ class Agent:
         
     def take_action(self,state):
         '''
-            take action as per policy
+            sceglie un'azione secondo la policy
         '''
         return self.policy[state]
 
     
     def load_policy(self, directory):
         '''
-            To be used while loading saved policies
+            carica una policy esistente
         '''
         with open(directory, 'rb') as f:
             policy_new = pickle.load(f)
-        self.policy = defaultdict(lambda:0, policy_new)  #saved as defaultdict
+        self.policy = defaultdict(lambda:0, policy_new)  #salvata come defaultdict
         print('policy Loaded')
 
 
     def save_policy(self,i):
+        '''
+            salva una policy in seguito alla creazione (allenamento)
+        '''
         try:
             policy = dict(self.policy)
             with open(f'policy{i}.pickle','wb') as f:

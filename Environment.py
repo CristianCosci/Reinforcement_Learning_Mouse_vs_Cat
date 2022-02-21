@@ -1,3 +1,6 @@
+from distutils.log import info
+from turtle import done
+from typing_extensions import Self
 import pygame
 from cat import Cat
 from mouse import Mouse
@@ -5,14 +8,15 @@ from Agent import Agent
 import numpy as np 
 
 
+# classe di comodo per rappresentare la griglia (mappa)
 class Matrix:
 	def __init__(self, rows=5, columns=5):
 		self.ROWS = rows 
 		self.COLUMNS = columns
 		self.OBSTACLES = [] #[[2,2], [2,7], [7,2], [7,7], [5,5]]
-    
 
     
+#----------------------------------classe ambiente---------------------------------------------#
 class Env():
     def __init__(self, display, matrix):
         self.HEIGHT = matrix.ROWS
@@ -37,31 +41,34 @@ class Env():
         self.CHEESE_IMG = pygame.transform.scale(pygame.image.load('immagini/cheese.png'),(self.BLOCK_WIDTH, self.BLOCK_HEIGHT))
 
 
-
     def get_state(self):
+        '''
+        Lo stato è definito diversamente per il gatto e per il topo:
+            - il topo riceve come stato la quadrupla delle 4 distanze (asse verticale e orizzontale) rispetto al gatto e al formaggio
+            - il gatto riceve come stato la coppia delle 2 distanze rispetto al topo
+        '''
         self.STATE = {'mouse':(self.MOUSE_X - self.CAT_X, self.MOUSE_Y - self.CAT_Y, self.MOUSE_X - self.CHEESE_X, self.MOUSE_Y -  self.CHEESE_Y),\
                         'cat':(self.CAT_X - self.MOUSE_X, self.CAT_Y - self.MOUSE_Y)}  
         return self.STATE
-    
+
 
     def reset(self):
+        '''
+        Funzione per resettare l'ambiente alla situazione iniziale
+        '''
         self.MOUSE_X, self.MOUSE_Y = (0,0)
         self.CAT_X, self.CAT_Y = (0, self.HEIGHT -1)
         self.CHEESE_X, self.CHEESE_Y = np.random.randint(0, 9, 2, 'int')
-
         # controllo che cheese non può essere sulla posizione di un ostacolo
-
         self.MOVES['cat'] = 100
         self.MOVES['cat'] = 100
-
         return self.get_state()
 
 
     def render(self, num_episode = -1):
         '''
-            rendering the environment using pygame display
+            Rendering dell'ambiente a schermo con pygame
         '''
-        #drawing our agents
         self.MOUSE.draw(self.MOUSE_X, self.MOUSE_Y)
         self.CAT.draw(self.CAT_X, self.CAT_Y)
         
@@ -73,3 +80,136 @@ class Env():
 
         if num_episode>=0:
             self.display_episode(num_episode)
+        
+    
+    def step(self, mouse_action, cat_action):
+        '''
+        Funzione di movimento
+        '''
+        done = False
+        mouse_action_null = False
+        cat_action_null = False
+        mouse_out_of_bounds = False
+        cat_out_of_bounds = False
+        reward = {'mouse': -1, 'cat': -1}
+        info = {
+            'cheese_eaten': False,
+            'mouse_caught': False,
+            'x': -1, 'y': -1,\
+            'width': self.BLOCK_WIDTH,
+            'height': self.BLOCK_EIGHT
+        }
+
+        self.MOVES['cat'] -= 1
+        self.MOVES['mouse'] -= 1
+        #done if moves = 0
+        if self.MOVES['cat'] == 0 or self.MOVES['mouse'] == 0:
+            done = True
+        
+        mouse_towards_obstacle = self.check_towards_obstacle(mouse_action)
+        cat_towards_obstacle = self.check_towards_obstacle(cat_action)
+        if mouse_towards_obstacle:
+            reward['mouse'] = -20
+            mouse_action_null = True
+        if cat_towards_obstacle:
+            reward['cat'] = -20
+            cat_action_null = True
+
+        mouse_out_of_bounds = self.check_out_of_bounds(mouse_action)
+        cat_out_of_bounds = self.check_out_of_bounds(cat_action)
+        if mouse_out_of_bounds:
+            reward['mouse'] = -20
+            mouse_action_null = True
+        if cat_out_of_bounds:
+            reward['cat'] = -20
+            cat_action_null = True
+
+        self.update_positions(mouse_action, cat_action, mouse_action_null, cat_action_null)
+
+        #mouse reached the cheese
+        if self.MOUSE_X == self.CHEESE_X and self.MOUSE_Y == self.CHEESE_Y:
+            done = True
+            reward['mouse'] = 50
+            info['cheese_eaten'], info['x'], info['y'] = True,  self.MOUSE_X, self.MOUSE_Y
+        
+        #cat caught the mouse
+        if self.CAT_X == self.MOUSE_X and self.CAT_Y == self.MOUSE_Y:
+            done = True
+            reward['cat'] = 50
+            reward['mouse'] = -20
+            info['mouse_caught'], info['x'], info['y'] = True,  self.MOUSE_X, self.MOUSE_Y
+        
+        return self.get_state(), reward, done, info
+    
+
+    def check_towards_obstacle(self, action, agent):
+        assert agent == 'cat' or agent == 'mouse'
+        towards_obstacle = False
+        x_change, y_change = self.get_changes(action)
+        for obs in self.OBSTACLES:
+            if agent == 'cat':
+                if ((self.CAT_X + x_change) == obs[0]) and ((self.CAT_Y + y_change) == obs[1]):    
+                    towards_obstacle = True
+                    #self.CAT_X, self.CAT_Y = (0, self.HEIGHT -1) #riposizionamento
+            else:
+                if ((self.MOUSE_X + x_change) == obs[0]) and ((self.MOUSE_Y + y_change) == obs[1]):
+                    towards_obstacle = True
+                    #self.MOUSE_X, self.MOUSE_Y = (0,0)
+        
+        return towards_obstacle
+
+
+    def check_out_of_bounds(self, action, agent):
+        assert agent == 'cat' or agent == 'mouse'
+        out_of_bounds = False
+        x_change, y_change = self.get_changes(action)
+        if agent == 'cat':
+            x_change += self.CAT_X
+            y_change += self.CAT_Y
+        else:
+            x_change += self.MOUSE_X
+            y_change += self.MOUSE_Y
+        
+        if x_change < 0:
+            out_of_bounds = True
+        elif x_change > self.WIDTH-1:
+            out_of_bounds = True
+        if y_change < 0:
+            out_of_bounds = True
+        elif y_change > self.HEIGHT -1:
+            out_of_bounds = True
+        
+        return out_of_bounds
+            
+    
+    def update_positions(self, mouse_action, cat_action, mouse_action_null, cat_action_null):
+        x_change_mouse, y_change_mouse = self.get_changes(mouse_action, mouse_action_null)
+        x_change_cat, y_change_cat = self.get_changes(cat_action, cat_action_null)
+
+        self.MOUSE_X += x_change_mouse 
+        self.MOUSE_Y += y_change_mouse
+
+        self.CAT_X += x_change_cat 
+        self.CAT_Y += y_change_cat 
+        
+
+    def get_changes(self, action, action_null):
+        x_change, y_change = 0, 0
+        if not action_null:
+            #decide action
+            if action == 0:
+                x_change = -1  #moving left
+            elif action == 1:
+                x_change = 1   #moving right
+            elif action == 2:
+                y_change = -1 #moving upwards
+            elif action ==3:
+                y_change = 1  #moving downwards
+        
+        return x_change, y_change
+
+
+    def display_episode(self,epsiode):
+        font = pygame.font.SysFont(None, 25)
+        text = font.render("Episode: "+str(epsiode), True, TEXT_COLOR)
+        self.DISPLAY.blit(text,(1,1))	
