@@ -6,10 +6,15 @@ import pickle
 
 class Agent:
 
-    def __init__(self, env, possibleActions):
+    def __init__(self, env, possibleActions, alpha, gamma=1.0, eps_start=1.0, eps_decay=0.9999, eps_min=0.05):
         self.env = env
         self.possibleActions = possibleActions
-        self.Q = defaultdict(lambda: np.zeros(self.nA))  #Q-TABLE
+        self.eps_start = eps_start
+        self.gamma = gamma
+        self.alpha = alpha
+        self.eps_decay = eps_decay
+        self.eps_min = eps_min
+        self.Q = defaultdict(lambda: np.zeros(self.possibleActions))  #Q-TABLE
 
 
     def get_action(self, state, epsilon):
@@ -65,7 +70,7 @@ class Agent:
         '''
         try:
             policy = dict(self.policy)
-            with open(f'policy{i}.pickle','wb') as f:
+            with open(f'policies/policy{i}.pickle','wb') as f:
                 pickle.dump(policy, f)
         except :
             print('not saved')

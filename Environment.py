@@ -1,10 +1,6 @@
-from distutils.log import info
-from turtle import done
-from typing_extensions import Self
 import pygame
 from cat import Cat
 from mouse import Mouse
-from Agent import Agent
 import numpy as np 
 
 
@@ -65,7 +61,7 @@ class Env():
         return self.get_state()
 
 
-    def render(self, num_episode = -1):
+    def render(self, i_episode = -1):
         '''
             Rendering dell'ambiente a schermo con pygame
         '''
@@ -78,8 +74,8 @@ class Env():
         for pos in self.OBSTACLES:
             pygame.draw.rect(self.DISPLAY, (0,0,255), [pos[0]*self.BLOCK_WIDTH, pos[1]*self.BLOCK_HEIGHT, self.BLOCK_WIDTH, self.BLOCK_HEIGHT])
 
-        if num_episode>=0:
-            self.display_episode(num_episode)
+        if i_episode>=0:
+            self.display_episode(i_episode)
         
     
     def step(self, mouse_action, cat_action):
@@ -97,7 +93,7 @@ class Env():
             'mouse_caught': False,
             'x': -1, 'y': -1,\
             'width': self.BLOCK_WIDTH,
-            'height': self.BLOCK_EIGHT
+            'height': self.BLOCK_HEIGHT
         }
 
         self.MOVES['cat'] -= 1
@@ -106,8 +102,8 @@ class Env():
         if self.MOVES['cat'] == 0 or self.MOVES['mouse'] == 0:
             done = True
         
-        mouse_towards_obstacle = self.check_towards_obstacle(mouse_action)
-        cat_towards_obstacle = self.check_towards_obstacle(cat_action)
+        mouse_towards_obstacle = self.check_towards_obstacle(mouse_action, agent='mouse')
+        cat_towards_obstacle = self.check_towards_obstacle(cat_action, agent='cat')
         if mouse_towards_obstacle:
             reward['mouse'] = -20
             mouse_action_null = True
@@ -115,8 +111,8 @@ class Env():
             reward['cat'] = -20
             cat_action_null = True
 
-        mouse_out_of_bounds = self.check_out_of_bounds(mouse_action)
-        cat_out_of_bounds = self.check_out_of_bounds(cat_action)
+        mouse_out_of_bounds = self.check_out_of_bounds(mouse_action, agent='mouse')
+        cat_out_of_bounds = self.check_out_of_bounds(cat_action, agent='cat')
         if mouse_out_of_bounds:
             reward['mouse'] = -20
             mouse_action_null = True
@@ -145,7 +141,7 @@ class Env():
     def check_towards_obstacle(self, action, agent):
         assert agent == 'cat' or agent == 'mouse'
         towards_obstacle = False
-        x_change, y_change = self.get_changes(action)
+        x_change, y_change = self.get_changes(action, action_null=False)
         for obs in self.OBSTACLES:
             if agent == 'cat':
                 if ((self.CAT_X + x_change) == obs[0]) and ((self.CAT_Y + y_change) == obs[1]):    
@@ -162,7 +158,7 @@ class Env():
     def check_out_of_bounds(self, action, agent):
         assert agent == 'cat' or agent == 'mouse'
         out_of_bounds = False
-        x_change, y_change = self.get_changes(action)
+        x_change, y_change = self.get_changes(action, action_null=False)
         if agent == 'cat':
             x_change += self.CAT_X
             y_change += self.CAT_Y
@@ -211,5 +207,5 @@ class Env():
 
     def display_episode(self,epsiode):
         font = pygame.font.SysFont(None, 25)
-        text = font.render("Episode: "+str(epsiode), True, TEXT_COLOR)
+        text = font.render("Episode: "+str(epsiode), True, (0,0,220))
         self.DISPLAY.blit(text,(1,1))	
