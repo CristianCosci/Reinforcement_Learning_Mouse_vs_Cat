@@ -4,7 +4,7 @@ import pygame
 import time
 
 from Agent import Agent
-from Environment import Env, Matrix 
+from Environment_GattoStupido import Env, Matrix 
 
 #colours
 ORANGE = (255, 165, 0)
@@ -24,12 +24,10 @@ grid_matrix = Matrix(rows=10, columns=10)
 env = Env(gameDisplay, grid_matrix)
 
 #initialising our agents
-cat = Agent(env, possibleActions = 4, alpha=0.1)
 mouse = Agent(env, possibleActions = 4, alpha=0.1)
 
 #load the policy
-cat.load_policy('policies/policycat_prova3.pickle')
-mouse.load_policy('policies/policymouse_prova3.pickle')
+mouse.load_policy('policies/policymouse_prova_gattostupido_random.pickle')
 
 #helpful function
 def show_info(cheese, mouse):
@@ -57,7 +55,7 @@ for i_episode in range(1, num_episodes+1):
    
     state = env.reset()
     action_mouse = mouse.take_action(state['mouse'])
-    action_cat = cat.take_action(state['cat'])
+    cat_direction = 2
     
     #render the environment         
     env.render(i_episode)
@@ -69,7 +67,7 @@ for i_episode in range(1, num_episodes+1):
                 pygame.quit()   #close the window
                 quit() 
 
-        next_state, reward, done, info = env.step(action_mouse, action_cat)
+        next_state, reward, done, info, cat_direction = env.step(action_mouse, cat_direction)
         
         #render the environment
         gameDisplay.fill(WHITE)         
@@ -78,7 +76,7 @@ for i_episode in range(1, num_episodes+1):
 
         #updating the display
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(6)
         
         if done:
             if info['cheese_eaten']:
@@ -94,7 +92,6 @@ for i_episode in range(1, num_episodes+1):
         #update state and action
         state = next_state
         action_mouse = mouse.take_action(state['mouse'])
-        action_cat = cat.take_action(state['cat'])
         
 
 time.sleep(2)

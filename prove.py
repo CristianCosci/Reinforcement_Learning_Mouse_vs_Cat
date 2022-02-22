@@ -1,5 +1,2 @@
-a = True
-if not a:
-    print('ok')
-else:
-    print('no')
+import numpy as np 
+print(np.random.randint(0, 9))

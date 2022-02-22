@@ -3,7 +3,7 @@ import time
 import sys
 
 from Agent import Agent
-from Environment import Env, Matrix
+from Environment_GattoStupido import Env, Matrix
 
 #colours
 ORANGE = (255, 165, 0)
@@ -23,7 +23,6 @@ clock = pygame.time.Clock()
 map = Matrix(rows=10, columns=10)
 env = Env(display, map)
 
-cat = Agent(env, possibleActions=4, alpha = 0.1)
 mouse = Agent(env, possibleActions=4, alpha = 0.1)
 
 def show_stats(cheese_eaten, mouse_caugth):
@@ -55,7 +54,7 @@ for i_episode in range(1, num_episodes+1):
 
     state = env.reset()
     action_mouse = mouse.get_action(state['mouse'], epsilon)
-    action_cat = cat.get_action(state['cat'], epsilon)
+    cat_direction = 2
 
     #render the environment         
     env.render(i_episode)
@@ -66,10 +65,9 @@ for i_episode in range(1, num_episodes+1):
                 pygame.quit()
                 quit()
         
-        next_state, reward, done, info = env.step(action_mouse, action_cat)
+        next_state, reward, done, info, cat_direction = env.step(action_mouse, cat_direction)
 
         mouse.Q_learn(state['mouse'], action_mouse, reward['mouse'], next_state['mouse'])
-        cat.Q_learn(state['cat'], action_cat, reward['cat'], next_state['cat'])
 
         #render the environment
         display.fill(WHITE)         
@@ -77,7 +75,7 @@ for i_episode in range(1, num_episodes+1):
         show_stats(total_cheese_eaten, total_mouse_caught)
 
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(600)
 
         if done:
             if info['cheese_eaten']:
@@ -93,11 +91,9 @@ for i_episode in range(1, num_episodes+1):
         #update state and action
         state = next_state
         action_mouse = mouse.get_action(state['mouse'], epsilon)
-        action_cat = cat.get_action(state['cat'], epsilon)
     
-cat.set_policy()
+
 mouse.set_policy()
 
 #to save the policy
-cat.save_policy('cat_prova3')
-mouse.save_policy('mouse_prova3')
+mouse.save_policy('mouse_prova_gattostupido_random')

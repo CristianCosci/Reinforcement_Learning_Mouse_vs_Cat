@@ -1,4 +1,5 @@
 import pygame
+import numpy as np 
 
 
 # classe di comodo per rappresentare la griglia (mappa)
@@ -40,8 +41,7 @@ class Env():
             - il topo riceve come stato la quadrupla delle 4 distanze (asse verticale e orizzontale) rispetto al gatto e al formaggio
             - il gatto riceve come stato la coppia delle 2 distanze rispetto al topo
         '''
-        self.STATE = {'mouse':(self.MOUSE_X - self.CAT_X, self.MOUSE_Y - self.CAT_Y, self.MOUSE_X - self.CHEESE_X, self.MOUSE_Y -  self.CHEESE_Y),\
-                        'cat':(self.CAT_X - self.MOUSE_X, self.CAT_Y - self.MOUSE_Y)}  
+        self.STATE = {'mouse':(self.MOUSE_X - self.CAT_X, self.MOUSE_Y - self.CAT_Y, self.MOUSE_X - self.CHEESE_X, self.MOUSE_Y -  self.CHEESE_Y)}  
         return self.STATE
 
 
@@ -50,12 +50,11 @@ class Env():
         Funzione per resettare l'ambiente alla situazione iniziale
         '''
         self.MOUSE_X, self.MOUSE_Y = (0,0)
-        self.CAT_X, self.CAT_Y = (0, self.HEIGHT -1)
+        self.CAT_X, self.CAT_Y = (self.WIDTH / 2, np.random.randint(0, 9))
         self.CHEESE_X, self.CHEESE_Y = (self.WIDTH-1, 0)
         #self.CHEESE_X, self.CHEESE_Y = np.random.randint(0, 9, 2, 'int')
         # controllo che cheese non può essere sulla posizione di un ostacolo
         self.MOVES['mouse'] = 100
-        self.MOVES['cat'] = 100
         return self.get_state()
 
 
@@ -76,16 +75,15 @@ class Env():
             self.display_episode(i_episode)
         
     
-    def step(self, mouse_action, cat_action):
+    def step(self, mouse_action, cat_direction):
         '''
         Funzione di movimento
         '''
         done = False
         mouse_action_null = False
-        cat_action_null = False
         mouse_out_of_bounds = False
         cat_out_of_bounds = False
-        reward = {'mouse': -1, 'cat': -1}
+        reward = {'mouse': -1}
         info = {
             'cheese_eaten': False,
             'mouse_caught': False,
@@ -94,31 +92,28 @@ class Env():
             'height': self.BLOCK_HEIGHT
         }
 
-        self.MOVES['cat'] -= 1
         self.MOVES['mouse'] -= 1
         #done if moves = 0
-        if self.MOVES['cat'] == 0 or self.MOVES['mouse'] == 0:
+        if self.MOVES['mouse'] == 0:
             done = True
         
         mouse_towards_obstacle = self.check_towards_obstacle(mouse_action, agent='mouse')
-        cat_towards_obstacle = self.check_towards_obstacle(cat_action, agent='cat')
         if mouse_towards_obstacle:
             reward['mouse'] = -20
             mouse_action_null = True
-        if cat_towards_obstacle:
-            reward['cat'] = -20
-            cat_action_null = True
 
         mouse_out_of_bounds = self.check_out_of_bounds(mouse_action, agent='mouse')
-        cat_out_of_bounds = self.check_out_of_bounds(cat_action, agent='cat')
+        cat_out_of_bounds = self.check_out_of_bounds(cat_direction, agent='cat')
         if mouse_out_of_bounds:
             reward['mouse'] = -20
             mouse_action_null = True
         if cat_out_of_bounds:
-            reward['cat'] = -20
-            cat_action_null = True
+            if cat_direction == 2:
+                cat_direction = 3
+            else:
+                cat_direction = 2
 
-        self.update_positions(mouse_action, cat_action, mouse_action_null, cat_action_null)
+        self.update_positions(mouse_action, cat_direction, mouse_action_null)
 
         #mouse reached the cheese
         if self.MOUSE_X == self.CHEESE_X and self.MOUSE_Y == self.CHEESE_Y:
@@ -129,11 +124,10 @@ class Env():
         #cat caught the mouse
         if self.CAT_X == self.MOUSE_X and self.CAT_Y == self.MOUSE_Y:
             done = True
-            reward['cat'] = 50
             reward['mouse'] = -20
             info['mouse_caught'], info['x'], info['y'] = True,  self.MOUSE_X, self.MOUSE_Y
         
-        return self.get_state(), reward, done, info
+        return self.get_state(), reward, done, info, cat_direction
     
 
     def check_towards_obstacle(self, action, agent):
@@ -176,9 +170,9 @@ class Env():
         return out_of_bounds
             
     
-    def update_positions(self, mouse_action, cat_action, mouse_action_null, cat_action_null):
+    def update_positions(self, mouse_action, cat_direction, mouse_action_null):
         x_change_mouse, y_change_mouse = self.get_changes(mouse_action, mouse_action_null)
-        x_change_cat, y_change_cat = self.get_changes(cat_action, cat_action_null)
+        x_change_cat, y_change_cat = self.get_changes(cat_direction, False)
 
         self.MOUSE_X += x_change_mouse 
         self.MOUSE_Y += y_change_mouse
