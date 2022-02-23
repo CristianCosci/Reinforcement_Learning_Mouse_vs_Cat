@@ -28,8 +28,8 @@ cat = Agent(env, possibleActions = 4, alpha=0.1)
 mouse = Agent(env, possibleActions = 4, alpha=0.1)
 
 #load the policy
-cat.load_policy('policies/policycat_prova3.pickle')
-mouse.load_policy('policies/policymouse_prova3.pickle')
+cat.load_policy('policies/.pickle')
+mouse.load_policy('policies/.pickle')
 
 #helpful function
 def show_info(cheese, mouse):

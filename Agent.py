@@ -2,7 +2,7 @@ import numpy as np
 import random
 from collections import defaultdict
 import pickle
-
+import os
 
 class Agent:
 
@@ -64,13 +64,20 @@ class Agent:
         print('policy Loaded')
 
 
-    def save_policy(self,i):
+    def save_policy(self, dir, name):
         '''
             salva una policy in seguito alla creazione (allenamento)
         '''
         try:
             policy = dict(self.policy)
-            with open(f'policies/policy{i}.pickle','wb') as f:
+            directory = "policies/"+ dir
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+                print('non esiste')
+            else:
+                print('esiste')
+                
+            with open(f'{directory}/{name}.pickle','wb') as f:
                 pickle.dump(policy, f)
         except :
             print('not saved')

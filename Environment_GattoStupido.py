@@ -49,9 +49,12 @@ class Env():
         '''
         Funzione per resettare l'ambiente alla situazione iniziale
         '''
-        self.MOUSE_X, self.MOUSE_Y = (0,0)
-        self.CAT_X, self.CAT_Y = (self.WIDTH / 2, np.random.randint(0, 9))
-        self.CHEESE_X, self.CHEESE_Y = (self.WIDTH-1, 0)
+        self.MOUSE_X, self.MOUSE_Y = (0, 0)
+        #self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH/2 )-1), np.random.randint(0,9))
+        self.CAT_X, self.CAT_Y = ((self.WIDTH / 2) -1 ,np.random.randint(0, 9))
+        #self.CAT_X, self.CAT_Y = (self.WIDTH / 2, 0)
+        #self.CHEESE_X, self.CHEESE_Y = (9, 5)
+        self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH / 2)+1, 9), np.random.randint(0, 9))
         #self.CHEESE_X, self.CHEESE_Y = np.random.randint(0, 9, 2, 'int')
         # controllo che cheese non può essere sulla posizione di un ostacolo
         self.MOVES['mouse'] = 100
@@ -106,6 +109,7 @@ class Env():
         cat_out_of_bounds = self.check_out_of_bounds(cat_direction, agent='cat')
         if mouse_out_of_bounds:
             reward['mouse'] = -20
+            print('topo toccato il muro')
             mouse_action_null = True
         if cat_out_of_bounds:
             if cat_direction == 2:

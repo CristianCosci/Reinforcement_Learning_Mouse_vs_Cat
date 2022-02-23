@@ -27,7 +27,8 @@ env = Env(gameDisplay, grid_matrix)
 mouse = Agent(env, possibleActions = 4, alpha=0.1)
 
 #load the policy
-mouse.load_policy('policies/policymouse_prova_gattostupido_random.pickle')
+dir = 'policies/policy_gattoStupido/RandomCat&Cheese'
+mouse.load_policy(dir+'/mouse.pickle')
 
 #helpful function
 def show_info(cheese, mouse):
@@ -43,12 +44,12 @@ def show_info(cheese, mouse):
 def draw_rect(color, x, y, width, height):
     pygame.draw.rect(gameDisplay, color, [x*width, y*height, width, height], 10)
     pygame.display.update()
-    #time.sleep(2)
+    time.sleep(1)
 
 total_mouse_caught = 0
 total_cheese_eaten = 0
 
-num_episodes = 1000
+num_episodes = 100
 
 # loop over episodes
 for i_episode in range(1, num_episodes+1):

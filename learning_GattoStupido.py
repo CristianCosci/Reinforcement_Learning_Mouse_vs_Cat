@@ -75,7 +75,7 @@ for i_episode in range(1, num_episodes+1):
         show_stats(total_cheese_eaten, total_mouse_caught)
 
         pygame.display.update()
-        clock.tick(600)
+        clock.tick(60000000000)
 
         if done:
             if info['cheese_eaten']:
@@ -96,4 +96,5 @@ for i_episode in range(1, num_episodes+1):
 mouse.set_policy()
 
 #to save the policy
-mouse.save_policy('mouse_prova_gattostupido_random')
+dir = 'policy_gattoStupido/RandomCat&Cheese'
+mouse.save_policy(dir, 'mouse')

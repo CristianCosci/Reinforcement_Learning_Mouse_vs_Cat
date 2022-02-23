@@ -99,5 +99,5 @@ cat.set_policy()
 mouse.set_policy()
 
 #to save the policy
-cat.save_policy('cat_prova3')
-mouse.save_policy('mouse_prova3')
+cat.save_policy('prova_cat')
+mouse.save_policy('prova_mouse')
