@@ -1,3 +1,4 @@
+from cmath import inf
 import pygame
 import numpy as np 
 
@@ -41,7 +42,8 @@ class Env():
             - il topo riceve come stato la quadrupla delle 4 distanze (asse verticale e orizzontale) rispetto al gatto e al formaggio
             - il gatto riceve come stato la coppia delle 2 distanze rispetto al topo
         '''
-        self.STATE = {'mouse':(self.MOUSE_X - self.CAT_X, self.MOUSE_Y - self.CAT_Y, self.MOUSE_X - self.CHEESE_X, self.MOUSE_Y -  self.CHEESE_Y)}  
+        distanzaMuro = self.getWallDistance()
+        self.STATE = {'mouse':(self.MOUSE_X - self.CAT_X, self.MOUSE_Y - self.CAT_Y, self.MOUSE_X - self.CHEESE_X, self.MOUSE_Y -  self.CHEESE_Y, distanzaMuro)}  
         return self.STATE
 
 
@@ -49,8 +51,8 @@ class Env():
         '''
         Funzione per resettare l'ambiente alla situazione iniziale
         '''
-        self.MOUSE_X, self.MOUSE_Y = (0, 0)
-        #self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH/2 )-1), np.random.randint(0,9))
+        #self.MOUSE_X, self.MOUSE_Y = (0, 0)
+        self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH/2 )-1), np.random.randint(0,9))
         self.CAT_X, self.CAT_Y = ((self.WIDTH / 2) -1 ,np.random.randint(0, 9))
         #self.CAT_X, self.CAT_Y = (self.WIDTH / 2, 0)
         #self.CHEESE_X, self.CHEESE_Y = (9, 5)
@@ -78,7 +80,7 @@ class Env():
             self.display_episode(i_episode)
         
     
-    def step(self, mouse_action, cat_direction):
+    def step(self, mouse_action, cat_direction, toccate_muro):
         '''
         Funzione di movimento
         '''
@@ -109,7 +111,7 @@ class Env():
         cat_out_of_bounds = self.check_out_of_bounds(cat_direction, agent='cat')
         if mouse_out_of_bounds:
             reward['mouse'] = -20
-            print('topo toccato il muro')
+            toccate_muro +=1
             mouse_action_null = True
         if cat_out_of_bounds:
             if cat_direction == 2:
@@ -131,7 +133,7 @@ class Env():
             reward['mouse'] = -20
             info['mouse_caught'], info['x'], info['y'] = True,  self.MOUSE_X, self.MOUSE_Y
         
-        return self.get_state(), reward, done, info, cat_direction
+        return self.get_state(), reward, done, info, cat_direction, toccate_muro
     
 
     def check_towards_obstacle(self, action, agent):
@@ -205,6 +207,22 @@ class Env():
         font = pygame.font.SysFont(None, 25)
         text = font.render("Episode: "+str(epsiode), True, (0,0,220))
         self.DISPLAY.blit(text,(1,1))
+
+    def getWallDistance(self):
+        distanza_X = 0
+        if self.WIDTH - self.MOUSE_X < self.MOUSE_X:
+            distanza_X = self.WIDTH - self.MOUSE_X
+        else:
+            distanza_X = self.MOUSE_X
+        
+        distanza_Y = 0
+        if self.HEIGHT - self.MOUSE_Y < self.MOUSE_Y:
+            distanza_Y = self.HEIGHT - self.MOUSE_Y
+        else:
+            distanza_Y = self.MOUSE_Y
+        
+        return min(distanza_X, distanza_Y)
+        
 
 
 class Mouse():

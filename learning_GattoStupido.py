@@ -43,11 +43,16 @@ total_cheese_eaten = 0
 
 epsilon, eps_decay, eps_min = 1.0, 0.99, 0.05
 #number of episodes to train
-num_episodes = 10000
+num_episodes = 20000
+
+toccatemuro = 0
 
 for i_episode in range(1, num_episodes+1):
     if i_episode % 100 == 0:
         print("\rEpisode {}/{}".format(i_episode, num_episodes), end="")
+        print()
+        print(toccatemuro)
+        toccatemuro = 0
         sys.stdout.flush()
     
     epsilon = max(epsilon*eps_decay, eps_min)
@@ -65,7 +70,7 @@ for i_episode in range(1, num_episodes+1):
                 pygame.quit()
                 quit()
         
-        next_state, reward, done, info, cat_direction = env.step(action_mouse, cat_direction)
+        next_state, reward, done, info, cat_direction, toccatemuro = env.step(action_mouse, cat_direction, toccatemuro)
 
         mouse.Q_learn(state['mouse'], action_mouse, reward['mouse'], next_state['mouse'])
 
@@ -96,5 +101,5 @@ for i_episode in range(1, num_episodes+1):
 mouse.set_policy()
 
 #to save the policy
-dir = 'policy_gattoStupido/RandomCat&Cheese'
-mouse.save_policy(dir, 'mouse')
+dir = 'policy_gattoStupido/AllRandom/evitaMuri/'
+mouse.save_policy(dir, 'mouse3')

@@ -27,8 +27,8 @@ env = Env(gameDisplay, grid_matrix)
 mouse = Agent(env, possibleActions = 4, alpha=0.1)
 
 #load the policy
-dir = 'policies/policy_gattoStupido/RandomCat&Cheese'
-mouse.load_policy(dir+'/mouse.pickle')
+dir = 'policies/policy_gattoStupido/AllRandom/evitaMuri/'
+mouse.load_policy(dir+'/mouse2.pickle')
 
 #helpful function
 def show_info(cheese, mouse):
