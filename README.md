@@ -4,9 +4,9 @@
 - [x] Agente
 - [x] Cat 
 - [x] Mouse
-- [ ] Controllo che impara ad evitare i muri
+- [x] Controllo che impara ad evitare i muri
 - [ ] Controllo se impara ad evitare gli ostacoli
-- [ ] Usare distanza di manatthan come distanza e non differenza tra gli assi singoliS
+- [x] Usare distanza di manatthan come distanza e non differenza tra gli assi singoli
 - [x] Posizionamento casuale topo
 - [x] Posizionamento casuale gatto stupido
 - [x] Posizionamento casuale formaggio
@@ -15,7 +15,12 @@
 - [x] Test
 - [x] Definire gatto e topo come sottoclassi di agente (Non va bene)
 - [x] Reward negativa se tocca i muri
-- [ ] Provare con due gatti
+- [x] Provare con due gatti in verticale
+- [ ] Sottocartelle per ogni tipologia di problema:
+    - AI cat vs AI mouse
+    - Mouse vs gatto stupido singolo
+    - Mouse vs doppio gatto stupido
+- [ ] Provare con due gatti (uno orizzontale e uno verticale)
 - [ ] Provare varie strategia per vedere le diverse policies
     - [ ] Ad esempio vedere che succede se il gatto conosce anche la posizione del formaggio (in teoria dovrebbe aspettare li il topo)
 - [ ] Eventuali plot

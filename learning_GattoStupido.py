@@ -59,7 +59,8 @@ for i_episode in range(1, num_episodes+1):
 
     state = env.reset()
     action_mouse = mouse.get_action(state['mouse'], epsilon)
-    cat_direction = 2
+    cat1_direction = 2
+    cat2_direction = 2
 
     #render the environment         
     env.render(i_episode)
@@ -70,7 +71,7 @@ for i_episode in range(1, num_episodes+1):
                 pygame.quit()
                 quit()
         
-        next_state, reward, done, info, cat_direction, toccatemuro = env.step(action_mouse, cat_direction, toccatemuro)
+        next_state, reward, done, info, cat1_direction, cat2_direction, toccatemuro = env.step(action_mouse, cat1_direction, cat2_direction, toccatemuro)
 
         mouse.Q_learn(state['mouse'], action_mouse, reward['mouse'], next_state['mouse'])
 
@@ -101,5 +102,5 @@ for i_episode in range(1, num_episodes+1):
 mouse.set_policy()
 
 #to save the policy
-dir = 'policy_gattoStupido/AllRandom/evitaMuri/'
-mouse.save_policy(dir, 'mouse3')
+dir = 'policy_doppioGattoStupido/AllRandom/evitaMuri/'
+mouse.save_policy(dir, 'mouse')
