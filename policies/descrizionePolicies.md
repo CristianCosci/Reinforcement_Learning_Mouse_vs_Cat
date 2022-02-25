@@ -126,10 +126,34 @@
         - uno a 2/3 della griglia
     - In più il topo come stato riceve in input anche la distanza più vicina da un muro, come tentativo per vedere se riesce ad imparare ad evitare i muri.
         - La distanza è calcolata da un'apposita funzione
-        - lo stato passato ha la distanza di manatthan per il gatto1 e un'altra distanza di manatthan per il gatto2 e il formaggio invece delle singole differenze delle ascisse
+        - lo stato passato ha la distanza di manatthan per il gatto1 e un'altra distanza di manatthan per il gatto2 e un'altra per il formaggio invece delle singole differenze delle ascisse
     - Info Training:
         - 20k epochs
         - 100 steps
     - note:
         - il topo impara a battere i gatti ma servono oltre 20k epoche 
-        - il topo sbatte sul muro inizialemente come sempre e impara completamente nella parte finale 
+        - il topo sbatte sul muro inizialemente come sempre e impara completamente nella parte finale
+
+
+## policy_doppioGattoStupido/AllaRandom/evitaMuri/mouse2
+    - Prova con 2 gatti guardiani del formaggio in modo stupido (solo su e giù in verticale)
+    - Il formaggio viene generato in una posizione casuale nella parte protetta dal gatto guardiano
+    - Il topo parte nella parte sinistra della griglia in una posizione casuale
+    - Il gatto viene generato a metà griglia in una posizione di altezza casuale
+        - uno a 1/3 della griglia
+        - uno a 2/3 della griglia
+    - In più il topo come stato riceve in input anche la distanza più vicina da un muro, come tentativo per vedere se riesce ad imparare ad evitare i muri.
+        - La distanza è calcolata da un'apposita funzione
+        - lo stato passato ha la distanza di manatthan per il gatto1 e un'altra distanza di manatthan per il gatto2 e il formaggio invece delle singole differenze delle ascisse
+    - Info Training:
+        - 40k epochs
+        - 100 steps
+    - note: l'apprendimento è molto lungo ma non si apprende al meglio, in quanto a volte ci sono loop e non si risolve. Probabilmente il problema potrebbe essere risolto con il deep q learning, in quanto si vede che c'è apprendimento
+
+
+<hr>
+
+## Per evitare gli ostacoli non è sufficiente il reward negativo ma l'agente deve avere qualche percezione di essi:
+Possibili idee:
+- posizione sugli assi per identificarli
+- distanza minima da un ostacolo

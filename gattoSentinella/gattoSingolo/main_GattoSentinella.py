@@ -3,8 +3,8 @@
 import pygame
 import time
 
-from Agent import Agent
-from Environment_GattoStupido import Env, Matrix 
+from Agent_GattoSentinella import Agent
+from Environment_GattoSentinella import Env, Matrix 
 
 #colours
 ORANGE = (255, 165, 0)
@@ -27,8 +27,8 @@ env = Env(gameDisplay, grid_matrix)
 mouse = Agent(env, possibleActions = 4, alpha=0.1)
 
 #load the policy
-dir = 'policies/policy_gattoStupido/AllRandom/evitaMuri/'
-mouse.load_policy(dir+'/mouse3.pickle')
+dir = 'policies/policy_doppioGattoStupido/AllRandom/evitaMuri/'
+mouse.load_policy(dir+'/mouse254156.pickle')
 
 #helpful function
 def show_info(cheese, mouse):
@@ -44,7 +44,7 @@ def show_info(cheese, mouse):
 def draw_rect(color, x, y, width, height):
     pygame.draw.rect(gameDisplay, color, [x*width, y*height, width, height], 10)
     pygame.display.update()
-    #time.sleep(1)
+    time.sleep(1)
 
 total_mouse_caught = 0
 total_cheese_eaten = 0
@@ -58,8 +58,9 @@ for i_episode in range(1, num_episodes+1):
    
     state = env.reset()
     action_mouse = mouse.take_action(state['mouse'])
-    cat_direction = 2
     
+    cat_direction = 2
+
     #render the environment         
     env.render(i_episode)
 
@@ -79,7 +80,7 @@ for i_episode in range(1, num_episodes+1):
 
         #updating the display
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(6)
         
         if done:
             if info['cheese_eaten']:

@@ -2,8 +2,8 @@ import pygame
 import time
 import sys
 
-from Agent import Agent
-from Environment_GattoStupido import Env, Matrix
+from Agent_GattoSentinella import Agent
+from Environment_GattoSentinella import Env, Matrix
 
 #colours
 ORANGE = (255, 165, 0)
@@ -42,16 +42,18 @@ total_mouse_caught = 0
 total_cheese_eaten = 0
 
 epsilon, eps_decay, eps_min = 1.0, 0.99, 0.05
+
 #number of episodes to train
-num_episodes = 20000
+num_episodes = 10000
 
 toccatemuro = 0
+toccate_ostacolo = 0
 
 for i_episode in range(1, num_episodes+1):
     if i_episode % 100 == 0:
         print("\rEpisode {}/{}".format(i_episode, num_episodes), end="")
         print()
-        print(toccatemuro)
+        print("Muri toccati: {},    Ostacoli toccati: {}".format(toccatemuro,toccate_ostacolo))
         toccatemuro = 0
         sys.stdout.flush()
     
@@ -59,8 +61,8 @@ for i_episode in range(1, num_episodes+1):
 
     state = env.reset()
     action_mouse = mouse.get_action(state['mouse'], epsilon)
-    cat1_direction = 2
-    cat2_direction = 2
+
+    cat_direction = 2
 
     #render the environment         
     env.render(i_episode)
@@ -71,7 +73,7 @@ for i_episode in range(1, num_episodes+1):
                 pygame.quit()
                 quit()
         
-        next_state, reward, done, info, cat1_direction, cat2_direction, toccatemuro = env.step(action_mouse, cat1_direction, cat2_direction, toccatemuro)
+        next_state, reward, done, info, cat_direction, toccatemuro, toccate_ostacolo = env.step(action_mouse, cat_direction, toccatemuro, toccate_ostacolo)
 
         mouse.Q_learn(state['mouse'], action_mouse, reward['mouse'], next_state['mouse'])
 
@@ -102,5 +104,5 @@ for i_episode in range(1, num_episodes+1):
 mouse.set_policy()
 
 #to save the policy
-dir = 'policy_doppioGattoStupido/AllRandom/evitaMuri/'
+dir = 'policy_gattoStupido/AllRandom/evitaMuri/evitaOstacoli'
 mouse.save_policy(dir, 'mouse')
