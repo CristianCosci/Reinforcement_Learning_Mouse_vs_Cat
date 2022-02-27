@@ -28,8 +28,9 @@ cat = Agent(env, possibleActions = 4, alpha=0.1)
 mouse = Agent(env, possibleActions = 4, alpha=0.1)
 
 #load the policy
-cat.load_policy('policies/.pickle')
-mouse.load_policy('policies/.pickle')
+dir = 'policies/policy_doppioGattoStupido/AllRandom/evitaMuri/'
+mouse.load_policy(dir+'/mouse254156.pickle')
+cat.load_policy(dir+'/mouse254156.pickle')
 
 #helpful function
 def show_info(cheese, mouse):
@@ -52,6 +53,8 @@ total_cheese_eaten = 0
 
 num_episodes = 1000
 
+toccatemuro = 0
+
 # loop over episodes
 for i_episode in range(1, num_episodes+1):
    
@@ -69,7 +72,7 @@ for i_episode in range(1, num_episodes+1):
                 pygame.quit()   #close the window
                 quit() 
 
-        next_state, reward, done, info = env.step(action_mouse, action_cat)
+        next_state, reward, done, info, toccatemuro = env.step(action_mouse, action_cat, toccatemuro)
         
         #render the environment
         gameDisplay.fill(WHITE)         
@@ -78,7 +81,7 @@ for i_episode in range(1, num_episodes+1):
 
         #updating the display
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(6)
         
         if done:
             if info['cheese_eaten']:
@@ -95,8 +98,11 @@ for i_episode in range(1, num_episodes+1):
         state = next_state
         action_mouse = mouse.take_action(state['mouse'])
         action_cat = cat.take_action(state['cat'])
+       
         
-
+print(toccatemuro)
+print(total_cheese_eaten)
+print(total_mouse_caught)
 time.sleep(2)
 pygame.quit()
 

@@ -66,7 +66,7 @@ class Env():
         self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint(0, 9))
         #self.CHEESE_X, self.CHEESE_Y = np.random.randint(0, 9, 2, 'int')
 
-        # Controllo che cheese non può essere sulla posizione di un ostacolo
+        # Controllo che il formaggio e il topo non possono essere sulla posizione di un ostacolo
         for obs in self.OBSTACLES:
             if self.CHEESE_X == obs[0] and self.CHEESE_Y == obs[1]:
                 #then shift it up
@@ -218,12 +218,6 @@ class Env():
         return x_change, y_change
 
 
-    def display_episode(self,epsiode):
-        font = pygame.font.SysFont(None, 25)
-        text = font.render("Episode: "+str(epsiode), True, (0,0,220))
-        self.DISPLAY.blit(text,(1,1))
-
-
     def getWallDistance(self):
         distanza_X = 0
         if self.WIDTH - self.MOUSE_X < self.MOUSE_X:
@@ -238,6 +232,13 @@ class Env():
             distanza_Y = self.MOUSE_Y
         
         return min(distanza_X, distanza_Y)
+
+        
+    def display_episode(self,epsiode):
+        font = pygame.font.SysFont(None, 25)
+        text = font.render("Episode: "+str(epsiode), True, (0,0,220))
+        self.DISPLAY.blit(text,(1,1))
+
         
 
 

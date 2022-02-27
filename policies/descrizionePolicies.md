@@ -157,3 +157,19 @@
 Possibili idee:
 - posizione sugli assi per identificarli
 - distanza minima da un ostacolo
+
+<hr>
+
+## policy_gattoIntelligente/AllaRandom/evitaMuri/
+    - Prova con gatto intelligenete
+    - Il formaggio viene generato in una posizione casuale nel quadrante alto dx della griglia
+    - Il topo viene generato in una posizione casuale nel quadrante alto sx della griglia
+    - Il gatto viene generato in una posizione casuale nel quadrante basso sx della griglia
+    - Distanze di manhattan nei vari stati ricevuti come input
+    - Info Training:
+        - 10k epochs
+        - 100 steps
+    - note: Mi aspetto che da una certa il topo vinca sempre per le dinamiche del posizionamento degli oggetti nella mappa
+    - note post allenamento:
+        Non sembra aver imparato troppo di star lontano dai muri ma si vede comunque un buon apprendimento in quanto nelle fasi finali si tengono sempre sotto le 400 toccate di muro ogni 100 epoche. Vedere se aggiungendo la features della distanza dal muro esso migliora.
+

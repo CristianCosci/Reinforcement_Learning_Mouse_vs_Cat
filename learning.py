@@ -44,11 +44,17 @@ total_cheese_eaten = 0
 
 epsilon, eps_decay, eps_min = 1.0, 0.99, 0.05
 #number of episodes to train
-num_episodes = 10000
+num_episodes = 10
+
+toccatemuro = 0
+toccate_ostacolo = 0
 
 for i_episode in range(1, num_episodes+1):
     if i_episode % 100 == 0:
         print("\rEpisode {}/{}".format(i_episode, num_episodes), end="")
+        print()
+        print("Muri toccati: {},    Ostacoli toccati: {}".format(toccatemuro,toccate_ostacolo))
+        toccatemuro = 0
         sys.stdout.flush()
     
     epsilon = max(epsilon*eps_decay, eps_min)
@@ -66,7 +72,7 @@ for i_episode in range(1, num_episodes+1):
                 pygame.quit()
                 quit()
         
-        next_state, reward, done, info = env.step(action_mouse, action_cat)
+        next_state, reward, done, info, toccatemuro, toccate_ostacolo = env.step(action_mouse, action_cat, toccatemuro, toccate_ostacolo)
 
         mouse.Q_learn(state['mouse'], action_mouse, reward['mouse'], next_state['mouse'])
         cat.Q_learn(state['cat'], action_cat, reward['cat'], next_state['cat'])
@@ -77,7 +83,7 @@ for i_episode in range(1, num_episodes+1):
         show_stats(total_cheese_eaten, total_mouse_caught)
 
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(600000)
 
         if done:
             if info['cheese_eaten']:
@@ -99,5 +105,6 @@ cat.set_policy()
 mouse.set_policy()
 
 #to save the policy
-cat.save_policy('prova_cat')
-mouse.save_policy('prova_mouse')
+dir = 'policy_gattoIntelligente/AllRandom/evitaMuri'
+cat.save_policy(dir, 'cat')
+mouse.save_policy(dir, 'mouse')

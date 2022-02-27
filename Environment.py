@@ -1,4 +1,5 @@
 import pygame
+import numpy as np 
 
 
 # classe di comodo per rappresentare la griglia (mappa)
@@ -22,15 +23,15 @@ class Env():
         self.BLOCK_WIDTH = int(displayWidth/self.WIDTH)
         self.BLOCK_HEIGHT = int(displayHeight/self.HEIGHT)
 
-        # agenti
+        # Agenti
         self.CAT = Cat(self.DISPLAY, self.BLOCK_WIDTH, self.BLOCK_HEIGHT)
         self.MOUSE = Mouse(self.DISPLAY, self.BLOCK_WIDTH, self.BLOCK_HEIGHT)
         self.MOVES = {'mouse':100,'cat':100}
 
-        # ostacoli
+        # Ostacoli
         self.OBSTACLES = matrix.OBSTACLES
 
-        # formaggio
+        # Cheese
         self.CHEESE_IMG = pygame.transform.scale(pygame.image.load('immagini/cheese.png'),(self.BLOCK_WIDTH, self.BLOCK_HEIGHT))
 
 
@@ -40,8 +41,12 @@ class Env():
             - il topo riceve come stato la quadrupla delle 4 distanze (asse verticale e orizzontale) rispetto al gatto e al formaggio
             - il gatto riceve come stato la coppia delle 2 distanze rispetto al topo
         '''
-        self.STATE = {'mouse':(self.MOUSE_X - self.CAT_X, self.MOUSE_Y - self.CAT_Y, self.MOUSE_X - self.CHEESE_X, self.MOUSE_Y -  self.CHEESE_Y),\
+        #distanzaMuro = self.getWallDistance()
+        '''self.STATE = {'mouse':(self.MOUSE_X - self.CAT_X, self.MOUSE_Y - self.CAT_Y, self.MOUSE_X - self.CHEESE_X, self.MOUSE_Y -  self.CHEESE_Y),\
                         'cat':(self.CAT_X - self.MOUSE_X, self.CAT_Y - self.MOUSE_Y)}  
+        '''
+        self.STATE = {'mouse':((self.MOUSE_X - self.CAT_X) + (self.MOUSE_Y - self.CAT_Y), (self.MOUSE_X - self.CHEESE_X) + (self.MOUSE_Y -  self.CHEESE_Y)),
+                        'cat':((self.MOUSE_X - self.CAT_X) + (self.MOUSE_Y - self.CAT_Y))}  
         return self.STATE
 
 
@@ -49,10 +54,17 @@ class Env():
         '''
         Funzione per resettare l'ambiente alla situazione iniziale
         '''
-        self.MOUSE_X, self.MOUSE_Y = (0,0)
-        self.CAT_X, self.CAT_Y = (0, self.HEIGHT -1)
-        self.CHEESE_X, self.CHEESE_Y = (self.WIDTH-1, 0)
+        #self.MOUSE_X, self.MOUSE_Y = (0, 0)
+        self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 2)-1), np.random.randint(0, (self.HEIGHT // 2)-1))
+        
+        self.CAT_X, self.CAT_Y = (np.random.randint(0, (self.WIDTH // 2)-1), np.random.randint((self.HEIGHT // 2)+1, self.HEIGHT))
+        #self.CAT_X, self.CAT_Y = (self.WIDTH / 2, 0)
+        
+        # Formaggio
+        #self.CHEESE_X, self.CHEESE_Y = (9, 5)
+        self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 2)+1, self.WIDTH), np.random.randint(0, (self.HEIGHT // 2)-1))
         #self.CHEESE_X, self.CHEESE_Y = np.random.randint(0, 9, 2, 'int')
+        
         # controllo che cheese non può essere sulla posizione di un ostacolo
         self.MOVES['mouse'] = 100
         self.MOVES['cat'] = 100
@@ -76,7 +88,7 @@ class Env():
             self.display_episode(i_episode)
         
     
-    def step(self, mouse_action, cat_action):
+    def step(self, mouse_action, cat_action, toccate_muro, toccate_ostacolo):
         '''
         Funzione di movimento
         '''
@@ -103,9 +115,11 @@ class Env():
         mouse_towards_obstacle = self.check_towards_obstacle(mouse_action, agent='mouse')
         cat_towards_obstacle = self.check_towards_obstacle(cat_action, agent='cat')
         if mouse_towards_obstacle:
+            toccate_ostacolo +=1
             reward['mouse'] = -20
             mouse_action_null = True
         if cat_towards_obstacle:
+            toccate_ostacolo +=1
             reward['cat'] = -20
             cat_action_null = True
 
@@ -113,9 +127,11 @@ class Env():
         cat_out_of_bounds = self.check_out_of_bounds(cat_action, agent='cat')
         if mouse_out_of_bounds:
             reward['mouse'] = -20
+            toccate_muro +=1
             mouse_action_null = True
         if cat_out_of_bounds:
             reward['cat'] = -20
+            toccate_muro +=1
             cat_action_null = True
 
         self.update_positions(mouse_action, cat_action, mouse_action_null, cat_action_null)
@@ -133,7 +149,7 @@ class Env():
             reward['mouse'] = -20
             info['mouse_caught'], info['x'], info['y'] = True,  self.MOUSE_X, self.MOUSE_Y
         
-        return self.get_state(), reward, done, info
+        return self.get_state(), reward, done, info, toccate_muro, toccate_ostacolo
     
 
     def check_towards_obstacle(self, action, agent):
@@ -202,11 +218,28 @@ class Env():
         
         return x_change, y_change
 
+    def getWallDistance(self):
+        distanza_X = 0
+        if self.WIDTH - self.MOUSE_X < self.MOUSE_X:
+            distanza_X = self.WIDTH - self.MOUSE_X
+        else:
+            distanza_X = self.MOUSE_X
+        
+        distanza_Y = 0
+        if self.HEIGHT - self.MOUSE_Y < self.MOUSE_Y:
+            distanza_Y = self.HEIGHT - self.MOUSE_Y
+        else:
+            distanza_Y = self.MOUSE_Y
+        
+        return min(distanza_X, distanza_Y)
+
 
     def display_episode(self,epsiode):
         font = pygame.font.SysFont(None, 25)
         text = font.render("Episode: "+str(epsiode), True, (0,0,220))
         self.DISPLAY.blit(text,(1,1))
+
+
 
 
 class Mouse():
