@@ -2,7 +2,7 @@ import pygame
 import numpy as np 
 
 
-# classe di comodo per rappresentare la griglia (mappa)
+# Classe di comodo per rappresentare la griglia (mappa)
 class Matrix:
 	def __init__(self, rows=5, columns=5):
 		self.ROWS = rows 
@@ -16,7 +16,7 @@ class Env():
         self.HEIGHT = matrix.ROWS
         self.WIDTH = matrix.COLUMNS
 
-        #setto informazioni finestra pygame
+        # Setto informazioni finestra pygame
         self.DISPLAY = display  #inizializzato con pygame nel main
         displayWidth, displayHeight = display.get_size()
         displayHeight -= 100    #per avere spazio aggiuntivo per mostrare altre informazioni
@@ -41,12 +41,13 @@ class Env():
             - il topo riceve come stato la quadrupla delle 4 distanze (asse verticale e orizzontale) rispetto al gatto e al formaggio
             - il gatto riceve come stato la coppia delle 2 distanze rispetto al topo
         '''
-        #distanzaMuro = self.getWallDistance()
+        distanzaMuroGatto = self.getWallDistance('cat')
+        distanzaMuroTopo = self.getWallDistance('mouse')
         '''self.STATE = {'mouse':(self.MOUSE_X - self.CAT_X, self.MOUSE_Y - self.CAT_Y, self.MOUSE_X - self.CHEESE_X, self.MOUSE_Y -  self.CHEESE_Y),\
                         'cat':(self.CAT_X - self.MOUSE_X, self.CAT_Y - self.MOUSE_Y)}  
         '''
-        self.STATE = {'mouse':((self.MOUSE_X - self.CAT_X) + (self.MOUSE_Y - self.CAT_Y), (self.MOUSE_X - self.CHEESE_X) + (self.MOUSE_Y -  self.CHEESE_Y)),
-                        'cat':((self.MOUSE_X - self.CAT_X) + (self.MOUSE_Y - self.CAT_Y))}  
+        self.STATE = {'mouse':((self.MOUSE_X - self.CAT_X) + (self.MOUSE_Y - self.CAT_Y), (self.MOUSE_X - self.CHEESE_X) + (self.MOUSE_Y -  self.CHEESE_Y), distanzaMuroTopo),
+                        'cat':((self.MOUSE_X - self.CAT_X) + (self.MOUSE_Y - self.CAT_Y), distanzaMuroGatto)}  
         return self.STATE
 
 
@@ -136,13 +137,13 @@ class Env():
 
         self.update_positions(mouse_action, cat_action, mouse_action_null, cat_action_null)
 
-        #mouse reached the cheese
+        # Mouse reached the cheese
         if self.MOUSE_X == self.CHEESE_X and self.MOUSE_Y == self.CHEESE_Y:
             done = True
             reward['mouse'] = 50
             info['cheese_eaten'], info['x'], info['y'] = True,  self.MOUSE_X, self.MOUSE_Y
         
-        #cat caught the mouse
+        # Cat caught the mouse
         if self.CAT_X == self.MOUSE_X and self.CAT_Y == self.MOUSE_Y:
             done = True
             reward['cat'] = 50
@@ -218,18 +219,29 @@ class Env():
         
         return x_change, y_change
 
-    def getWallDistance(self):
+    def getWallDistance(self, agent):
+        assert agent == 'cat' or agent == 'mouse'
         distanza_X = 0
-        if self.WIDTH - self.MOUSE_X < self.MOUSE_X:
-            distanza_X = self.WIDTH - self.MOUSE_X
-        else:
-            distanza_X = self.MOUSE_X
-        
         distanza_Y = 0
-        if self.HEIGHT - self.MOUSE_Y < self.MOUSE_Y:
-            distanza_Y = self.HEIGHT - self.MOUSE_Y
-        else:
-            distanza_Y = self.MOUSE_Y
+        if agent == 'cat':
+            if self.WIDTH - self.CAT_X < self.CAT_X:
+                distanza_X = self.WIDTH - self.CAT_X
+            else:
+                distanza_X = self.CAT_X
+            if self.HEIGHT - self.CAT_Y < self.CAT_Y:
+                distanza_Y = self.HEIGHT - self.CAT_Y
+            else:
+                distanza_Y = self.CAT_Y
+        elif agent == 'mouse':
+            if self.WIDTH - self.MOUSE_X < self.MOUSE_X:
+                distanza_X = self.WIDTH - self.MOUSE_X
+            else:
+                distanza_X = self.MOUSE_X
+            distanza_Y = 0
+            if self.HEIGHT - self.MOUSE_Y < self.MOUSE_Y:
+                distanza_Y = self.HEIGHT - self.MOUSE_Y
+            else:
+                distanza_Y = self.MOUSE_Y
         
         return min(distanza_X, distanza_Y)
 

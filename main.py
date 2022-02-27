@@ -6,7 +6,7 @@ import time
 from Agent import Agent
 from Environment import Env, Matrix 
 
-#colours
+# Definizione colori
 ORANGE = (255, 165, 0)
 GREEN = (0, 150, 0)
 WHITE = (255,255,255)
@@ -23,16 +23,16 @@ clock = pygame.time.Clock()
 grid_matrix = Matrix(rows=10, columns=10)
 env = Env(gameDisplay, grid_matrix)
 
-#initialising our agents
+# Inizializzazione agenti
 cat = Agent(env, possibleActions = 4, alpha=0.1)
 mouse = Agent(env, possibleActions = 4, alpha=0.1)
 
-#load the policy
-dir = 'policies/policy_doppioGattoStupido/AllRandom/evitaMuri/'
-mouse.load_policy(dir+'/mouse254156.pickle')
-cat.load_policy(dir+'/mouse254156.pickle')
+# Load della policy
+dir = 'policy_gattoIntelligente/AllRandom/evitaMuri'
+mouse.load_policy(dir+'/mouse2.pickle')
+cat.load_policy(dir+'/cat2.pickle')
 
-#helpful function
+# Funzioni di comodo
 def show_info(cheese, mouse):
     pygame.draw.rect(gameDisplay, BLACK, [0, 800, 800, 5])
     font = pygame.font.SysFont(None, 40)
@@ -42,18 +42,19 @@ def show_info(cheese, mouse):
     gameDisplay.blit(text1,(50,810))
     gameDisplay.blit(text2,(50,855))	
 
-#indicative rectangle to show cheese eaten or mouse caught
+# Barra delle statistiche
 def draw_rect(color, x, y, width, height):
     pygame.draw.rect(gameDisplay, color, [x*width, y*height, width, height], 10)
     pygame.display.update()
-    #time.sleep(2)
+    time.sleep(2)
 
 total_mouse_caught = 0
 total_cheese_eaten = 0
 
-num_episodes = 1000
+num_episodes = 100
 
 toccatemuro = 0
+toccate_ostacolo = 0
 
 # loop over episodes
 for i_episode in range(1, num_episodes+1):
@@ -62,26 +63,26 @@ for i_episode in range(1, num_episodes+1):
     action_mouse = mouse.take_action(state['mouse'])
     action_cat = cat.take_action(state['cat'])
     
-    #render the environment         
+    # Render dell'environment
     env.render(i_episode)
 
     while True:
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()   #close the window
+                pygame.quit()   # Close window
                 quit() 
 
-        next_state, reward, done, info, toccatemuro = env.step(action_mouse, action_cat, toccatemuro)
+        next_state, reward, done, info, toccatemuro, toccate_ostacolo = env.step(action_mouse, action_cat, toccatemuro, toccate_ostacolo)
         
-        #render the environment
+        # Render dell'environment
         gameDisplay.fill(WHITE)         
         env.render(i_episode)
         show_info(total_cheese_eaten, total_mouse_caught)
 
-        #updating the display
+        # Updating the display
         pygame.display.update()
-        clock.tick(6)
+        clock.tick(12)
         
         if done:
             if info['cheese_eaten']:
@@ -91,10 +92,10 @@ for i_episode in range(1, num_episodes+1):
             if info['mouse_caught']:
                 total_mouse_caught += 1
                 draw_rect(RED, info['x'], info['y'], info['width'], info['height'])    
-            #finish this episode    
+            # Terminazione episodio    
             break
        
-        #update state and action
+        # Update state and action
         state = next_state
         action_mouse = mouse.take_action(state['mouse'])
         action_cat = cat.take_action(state['cat'])

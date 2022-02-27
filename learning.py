@@ -43,8 +43,9 @@ total_mouse_caught = 0
 total_cheese_eaten = 0
 
 epsilon, eps_decay, eps_min = 1.0, 0.99, 0.05
-#number of episodes to train
-num_episodes = 10
+
+# Number of episodes to train
+num_episodes = 20000
 
 toccatemuro = 0
 toccate_ostacolo = 0
@@ -104,7 +105,9 @@ for i_episode in range(1, num_episodes+1):
 cat.set_policy()
 mouse.set_policy()
 
+print('total cheese eaten: ',total_cheese_eaten)
+print('total mouse caugth: ',total_mouse_caught)
 #to save the policy
 dir = 'policy_gattoIntelligente/AllRandom/evitaMuri'
-cat.save_policy(dir, 'cat')
-mouse.save_policy(dir, 'mouse')
+cat.save_policy(dir, 'cat2')
+mouse.save_policy(dir, 'mouse2')

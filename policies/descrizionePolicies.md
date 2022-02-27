@@ -170,6 +170,20 @@ Possibili idee:
         - 10k epochs
         - 100 steps
     - note: Mi aspetto che da una certa il topo vinca sempre per le dinamiche del posizionamento degli oggetti nella mappa
-    - note post allenamento:
+    - note post primo allenamento (mouse e cat):
         Non sembra aver imparato troppo di star lontano dai muri ma si vede comunque un buon apprendimento in quanto nelle fasi finali si tengono sempre sotto le 400 toccate di muro ogni 100 epoche. Vedere se aggiungendo la features della distanza dal muro esso migliora.
 
+    - Info Training:
+        - 20k epochs
+        - 100 steps
+        - aggiunta distanza dai muri nello stato ai due agenti
+    - note post secondo allenamento (mouse2 e cat2):
+        Sembra aver imparato a star lontano dai muri in quanto nelle fasi finali si tengono sempre sotto le 200 toccate di muro ogni 100 epoche. 
+
+```bash
+Muri toccati: 90,    Ostacoli toccati: 0
+total cheese eaten:  10653
+total mouse caugth:  6131
+```
+
+<hr>

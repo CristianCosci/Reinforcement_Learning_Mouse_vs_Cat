@@ -14,7 +14,7 @@ class Agent:
         self.alpha = alpha
         self.eps_decay = eps_decay
         self.eps_min = eps_min
-        self.Q = defaultdict(lambda: np.zeros(self.possibleActions))  #Q-TABLE
+        self.Q = defaultdict(lambda: np.zeros(self.possibleActions))  # Q-TABLE
 
 
     def get_action(self, state, epsilon):
@@ -58,9 +58,10 @@ class Agent:
         '''
             carica una policy esistente
         '''
-        with open(directory, 'rb') as f:
+        dir = 'policies/'+directory
+        with open(dir, 'rb') as f:
             policy_new = pickle.load(f)
-        self.policy = defaultdict(lambda:0, policy_new)  #salvata come defaultdict
+        self.policy = defaultdict(lambda:0, policy_new)  # Salvata come defaultdict
         print('policy Loaded')
 
 
