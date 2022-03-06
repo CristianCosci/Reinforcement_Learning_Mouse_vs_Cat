@@ -98,12 +98,14 @@ class Env():
             self.display_episode(i_episode)
         
 
-    def step(self, mouse_action, cat_direction, toccate_muro, toccate_ostacolo):
+    def step(self, mouse_action, cat_direction):
         done = False
         mouse_action_null = False
         mouse_out_of_bounds = False
         cat_out_of_bounds = False
         reward = {'mouse': -1}
+        toccate_ostacolo = 0
+        toccate_muro = 0
         info = {
             'cheese_eaten': False,
             'mouse_caught': False,
@@ -141,13 +143,13 @@ class Env():
         #mouse reached the cheese
         if self.MOUSE_X == self.CHEESE_X and self.MOUSE_Y == self.CHEESE_Y:
             done = True
-            reward['mouse'] = 50
+            reward['mouse'] = 200
             info['cheese_eaten'], info['x'], info['y'] = True,  self.MOUSE_X, self.MOUSE_Y
         
         #cat caught the mouse
         if self.CAT_X == self.MOUSE_X and self.CAT_Y == self.MOUSE_Y:
             done = True
-            reward['mouse'] = -20
+            reward['mouse'] = -200
             info['mouse_caught'], info['x'], info['y'] = True,  self.MOUSE_X, self.MOUSE_Y
         
         return self.get_state(), reward, done, info, cat_direction, toccate_muro, toccate_ostacolo
@@ -207,13 +209,13 @@ class Env():
         if not action_null:
             #decide action
             if action == 0:
-                x_change = -1  #moving left
+                x_change = -1   #moving left
             elif action == 1:
-                x_change = 1   #moving right
+                x_change = 1    #moving right
             elif action == 2:
-                y_change = -1 #moving upwards
+                y_change = -1   #moving upwards
             elif action ==3:
-                y_change = 1  #moving downwards
+                y_change = 1    #moving downwards
         
         return x_change, y_change
 
@@ -240,7 +242,7 @@ class Env():
         self.DISPLAY.blit(text,(1,1))
 
         
-
+#-----------------------------------------------------------------------------------------------------------------------------------#
 
 class Mouse():
 
@@ -255,6 +257,7 @@ class Mouse():
 
     def draw(self, x, y):
         self.DISPLAY.blit(self.IMG, (x*self.WIDTH, y*self.HEIGHT))
+
 
 
 class Cat():

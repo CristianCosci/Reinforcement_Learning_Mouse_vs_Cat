@@ -24,11 +24,11 @@ grid_matrix = Matrix(rows=10, columns=10)
 env = Env(gameDisplay, grid_matrix)
 
 #initialising our agents
-mouse = Agent(env, possibleActions = 4, alpha=0.1)
+mouse = Agent(env, possibleActions = 4, alpha=0.1, gamma=0.99)
 
 #load the policy
-dir = 'policies/policy_doppioGattoStupido/AllRandom/evitaMuri/'
-mouse.load_policy(dir+'/mouse254156.pickle')
+dir = 'policies/gattoSentinella/gattoSingolo/'
+mouse.load_policy(dir+'mouse1.pickle')
 
 #helpful function
 def show_info(cheese, mouse):
@@ -44,14 +44,15 @@ def show_info(cheese, mouse):
 def draw_rect(color, x, y, width, height):
     pygame.draw.rect(gameDisplay, color, [x*width, y*height, width, height], 10)
     pygame.display.update()
-    time.sleep(1)
+    time.sleep(0)
 
 total_mouse_caught = 0
 total_cheese_eaten = 0
 
 num_episodes = 100
 
-toccatemuro = 0
+total_toccatemuro = 0
+toccate_ostacolo = 0
 
 # loop over episodes
 for i_episode in range(1, num_episodes+1):
@@ -71,8 +72,9 @@ for i_episode in range(1, num_episodes+1):
                 pygame.quit()   #close the window
                 quit() 
 
-        next_state, reward, done, info, cat_direction, toccatemuro = env.step(action_mouse, cat_direction, toccatemuro)
+        next_state, reward, done, info, cat_direction, toccatemuro, toccate_ostacolo= env.step(action_mouse, cat_direction)
         
+        total_toccatemuro += toccatemuro
         #render the environment
         gameDisplay.fill(WHITE)         
         env.render(i_episode)
@@ -80,7 +82,7 @@ for i_episode in range(1, num_episodes+1):
 
         #updating the display
         pygame.display.update()
-        clock.tick(6)
+        clock.tick(6000)
         
         if done:
             if info['cheese_eaten']:
@@ -98,7 +100,7 @@ for i_episode in range(1, num_episodes+1):
         action_mouse = mouse.take_action(state['mouse'])
         
 
-print(toccatemuro)
+print(total_toccatemuro)
 print(total_cheese_eaten)
 print(total_mouse_caught)
 time.sleep(2)

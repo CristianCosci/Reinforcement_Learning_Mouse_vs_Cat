@@ -4,9 +4,11 @@ from collections import defaultdict
 import pickle
 import os
 
+import csv
+
 class Agent:
 
-    def __init__(self, env, possibleActions, alpha, gamma=1.0, eps_start=1.0, eps_decay=0.9999, eps_min=0.05):
+    def __init__(self, env, possibleActions, alpha, gamma, eps_start=1.0, eps_decay=0.9999, eps_min=0.05):
         self.env = env
         self.possibleActions = possibleActions
         self.eps_start = eps_start
@@ -41,6 +43,14 @@ class Agent:
         '''
             setta la policy ottimale per l'agente
         '''
+        w = csv.writer(open("ok.csv", "w"))
+
+        # loop over dictionary keys and values
+        for key, val in self.Q.items():
+
+        # write every key and value to file
+            w.writerow([key, val])
+            
         policy = defaultdict(lambda: 0)
         for state, action in self.Q.items():
             policy[state] = np.argmax(action)
@@ -79,5 +89,14 @@ class Agent:
                 
             with open(f'{directory}/{name}.pickle','wb') as f:
                 pickle.dump(policy, f)
+            
+            w = csv.writer(open("output.csv", "w"))
+
+            # loop over dictionary keys and values
+            for key, val in policy.items():
+
+                # write every key and value to file
+                w.writerow([key, val])
+
         except :
             print('not saved')

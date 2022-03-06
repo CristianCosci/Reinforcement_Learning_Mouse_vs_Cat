@@ -28,7 +28,7 @@ mouse = Agent(env, possibleActions = 4, alpha=0.1)
 
 #load the policy
 dir = 'policies/policy_doppioGattoStupido/AllRandom/evitaMuri/'
-mouse.load_policy(dir+'/mouse46465.pickle')
+mouse.load_policy(dir+'mouse2.pickle')
 
 #helpful function
 def show_info(cheese, mouse):
@@ -84,7 +84,7 @@ for i_episode in range(1, num_episodes+1):
 
         #updating the display
         pygame.display.update()
-        clock.tick(6)
+        clock.tick(60)
         
         if done:
             if info['cheese_eaten']:
