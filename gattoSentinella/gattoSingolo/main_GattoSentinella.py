@@ -28,7 +28,7 @@ mouse = Agent(env, possibleActions = 4, alpha=0.1, gamma=0.99)
 
 #load the policy
 dir = 'policies/gattoSentinella/gattoSingolo/'
-mouse.load_policy(dir+'mouse1.pickle')
+mouse.load_policy(dir+'mouse099.pickle')
 
 #helpful function
 def show_info(cheese, mouse):
@@ -49,7 +49,7 @@ def draw_rect(color, x, y, width, height):
 total_mouse_caught = 0
 total_cheese_eaten = 0
 
-num_episodes = 100
+num_episodes = 10000
 
 total_toccatemuro = 0
 toccate_ostacolo = 0
@@ -82,7 +82,7 @@ for i_episode in range(1, num_episodes+1):
 
         #updating the display
         pygame.display.update()
-        clock.tick(6000)
+        clock.tick(999999999999999)
         
         if done:
             if info['cheese_eaten']:

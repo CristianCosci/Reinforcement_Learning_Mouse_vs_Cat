@@ -42,11 +42,12 @@ class Env():
             - il topo riceve come stato la quadrupla delle 4 distanze (asse verticale e orizzontale) rispetto al gatto e al formaggio
             - il gatto riceve come stato la coppia delle 2 distanze rispetto al topo
         '''
-        distanzaMuro = self.getWallDistance()
+        #distanzaMuro = self.getWallDistance()
+        wall = self.checkWall()
 
         self.STATE = {'mouse':((self.MOUSE_X - self.CAT_X) + (self.MOUSE_Y - self.CAT_Y),
             (self.MOUSE_X - self.CHEESE_X) + (self.MOUSE_Y -  self.CHEESE_Y),
-            distanzaMuro)}
+            wall)}
     
         return self.STATE
 
@@ -55,7 +56,7 @@ class Env():
         '''
         Funzione per resettare l'ambiente alla situazione iniziale
         '''
-        #self.MOUSE_X, self.MOUSE_Y = (0, 0)
+        #self.MOUSE_X, self.MOUSE_Y = (9, 0)
         self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-1), np.random.randint(0,9))
 
         self.CAT_X, self.CAT_Y = ((self.WIDTH / 2) -1 ,np.random.randint(0, 9))
@@ -234,6 +235,29 @@ class Env():
             distanza_Y = self.MOUSE_Y
         
         return min(distanza_X, distanza_Y)
+    
+    def checkWall(self):
+        wall_position = 0
+        if self.MOUSE_X - 1 < 0:
+            wall_position = 1 # wall on the left
+        if self.MOUSE_X + 1 > self.WIDTH-1:
+            wall_position = 2 # wall on the rigth
+        if self.MOUSE_Y - 1 < 0:
+            if wall_position == 1:
+                wall_position = 5 # alto sx
+            elif wall_position == 2:
+                wall_position = 6 # alto dx
+            else:
+                wall_position = 3 # wall on the top
+        if self.MOUSE_Y + 1 > self.HEIGHT-1:
+            if wall_position == 1:
+                wall_position = 7 # basso sx
+            elif wall_position == 2:
+                wall_position = 8 # basso dx
+            else:
+                wall_position = 4 # wall on the bottom
+
+        return wall_position
 
         
     def display_episode(self,epsiode):

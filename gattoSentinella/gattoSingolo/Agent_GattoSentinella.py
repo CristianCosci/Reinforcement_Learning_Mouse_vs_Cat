@@ -39,18 +39,13 @@ class Agent:
         self.Q[state][action] += self.alpha*(reward + self.gamma*np.max(self.Q[next_state]) - self.Q[state][action])
 
     
-    def set_policy(self):
+    def set_policy(self, saveQtable):
         '''
             setta la policy ottimale per l'agente
         '''
-        w = csv.writer(open("ok.csv", "w"))
-
-        # loop over dictionary keys and values
-        for key, val in self.Q.items():
-
-        # write every key and value to file
-            w.writerow([key, val])
-            
+        if saveQtable:
+            self.saveQtableToCsv()
+        
         policy = defaultdict(lambda: 0)
         for state, action in self.Q.items():
             policy[state] = np.argmax(action)
@@ -74,10 +69,13 @@ class Agent:
         print('policy Loaded')
 
 
-    def save_policy(self, dir, name):
+    def save_policy(self, dir, name, savePolicytable):
         '''
             salva una policy in seguito alla creazione (allenamento)
         '''
+        if savePolicytable:
+            self.savePolicyToCsv()
+            
         try:
             policy = dict(self.policy)
             directory = "policies/"+ dir
@@ -89,14 +87,27 @@ class Agent:
                 
             with open(f'{directory}/{name}.pickle','wb') as f:
                 pickle.dump(policy, f)
-            
-            w = csv.writer(open("output.csv", "w"))
-
-            # loop over dictionary keys and values
-            for key, val in policy.items():
-
-                # write every key and value to file
-                w.writerow([key, val])
 
         except :
             print('not saved')
+    
+
+    def saveQtableToCsv(self):
+        w = csv.writer(open("Qtable.csv", "w"))
+        
+        # loop over dictionary keys and values
+        for key, val in self.Q.items():
+        
+        # write every key and value to file
+            w.writerow([key, val])
+
+
+    def savePolicyToCsv(self):
+        policy = dict(self.policy)
+        w = csv.writer(open("Policy.csv", "w"))
+
+        # loop over dictionary keys and values
+        for key, val in policy.items():
+
+            # write every key and value to file
+            w.writerow([key, val])
