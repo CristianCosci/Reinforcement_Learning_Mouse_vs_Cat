@@ -28,7 +28,7 @@ mouse = Agent(env, possibleActions = 4, alpha=0.1, gamma=0.99)
 
 #load the policy
 dir = 'policies/gattoSentinella/gattoSingolo/'
-mouse.load_policy(dir+'mouse099.pickle')
+mouse.load_policy(dir+'mouse0852.pickle')
 
 #helpful function
 def show_info(cheese, mouse):

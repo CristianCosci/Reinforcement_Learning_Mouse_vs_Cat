@@ -39,7 +39,7 @@ clock = pygame.time.Clock()
 # Definizione env, griglia e agente
 map = Matrix(rows=10, columns=10)
 env = Env(display, map)
-mouse = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.99)
+mouse = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.92)
 
 # Parametri di Qlearning
 epsilon, eps_decay, eps_min = 1.0, 0.9994, 0.05
@@ -128,7 +128,7 @@ for i_episode in range(1, num_episodes+1):
 # Plot statistiche
 plt.plot(total_rewards)
 plt.title('Reward')
-plt.savefig('reward099.png')
+plt.savefig('reward0993.png')
 plt.show()
 #plt.plot(total_toccate_ostacolo)
 #plt.show()
@@ -138,7 +138,7 @@ plt.title('Mouse vs cat')
 plt.plot(total_mouse_caught, label='topo catturato', color='orange')
 plt.plot(total_cheese_eaten, label='formaggio mangiato', color='green')
 plt.legend()
-plt.savefig('mouse_vs_cat099.png')
+plt.savefig('mouse_vs_cat092.png')
 plt.show()
 
 print(mouse_caught)
@@ -147,4 +147,4 @@ print(cheese_eaten)
 mouse.set_policy(saveQtable=False)
 # Save the policy
 dir = 'gattoSentinella/gattoSingolo'
-mouse.save_policy(dir, 'mouse099', savePolicytable=False)
+mouse.save_policy(dir, 'mouse0993', savePolicytable=False)
