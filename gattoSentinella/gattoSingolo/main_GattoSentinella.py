@@ -24,11 +24,11 @@ grid_matrix = Matrix(rows=10, columns=10)
 env = Env(gameDisplay, grid_matrix)
 
 #initialising our agents
-mouse = Agent(env, possibleActions = 4, alpha=0.1, gamma=0.99)
+mouse = Agent(env, possibleActions = 4, alpha=0.1, gamma=0.92)
 
 #load the policy
 dir = 'policies/gattoSentinella/gattoSingolo/'
-mouse.load_policy(dir+'mouse0852.pickle')
+mouse.load_policy(dir+'mouse090.pickle')
 
 #helpful function
 def show_info(cheese, mouse):
