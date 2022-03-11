@@ -151,4 +151,4 @@ print(cheese_eaten)
 mouse.set_policy(saveQtable=True)
 # Save the policy
 dir = 'gattoSentinella/gattoSingolo'
-mouse.save_policy(dir, 'mouse2', savePolicytable=True)
+mouse.save_policy(dir, 'mouse', savePolicytable=True)

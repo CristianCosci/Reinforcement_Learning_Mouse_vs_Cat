@@ -27,7 +27,7 @@ env = Env(gameDisplay, grid_matrix)
 mouse = Agent(env, possibleActions = 4, alpha=0.1, gamma=0.92)
 
 #load the policy
-dir = 'policies/gattoSentinella/gattoSingolo/SenzaOstacoli/'
+dir = 'policies/gattoSentinella/gattoSingolo/'
 mouse.load_policy(dir+'mouse.pickle')
 
 #helpful function

@@ -30,13 +30,13 @@
 ## **Senza ostacoli**
 Il topo impara facilmente a battere il gatto non facendosi mai prendere e a mangiare il formaggio.
 - **Risultati di train**:
-    - Vittorie Gatto 544    | 430 se reward ostacoli diverse
-    - Vittorie Topo 8942    | 9038 se reward ostacoli diverse
+    - Vittorie Gatto 544, 619    | 430 se reward ostacoli diverse (5)    | 504 se reward ostacoli diverse (10) 
+    - Vittorie Topo 8942, 8930   | 9038 se reward ostacoli diverse (5)   | 9010 se reward ostacoli diverse (10) 
     - Muri toccati N.D.
 - **Risultati di test**:
-    - Vittorie Gatto 0      | 0 se reward ostacoli diverse
-    - Vittorie Topo 9193    | 9854 se reward ostacoli diverse
-    - Muri toccati 4575     | 3938 se reward ostacoli diverse
+    - Vittorie Gatto 0, 0           | 0 se reward ostacoli diverse          | 0 se reward ostacoli diverse (10)
+    - Vittorie Topo 9193, 9622      | 9854 se reward ostacoli diverse (5)   | 9646 se reward ostacoli diverse (10) 
+    - Muri toccati 4575, 3519       | 3938 se reward ostacoli diverse (5)   | 3092 se reward ostacoli diverse (10) 
 
 ## **Con ostacoli**
 Il topo impara facilmente a battere il gatto non facendosi mai prendere e a mangiare il formaggio.
