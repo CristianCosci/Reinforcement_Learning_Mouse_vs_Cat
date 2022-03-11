@@ -27,8 +27,8 @@ env = Env(gameDisplay, grid_matrix)
 mouse = Agent(env, possibleActions = 4, alpha=0.1, gamma=0.92)
 
 #load the policy
-dir = 'policies/gattoSentinella/gattoSingolo/'
-mouse.load_policy(dir+'mouse090.pickle')
+dir = 'policies/gattoSentinella/gattoSingolo/SenzaOstacoli/'
+mouse.load_policy(dir+'mouse.pickle')
 
 #helpful function
 def show_info(cheese, mouse):
@@ -52,7 +52,7 @@ total_cheese_eaten = 0
 num_episodes = 10000
 
 total_toccatemuro = 0
-toccate_ostacolo = 0
+total_roccateostacolo = 0
 
 # loop over episodes
 for i_episode in range(1, num_episodes+1):
@@ -75,6 +75,7 @@ for i_episode in range(1, num_episodes+1):
         next_state, reward, done, info, cat_direction, toccatemuro, toccate_ostacolo= env.step(action_mouse, cat_direction)
         
         total_toccatemuro += toccatemuro
+        total_roccateostacolo += toccate_ostacolo
         #render the environment
         gameDisplay.fill(WHITE)         
         env.render(i_episode)
@@ -100,9 +101,10 @@ for i_episode in range(1, num_episodes+1):
         action_mouse = mouse.take_action(state['mouse'])
         
 
-print(total_toccatemuro)
-print(total_cheese_eaten)
-print(total_mouse_caught)
+print('muro: ', total_toccatemuro)
+print('ostacolo: ', total_roccateostacolo)
+print('topo: ', total_cheese_eaten)
+print('gatto: ', total_mouse_caught)
 time.sleep(2)
 pygame.quit()
 

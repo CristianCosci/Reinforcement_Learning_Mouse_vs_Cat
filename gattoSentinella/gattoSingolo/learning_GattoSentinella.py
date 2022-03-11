@@ -39,7 +39,7 @@ clock = pygame.time.Clock()
 # Definizione env, griglia e agente
 map = Matrix(rows=10, columns=10)
 env = Env(display, map)
-mouse = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.90)
+mouse = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)
 
 # Parametri di Qlearning
 epsilon, eps_decay, eps_min = 1.0, 0.9994, 0.05
@@ -48,6 +48,7 @@ epsilon, eps_decay, eps_min = 1.0, 0.9994, 0.05
 num_episodes = 10000
 
 # Statistiche per plot
+info_plot = True
 total_rewards = np.zeros(num_episodes)
 total_toccateMuro = np.zeros(num_episodes)
 total_toccate_ostacolo = np.zeros(num_episodes)
@@ -101,7 +102,7 @@ for i_episode in range(1, num_episodes+1):
         show_stats(cheese_eaten, mouse_caught)
 
         pygame.display.update()
-        clock.tick(99999999999999999999999999999)
+        clock.tick(9999999999999)
 
         if done:
             if info['cheese_eaten']:
@@ -126,25 +127,28 @@ for i_episode in range(1, num_episodes+1):
     
 
 # Plot statistiche
-plt.plot(total_rewards)
-plt.title('Reward')
-plt.savefig('reward090.png')
-plt.show()
-#plt.plot(total_toccate_ostacolo)
-#plt.show()
-plt.plot(total_toccateMuro)
-plt.show()
-plt.title('Mouse vs cat')
-plt.plot(total_mouse_caught, label='topo catturato', color='orange')
-plt.plot(total_cheese_eaten, label='formaggio mangiato', color='green')
-plt.legend()
-plt.savefig('mouse_vs_cat090.png')
-plt.show()
+if info_plot:
+    plt.plot(total_rewards)
+    plt.title('Reward')
+    plt.savefig('reward.png')
+    plt.show()
+    plt.plot(total_toccate_ostacolo)
+    #plt.savefig('reward085.png')
+    plt.show()
+    plt.plot(total_toccateMuro)
+    plt.savefig('toccateMuro.png')
+    plt.show()
+    plt.title('Mouse vs cat')
+    plt.plot(total_mouse_caught, label='topo catturato', color='orange')
+    plt.plot(total_cheese_eaten, label='formaggio mangiato', color='green')
+    plt.legend()
+    plt.savefig('mouse_vs_cat.png')
+    plt.show()
 
 print(mouse_caught)
 print(cheese_eaten)
 
-mouse.set_policy(saveQtable=False)
+mouse.set_policy(saveQtable=True)
 # Save the policy
 dir = 'gattoSentinella/gattoSingolo'
-mouse.save_policy(dir, 'mouse090', savePolicytable=False)
+mouse.save_policy(dir, 'mouse2', savePolicytable=True)
