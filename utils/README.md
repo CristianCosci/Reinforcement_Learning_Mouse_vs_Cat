@@ -24,7 +24,7 @@
 - [ ] Provare con due gatti (uno orizzontale e uno verticale)
 - [ ] Provare varie strategia per vedere le diverse policies
     - [ ] Ad esempio vedere che succede se il gatto conosce anche la posizione del formaggio (in teoria dovrebbe aspettare li il topo)
-- [ ] Eventuali plot
+- [x] Eventuali plot
 
 NOTE:
 - Apparentemente non sembra apprendere che deve evitare i muri. Probabilmente è dovuto al fatto che l'agente non ha informazioni sulla posizione ma solo sulle distanze. Procavare a dare anche le coordinate come stato e vedere se impara ad evitare i muri (logicamente dovrebbe capire quali sono i bordi ed evitarli). 

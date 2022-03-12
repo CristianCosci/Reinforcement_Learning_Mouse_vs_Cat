@@ -133,7 +133,7 @@ if info_plot:
     plt.savefig('reward.png')
     plt.show()
     plt.plot(total_toccate_ostacolo)
-    #plt.savefig('reward085.png')
+    plt.savefig('toccateOstacolo.png')
     plt.show()
     plt.plot(total_toccateMuro)
     plt.savefig('toccateMuro.png')
@@ -148,7 +148,7 @@ if info_plot:
 print(mouse_caught)
 print(cheese_eaten)
 
-mouse.set_policy(saveQtable=True)
+mouse.set_policy(saveQtable=False)
 # Save the policy
 dir = 'gattoSentinella/gattoSingolo'
-mouse.save_policy(dir, 'mouse', savePolicytable=True)
+mouse.save_policy(dir, 'mouse', savePolicytable=False)

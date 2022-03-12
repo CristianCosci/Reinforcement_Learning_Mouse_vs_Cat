@@ -8,7 +8,7 @@ class Matrix:
 	def __init__(self, rows=5, columns=5):
 		self.ROWS = rows 
 		self.COLUMNS = columns
-		self.OBSTACLES = []#[3,2], [3,1], [3,0], [3,3], [3,4]
+		self.OBSTACLES = []#[3,0], [3,3], [3,6], [3,9], [5,1], [5,4], [5,7]
 
     
 #----------------------------------Classe Ambiente---------------------------------------------#
@@ -221,18 +221,18 @@ class Env():
     
     def checkWall(self):
         wall_position = 0
-        if self.MOUSE_X - 1 < 0:
+        if self.MOUSE_X - 2 < 0:
             wall_position = 1        # wall on the left
-        if self.MOUSE_X + 1 > self.WIDTH-1:
+        if self.MOUSE_X + 2 > self.WIDTH-1:
             wall_position = 2       # wall on the rigth
-        if self.MOUSE_Y - 1 < 0:
+        if self.MOUSE_Y - 2 < 0:
             if wall_position == 1:
                 wall_position = 5   # wall on top e left
             elif wall_position == 2:
                 wall_position = 6   # wall on top e rigth
             else:
                 wall_position = 3   # wall on the top
-        if self.MOUSE_Y + 1 > self.HEIGHT-1:
+        if self.MOUSE_Y + 2 > self.HEIGHT-1:
             if wall_position == 1:
                 wall_position = 7   # wall on bottom e left
             elif wall_position == 2:
