@@ -39,10 +39,8 @@ class Env():
     def get_state(self):
         '''
         Lo stato è definito diversamente per il gatto e per il topo:
-            - il topo riceve come stato la quadrupla delle 4 distanze (asse verticale e orizzontale) rispetto al gatto e al formaggio
-            - il gatto riceve come stato la coppia delle 2 distanze rispetto al topo
+            - il topo riceve come la distanza di manhattan dal topo e dal formaggio
         '''
-        #distanzaMuro = self.getWallDistance()
         wall = self.checkWall()
         #obsacles = self.checkObstacles(wall)
 
@@ -60,8 +58,6 @@ class Env():
         self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-1), np.random.randint(0,9))
         self.CAT_X, self.CAT_Y = ((self.WIDTH / 2) -1 ,np.random.randint(0, 9))
         self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint(0, 9))
-
-        self.checkRegularPosition() # Controllo che il formaggio e il topo non possono essere sulla posizione di un ostacolo
 
         self.MOVES['mouse'] = 100
         return self.get_state()
@@ -242,6 +238,7 @@ class Env():
 
         return wall_position
     
+
     def checkObstacles(self, wall_position):
         if wall_position == 0:
             for obs in self.OBSTACLES:
@@ -258,10 +255,8 @@ class Env():
         
         return wall_position
     
-    def checkRegularPosition(self):
-        '''
-        Controllo che il formaggio e il topo non possono essere sulla posizione di un ostacolo
-        '''
+
+    '''def checkRegularPosition(self):
         for obs in self.OBSTACLES:
             if self.CHEESE_X == obs[0] and self.CHEESE_Y == obs[1]:
                 #then shift it up
@@ -271,7 +266,7 @@ class Env():
             if self.MOUSE_X == obs[0] and self.MOUSE_Y == obs[1]:
                 #then shift it up
                     self.MOUSE_Y -= 1
-
+    '''
 
     def display_episode(self,epsiode):
         font = pygame.font.SysFont(None, 25)

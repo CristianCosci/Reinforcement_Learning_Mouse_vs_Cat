@@ -88,10 +88,10 @@ for i_episode in range(1, num_episodes+1):
                 quit()
         
 
-        next_state, reward, done, info, cat_direction, toccateMuro, toccate_ostacolo = env.step(action_mouse, cat_direction)
+        next_state, reward, done, info, cat_direction, toccate_muro, toccate_ostacolo = env.step(action_mouse, cat_direction)
 
         ep_rewards += reward['mouse']
-        ep_toccateMuro += toccateMuro
+        ep_toccateMuro += toccate_muro
         ep_toccate_ostacolo += toccate_ostacolo
 
         mouse.Q_learn(state['mouse'], action_mouse, reward['mouse'], next_state['mouse'])

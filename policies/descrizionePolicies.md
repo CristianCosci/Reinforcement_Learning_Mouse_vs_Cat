@@ -85,7 +85,7 @@ In tutti i casi il topo apprende come prendere il formaggio senza farsi catturar
 # **Gatto Sentinella Doppio**
 ### Parametri di train
 - Prova
-    - 10k epoche
+    - 20k epoche
     - 100 steps
     - Gamma: gamma=0.85
     - Lr: alpha = 0.1
@@ -98,6 +98,15 @@ In tutti i casi il topo apprende come prendere il formaggio senza farsi catturar
 - I due gatti vengono generati a 1/3 e 2/3 della mappa e si muovono lungo l'asse verticale. La posizione è generata casualmente.
 - Il formaggio viene generato nella parte destra della mappa in una posizione casuale.
 - Lo stato tornato è dato dalle distanze di manatthan verso il gatto e il formaggio. In aggiunta c'è la distanza verso il muro più vicino.
+
+- **Risultati di train**:
+    - Vittorie Gatto 4071
+    - Vittorie Topo 14402
+    - Muri toccati N.D.
+- **Risultati di test**:
+    - Vittorie Gatto 
+    - Vittorie Topo 
+    - Muri toccati 
 
 ## **Gatto Doppio Misto**
 - Il topo viene generato nella parte sinistra della mappa in una posizione casuale.

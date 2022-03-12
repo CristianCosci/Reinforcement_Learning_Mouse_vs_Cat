@@ -24,11 +24,11 @@ grid_matrix = Matrix(rows=10, columns=10)
 env = Env(gameDisplay, grid_matrix)
 
 #initialising our agents
-mouse = Agent(env, possibleActions = 4, alpha=0.1)
+mouse = Agent(env, possibleActions = 4, alpha=0.1, gamma=0.85)
 
 #load the policy
-dir = 'policies/policy_doppioGattoStupido/AllRandom/evitaMuri/'
-mouse.load_policy(dir+'mouse2.pickle')
+dir = 'policies/gattoSentinella/gatto/'
+mouse.load_policy(dir+'mouse.pickle')
 
 #helpful function
 def show_info(cheese, mouse):
@@ -49,9 +49,10 @@ def draw_rect(color, x, y, width, height):
 total_mouse_caught = 0
 total_cheese_eaten = 0
 
-num_episodes = 100
+num_episodes = 10000
 
-toccatemuro = 0
+total_toccatemuro = 0
+total_roccateostacolo = 0
 
 # loop over episodes
 for i_episode in range(1, num_episodes+1):
@@ -75,8 +76,10 @@ for i_episode in range(1, num_episodes+1):
 
         
         # Gatto sentinella doppio
-        next_state, reward, done, info, cat1_direction, cat2_direction, toccatemuro = env.step(action_mouse, cat1_direction, cat2_direction, toccatemuro)
+        next_state, reward, done, info, cat1_direction, cat2_direction, toccatemuro, toccate_ostacolo = env.step(action_mouse, cat1_direction, cat2_direction, toccatemuro)
 
+        total_toccatemuro += toccatemuro
+        total_roccateostacolo += toccate_ostacolo
         #render the environment
         gameDisplay.fill(WHITE)         
         env.render(i_episode)
@@ -84,7 +87,7 @@ for i_episode in range(1, num_episodes+1):
 
         #updating the display
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(9999999999999)
         
         if done:
             if info['cheese_eaten']:
@@ -102,9 +105,10 @@ for i_episode in range(1, num_episodes+1):
         action_mouse = mouse.take_action(state['mouse'])
         
 
-print(toccatemuro)
-print(total_cheese_eaten)
-print(total_mouse_caught)
+print('muro: ', total_toccatemuro)
+print('ostacolo: ', total_roccateostacolo)
+print('topo: ', total_cheese_eaten)
+print('gatto: ', total_mouse_caught)
 time.sleep(2)
 pygame.quit()
 
