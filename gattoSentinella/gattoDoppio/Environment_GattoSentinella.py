@@ -61,8 +61,8 @@ class Env():
         self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-1), np.random.randint(0,9))
 
         #Gatto sentinella doppio
-        self.CAT1_X, self.CAT1_Y = ((self.WIDTH // 3) -1 ,np.random.randint(0, 9))
-        self.CAT2_X, self.CAT2_Y = ((self.WIDTH // 3 * 2) -1 ,np.random.randint(0, 9))
+        self.CAT1_X, self.CAT1_Y = ((self.WIDTH // 3), np.random.randint(0, 9))
+        self.CAT2_X, self.CAT2_Y = ((self.WIDTH // 3 * 2), np.random.randint(0, 9))
         
         # Formaggio
         self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint(0, 9))

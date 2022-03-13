@@ -39,7 +39,7 @@ Il topo impara facilmente a battere il gatto non facendosi mai prendere e a mang
 - **Risultati di test**:
     - Vittorie Gatto 0, 0           | 0 se reward ostacoli diverse          | 0 se reward ostacoli diverse (10)    | 0 se vede i muri prima
     - Vittorie Topo 9193, 9622      | 9854 se reward ostacoli diverse (5)   | 9646 se reward ostacoli diverse (10) | 10000 se vede i muri prima
-    - Muri toccati 4575, 3519       | 3938 se reward ostacoli diverse (5)   | 3092 se reward ostacoli diverse (10) | N.D. se vede i muri prima
+    - Muri toccati 4575, 3519       | 3938 se reward ostacoli diverse (5)   | 3092 se reward ostacoli diverse (10) | 98 se vede i muri prima
 
 ## **Con ostacoli** [3,0], [3,3], [3,6], [3,9], [5,1], [5,4], [5,7]
 Il topo impara facilmente a battere il gatto non facendosi mai prendere e a mangiare il formaggio.
@@ -97,22 +97,50 @@ In tutti i casi il topo apprende come prendere il formaggio senza farsi catturar
 - Il topo viene generato nella parte sinistra della mappa in una posizione casuale.
 - I due gatti vengono generati a 1/3 e 2/3 della mappa e si muovono lungo l'asse verticale. La posizione è generata casualmente.
 - Il formaggio viene generato nella parte destra della mappa in una posizione casuale.
-- Lo stato tornato è dato dalle distanze di manatthan verso il gatto e il formaggio. In aggiunta c'è la distanza verso il muro più vicino.
+- Lo stato tornato è dato dalle distanze di manatthan verso il gatto e il formaggio. Il topo vede il muro una cella prima.
 
 - **Risultati di train**:
-    - Vittorie Gatto 4071 con gamma = 1     | 4056 con gamma = 0.85
-    - Vittorie Topo 14402 con gamma = 1     | 15003 con gamma = 0.85
+    - Vittorie Gatto 3803 con gamma = 1     | 3860 con gamma = 0.85
+    - Vittorie Topo 14138 con gamma = 1     | 14476 con gamma = 0.85
     - Muri toccati N.D.
 - **Risultati di test**:
-    - Vittorie Gatto 209 con gamma = 1      | 184 con gamma = 0.85
-    - Vittorie Topo 8751 con gamma = 1      | 9340 con gamma = 0.85
-    - Muri toccati 1971                     | 1496 con gamma = 0.85
+    - Vittorie Gatto 172 con gamma = 1      | 133 con gamma = 0.85
+    - Vittorie Topo 8519 con gamma = 1      | 8886 con gamma = 0.85
+    - Muri toccati 1850                     | 1963 con gamma = 0.85
+
+
+## **Gatto Doppio Verticale (prova senza dare importanza al tocco dei muri)**
+- Il topo viene generato nella parte sinistra della mappa in una posizione casuale.
+- I due gatti vengono generati a 1/3 e 2/3 della mappa e si muovono lungo l'asse verticale. La posizione è generata casualmente.
+- Il formaggio viene generato nella parte destra della mappa in una posizione casuale.
+- Lo stato tornato è dato dalle 4 distanze (asse x e asse y) rispetto ai due gatti e dalle due distanze verso il formaggio.
+
+- **Risultati di train**:
+    - Vittorie Gatto 5039 con gamma = 1     |  con gamma = 0.85
+    - Vittorie Topo  11617 con gamma = 1    |  con gamma = 0.85
+    - Muri toccati N.D.
+- **Risultati di test**:
+    - Vittorie Gatto 166 con gamma = 1      |  con gamma = 0.85
+    - Vittorie Topo 8328 con gamma = 1      |  con gamma = 0.85
+    - Muri toccati 39835                    |  con gamma = 0.85
+
+
+## **Gatto Doppio Verticale (prova senza dare importanza al tocco dei muri ma 3 coopie)**
+- Il topo viene generato nella parte sinistra della mappa in una posizione casuale.
+- I due gatti vengono generati a 1/3 e 2/3 della mappa e si muovono lungo l'asse verticale. La posizione è generata casualmente.
+- Il formaggio viene generato nella parte destra della mappa in una posizione casuale.
+- Lo stato tornato è dato dalle 4 distanze (asse x e asse y) rispetto ai due gatti e dalle due distanze verso il formaggio.
+
+- **Risultati di train**:
+    - Vittorie Gatto 5956 con gamma = 1     |  con gamma = 0.85
+    - Vittorie Topo 10613 con gamma = 1    |  con gamma = 0.85
+    - Muri toccati N.D.
+
 
 ## **Gatto Doppio Misto**
 - Il topo viene generato nella parte sinistra della mappa in una posizione casuale.
 - I due gatti vengono generati a adfassjk e si muovono uno in orizzontale e uno in verticale. La posizione è generata casualmente.
 - Il formaggio viene generato nella parte destra della mappa in una posizione casuale.
 - Lo stato tornato è dato dalle distanze di manatthan verso il gatto e il formaggio. In aggiunta c'è la distanza verso il muro più vicino.
-
 
 <hr>
