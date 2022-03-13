@@ -8,14 +8,11 @@ import csv
 
 class Agent:
 
-    def __init__(self, env, possibleActions, alpha, gamma=1.0, eps_start=1.0, eps_decay=0.9999, eps_min=0.05):
+    def __init__(self, env, possibleActions, alpha=0.1, gamma=0.85):
         self.env = env
         self.possibleActions = possibleActions
-        self.eps_start = eps_start
         self.gamma = gamma
         self.alpha = alpha
-        self.eps_decay = eps_decay
-        self.eps_min = eps_min
         self.Q = defaultdict(lambda: np.zeros(self.possibleActions))  #Q-TABLE
 
 

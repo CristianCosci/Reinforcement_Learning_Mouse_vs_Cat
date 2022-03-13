@@ -100,13 +100,13 @@ In tutti i casi il topo apprende come prendere il formaggio senza farsi catturar
 - Lo stato tornato è dato dalle distanze di manatthan verso il gatto e il formaggio. In aggiunta c'è la distanza verso il muro più vicino.
 
 - **Risultati di train**:
-    - Vittorie Gatto 4071
-    - Vittorie Topo 14402
+    - Vittorie Gatto 4071 con gamma = 1     | 4056 con gamma = 0.85
+    - Vittorie Topo 14402 con gamma = 1     | 15003 con gamma = 0.85
     - Muri toccati N.D.
 - **Risultati di test**:
-    - Vittorie Gatto 
-    - Vittorie Topo 
-    - Muri toccati 
+    - Vittorie Gatto 209 con gamma = 1      | 184 con gamma = 0.85
+    - Vittorie Topo 8751 con gamma = 1      | 9340 con gamma = 0.85
+    - Muri toccati 1971                     | 1496 con gamma = 0.85
 
 ## **Gatto Doppio Misto**
 - Il topo viene generato nella parte sinistra della mappa in una posizione casuale.

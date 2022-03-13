@@ -39,7 +39,7 @@ clock = pygame.time.Clock()
 # Definizione env, griglia e agente
 map = Matrix(rows=10, columns=10)
 env = Env(display, map)
-mouse = Agent(env, possibleActions=4, alpha = 0.1)
+mouse = Agent(env, possibleActions=4, alpha = 0.1, gamma=0.85)
 
 # Parametri di Qlearning
 epsilon, eps_decay, eps_min = 1.0, 0.9994, 0.05
