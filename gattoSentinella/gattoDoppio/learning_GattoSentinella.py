@@ -72,7 +72,8 @@ for i_episode in range(1, num_episodes+1):
 
     # Gatto sentinella doppio
     cat1_direction = 2
-    cat2_direction = 2
+    #cat2_direction = 2 # gatto doppio verticale
+    cat2_direction = 0
 
     ep_rewards = 0
     ep_toccateMuro = 0
@@ -102,7 +103,7 @@ for i_episode in range(1, num_episodes+1):
         show_stats(cheese_eaten, mouse_caught)
 
         pygame.display.update()
-        clock.tick(9999999999999)
+        clock.tick(99999999999999999999999)
 
         if done:
             if info['cheese_eaten']:
@@ -150,5 +151,5 @@ print(cheese_eaten)
 
 mouse.set_policy(saveQtable=True)
 # Save the policy
-dir = 'gattoSentinella/gattoDoppio/'
+dir = 'gattoSentinella/gattoDoppio/misto/'
 mouse.save_policy(dir, 'mouse', savePolicytable=True)

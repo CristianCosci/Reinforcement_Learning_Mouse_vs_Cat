@@ -146,22 +146,31 @@ In tutti i casi il topo apprende come prendere il formaggio senza farsi catturar
 - 30k epoche di train
 
 - **Risultati di train**:
-    - Vittorie Gatto  con gamma = 1    | 5507 con gamma = 0.85
-    - Vittorie Topo  con gamma = 1     | 21620 con gamma = 0.85
+    - Vittorie Gatto 5507 con gamma = 0.85
+    - Vittorie Topo 21620 con gamma = 0.85
     - Muri toccati N.D.
 - **Risultati di test**:
-    - Vittorie Gatto  con gamma = 1     | 19 con gamma = 0.85
-    - Vittorie Topo  con gamma = 1      | 9287 con gamma = 0.85
-    - Muri toccati  con gamme = 1       | 893 con gamma = 0.85
-    - Ostacoli toccati                  | 1927 con gamma = 0.85 <br>
+    - Vittorie Gatto 19 con gamma = 0.85
+    - Vittorie Topo 9287 con gamma = 0.85
+    - Muri toccati 893 con gamma = 0.85
+    - Ostacoli toccati 1927 con gamma = 0.85 <br>
 Il problema sta che vede i muri prima e gli ostacoli no.
 
 
-
 ## **Gatto Doppio Misto**
-- Il topo viene generato nella parte sinistra della mappa in una posizione casuale.
-- I due gatti vengono generati a adfassjk e si muovono uno in orizzontale e uno in verticale. La posizione è generata casualmente.
-- Il formaggio viene generato nella parte destra della mappa in una posizione casuale.
+- Il topo viene generato nel quadrante in alto a sinistra della mappa.
+- I due gatti vengono generati a metà mappa e si muovono uno in orizzontale e uno in verticale. La posizione è generata casualmente.
+- Il formaggio viene generato nel quadrante in basso a destra della mappa.
 - Lo stato tornato è dato dalle distanze di manatthan verso il gatto e il formaggio. In aggiunta c'è la distanza verso il muro più vicino.
+- 30k epoche di train
+
+- **Risultati di train**:
+    - Vittorie Gatto 3719 con gamma = 0.85
+    - Vittorie Topo 24069 con gamma = 0.85
+    - Muri toccati N.D.
+- **Risultati di test**:
+    - Vittorie Gatto 130 con gamma = 0.85
+    - Vittorie Topo 9468 con gamma = 0.85
+    - Muri toccati 780 con gamma = 0.85
 
 <hr>

@@ -8,7 +8,7 @@ class Matrix:
 	def __init__(self, rows=5, columns=5):
 		self.ROWS = rows 
 		self.COLUMNS = columns
-		self.OBSTACLES = [[2,2], [2,7], [7,2], [7,7], [4,5]]
+		self.OBSTACLES = []#[[2,2], [2,7], [7,2], [7,7], [4,5]]
 
     
 #----------------------------------classe ambiente---------------------------------------------#
@@ -43,13 +43,13 @@ class Env():
             - il topo riceve come la distanza di manhattan dal topo1, topo2 e dal formaggio
         '''
         wall = self.checkWall()
-        obsacles = self.checkObstacles(wall)
+        #obsacles = self.checkObstacles(wall)
 
         #Doppio gatto sentinella
         self.STATE = {'mouse':((self.MOUSE_X - self.CAT1_X) + (self.MOUSE_Y - self.CAT1_Y),
             (self.MOUSE_X - self.CAT2_X) + (self.MOUSE_Y - self.CAT2_Y),
             (self.MOUSE_X - self.CHEESE_X) + (self.MOUSE_Y -  self.CHEESE_Y), 
-            obsacles)}
+            wall)}
         
         return self.STATE
 
@@ -58,14 +58,20 @@ class Env():
         '''
         Funzione per resettare l'ambiente alla situazione iniziale
         '''
-        self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-2), np.random.randint(0,9))
+        #self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-1), np.random.randint(0,9)) #doppio gatto verticale SENZA ostacoli
+        #self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-2), np.random.randint(0,9)) #doppio gatto verticale e CON ostacoli
+        self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )+1), np.random.randint(0, (self.HEIGHT // 3)+1)) #doppio gatto misto SENZA ostacoli
 
         #Gatto sentinella doppio
-        self.CAT1_X, self.CAT1_Y = ((self.WIDTH // 3), np.random.randint(0, 9))
-        self.CAT2_X, self.CAT2_Y = ((self.WIDTH // 3 * 2), np.random.randint(0, 9))
-        
+        #self.CAT1_X, self.CAT1_Y = ((self.WIDTH // 3), np.random.randint(0, 9)) #doppio gatto verticale
+        #self.CAT2_X, self.CAT2_Y = ((self.WIDTH // 3 * 2), np.random.randint(0, 9)) #doppio gatto verticale
+        self.CAT1_X, self.CAT1_Y = ((self.WIDTH // 3)+2, np.random.randint(0, 9)) #doppio gatto misto SENZA ostacoli
+        self.CAT2_X, self.CAT2_Y = (np.random.randint(0, 9), (self.HEIGHT // 3 * 2)-1) #doppio gatto misto SENZA ostacoli
+
         # Formaggio
-        self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+2, 9), np.random.randint(0, 9))
+        #self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint(0, 9)) #doppio gatto verticale SENZA ostacoli
+        #self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+2, 9), np.random.randint(0, 9)) #doppio gatto verticale CON ostacoli
+        self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2), 9), np.random.randint((self.HEIGHT // 3 * 2), 9)) #doppio gatto misto SENZA ostacoli
 
         self.MOVES['mouse'] = 100
         return self.get_state()
@@ -137,11 +143,19 @@ class Env():
                 cat1_direction = 3
             else:
                 cat1_direction = 2
+        '''
+        Gatto doppio verticale
         if cat2_out_of_bounds:
             if cat2_direction == 2:
                 cat2_direction = 3
             else:
                 cat2_direction = 2
+        '''
+        if cat2_out_of_bounds:
+            if cat2_direction == 0:
+                cat2_direction = 1
+            else:
+                cat2_direction = 0
 
         self.update_positions(mouse_action, cat1_direction, cat2_direction, mouse_action_null)
 

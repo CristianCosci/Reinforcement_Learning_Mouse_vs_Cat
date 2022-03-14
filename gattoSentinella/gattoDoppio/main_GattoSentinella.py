@@ -44,7 +44,7 @@ mouse = Agent(env, possibleActions = 4)
 num_episodes = 10000
 
 #load the policy
-dir = 'policies/gattoSentinella/gattoDoppio/'
+dir = 'policies/gattoSentinella/gattoDoppio/misto/'
 mouse.load_policy(dir+'mouse.pickle')
 
 # Statistiche
@@ -60,7 +60,7 @@ for i_episode in range(1, num_episodes+1):
     
     # Gatto sentinella doppio
     cat1_direction = 2
-    cat2_direction = 2
+    cat2_direction = 0
 
     #render the environment         
     env.render(i_episode)
