@@ -106,7 +106,7 @@ In tutti i casi il topo apprende come prendere il formaggio senza farsi catturar
 - **Risultati di test**:
     - Vittorie Gatto 172 con gamma = 1      | 133 con gamma = 0.85
     - Vittorie Topo 8519 con gamma = 1      | 8886 con gamma = 0.85
-    - Muri toccati 1850                     | 1963 con gamma = 0.85
+    - Muri toccati 1850 con gamme = 1       | 1963 con gamma = 0.85
 
 
 ## **Gatto Doppio Verticale (prova senza dare importanza al tocco dei muri)**
@@ -135,6 +135,27 @@ In tutti i casi il topo apprende come prendere il formaggio senza farsi catturar
     - Vittorie Gatto 5956 con gamma = 1     |  con gamma = 0.85
     - Vittorie Topo 10613 con gamma = 1    |  con gamma = 0.85
     - Muri toccati N.D.
+
+
+
+## **Gatto Doppio Verticale con ostacoli** [[2,2], [2,7], [7,2], [7,7], [4,5]]
+- Il topo viene generato nella parte sinistra della mappa in una posizione casuale.
+- I due gatti vengono generati a 1/3 e 2/3 della mappa e si muovono lungo l'asse verticale. La posizione è generata casualmente.
+- Il formaggio viene generato nella parte destra della mappa in una posizione casuale.
+- Lo stato tornato è dato dalle distanze di manatthan verso il gatto e il formaggio. Il topo vede il muro una cella prima e gli ostacoli solo se li ha davanti.
+- 30k epoche di train
+
+- **Risultati di train**:
+    - Vittorie Gatto  con gamma = 1    | 5507 con gamma = 0.85
+    - Vittorie Topo  con gamma = 1     | 21620 con gamma = 0.85
+    - Muri toccati N.D.
+- **Risultati di test**:
+    - Vittorie Gatto  con gamma = 1     | 19 con gamma = 0.85
+    - Vittorie Topo  con gamma = 1      | 9287 con gamma = 0.85
+    - Muri toccati  con gamme = 1       | 893 con gamma = 0.85
+    - Ostacoli toccati                  | 1927 con gamma = 0.85 <br>
+Il problema sta che vede i muri prima e gli ostacoli no.
+
 
 
 ## **Gatto Doppio Misto**

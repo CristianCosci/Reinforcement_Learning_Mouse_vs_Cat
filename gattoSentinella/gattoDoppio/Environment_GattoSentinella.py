@@ -8,7 +8,7 @@ class Matrix:
 	def __init__(self, rows=5, columns=5):
 		self.ROWS = rows 
 		self.COLUMNS = columns
-		self.OBSTACLES = [] #[[2,2], [2,7], [7,2], [7,7], [5,5]]
+		self.OBSTACLES = [[2,2], [2,7], [7,2], [7,7], [4,5]]
 
     
 #----------------------------------classe ambiente---------------------------------------------#
@@ -43,13 +43,13 @@ class Env():
             - il topo riceve come la distanza di manhattan dal topo1, topo2 e dal formaggio
         '''
         wall = self.checkWall()
-        #obsacles = self.checkObstacles(wall)
+        obsacles = self.checkObstacles(wall)
 
         #Doppio gatto sentinella
         self.STATE = {'mouse':((self.MOUSE_X - self.CAT1_X) + (self.MOUSE_Y - self.CAT1_Y),
             (self.MOUSE_X - self.CAT2_X) + (self.MOUSE_Y - self.CAT2_Y),
             (self.MOUSE_X - self.CHEESE_X) + (self.MOUSE_Y -  self.CHEESE_Y), 
-            wall)}
+            obsacles)}
         
         return self.STATE
 
@@ -58,14 +58,14 @@ class Env():
         '''
         Funzione per resettare l'ambiente alla situazione iniziale
         '''
-        self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-1), np.random.randint(0,9))
+        self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-2), np.random.randint(0,9))
 
         #Gatto sentinella doppio
         self.CAT1_X, self.CAT1_Y = ((self.WIDTH // 3), np.random.randint(0, 9))
         self.CAT2_X, self.CAT2_Y = ((self.WIDTH // 3 * 2), np.random.randint(0, 9))
         
         # Formaggio
-        self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint(0, 9))
+        self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+2, 9), np.random.randint(0, 9))
 
         self.MOVES['mouse'] = 100
         return self.get_state()
@@ -272,7 +272,24 @@ class Env():
 
         return wall_position
 
+
+    def checkObstacles(self, wall_position):
+        if wall_position == 0:
+            for obs in self.OBSTACLES:
+                if (self.MOUSE_X == obs[0]):
+                    if (self.MOUSE_Y + 1) == obs[1]:
+                        wall_position = 4   # down
+                    elif (self.MOUSE_Y - 1) == obs[1]:
+                        wall_position = 3   # up
+                elif (self.MOUSE_Y == obs[1]):
+                    if (self.MOUSE_X + 1) == obs[0]:
+                        wall_position = 2   # right
+                    elif (self.MOUSE_X - 1) == obs[0]:
+                        wall_position = 1   # left
         
+        return wall_position
+        
+             
     def display_episode(self,epsiode):
         font = pygame.font.SysFont(None, 25)
         text = font.render("Episode: "+str(epsiode), True, (0,0,220))
