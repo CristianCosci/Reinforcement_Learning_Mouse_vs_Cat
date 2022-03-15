@@ -173,4 +173,22 @@ Il problema sta che vede i muri prima e gli ostacoli no.
     - Vittorie Topo 9468 con gamma = 0.85
     - Muri toccati 780 con gamma = 0.85
 
+
+## **Gatto Doppio Misto con ostacoli**
+- Il topo viene generato nel quadrante in alto a sinistra della mappa.
+- I due gatti vengono generati a metà mappa e si muovono uno in orizzontale e uno in verticale. La posizione è generata casualmente.
+- Il formaggio viene generato nel quadrante in basso a destra della mappa.
+- Lo stato tornato è dato dalle distanze di manatthan verso il gatto e il formaggio. In aggiunta c'è la distanza verso il muro più vicino.
+- 30k epoche di train
+
+- **Risultati di train**:
+    - Vittorie Gatto 4253 con gamma = 0.85
+    - Vittorie Topo 23770 con gamma = 0.85
+    - Muri toccati N.D.
+- **Risultati di test**:
+    - Vittorie Gatto 10 con gamma = 0.85
+    - Vittorie Topo 9730 con gamma = 0.85
+    - Muri toccati 1211 con gamma = 0.85
+    - Ostacoli toccati 1146 con gamma = 0.85
+
 <hr>

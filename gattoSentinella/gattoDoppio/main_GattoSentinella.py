@@ -83,7 +83,7 @@ for i_episode in range(1, num_episodes+1):
 
         #updating the display
         pygame.display.update()
-        clock.tick(9999999999999)
+        clock.tick(9999999999999999999999999999999)
         
         if done:
             if info['cheese_eaten']:

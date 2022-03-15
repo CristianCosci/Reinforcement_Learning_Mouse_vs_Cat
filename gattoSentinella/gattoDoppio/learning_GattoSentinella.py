@@ -103,7 +103,7 @@ for i_episode in range(1, num_episodes+1):
         show_stats(cheese_eaten, mouse_caught)
 
         pygame.display.update()
-        clock.tick(99999999999999999999999)
+        clock.tick(99999999999999999999)
 
         if done:
             if info['cheese_eaten']:
