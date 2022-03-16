@@ -146,7 +146,7 @@ class Env():
             else:
                 cat1_direction = 2
         '''
-        Gatto doppio verticale
+        #Gatto doppio verticale
         if cat2_out_of_bounds:
             if cat2_direction == 2:
                 cat2_direction = 3
@@ -158,7 +158,7 @@ class Env():
                 cat2_direction = 1
             else:
                 cat2_direction = 0
-
+        
         self.update_positions(mouse_action, cat1_direction, cat2_direction, mouse_action_null)
 
         #mouse reached the cheese

@@ -8,7 +8,7 @@ import csv
 
 class Agent:
 
-    def __init__(self, env, possibleActions, alpha, gamma=0.99):
+    def __init__(self, env, possibleActions, alpha = 0.1, gamma=0.99):
         self.env = env
         self.possibleActions = possibleActions
         self.gamma = gamma

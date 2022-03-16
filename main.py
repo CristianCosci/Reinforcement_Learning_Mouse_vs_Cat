@@ -13,26 +13,6 @@ WHITE = (255,255,255)
 RED = (255, 0, 0)
 BLACK = (0,0,0)
 
-display_width, display_height = 800, 900
-
-pygame.init()
-pygame.display.set_caption('Tom & Jerry AI Agents')
-gameDisplay = pygame.display.set_mode((display_width,display_height))
-clock = pygame.time.Clock()
-
-grid_matrix = Matrix(rows=10, columns=10)
-env = Env(gameDisplay, grid_matrix)
-
-# Inizializzazione agenti
-cat = Agent(env, possibleActions = 4, alpha=0.1)
-mouse = Agent(env, possibleActions = 4, alpha=0.1)
-
-# Load della policy
-dir = 'policy_gattoIntelligente/AllRandom/evitaMuri'
-mouse.load_policy(dir+'/mouse2.pickle')
-cat.load_policy(dir+'/cat2.pickle')
-
-# Funzioni di comodo
 def show_info(cheese, mouse):
     pygame.draw.rect(gameDisplay, BLACK, [0, 800, 800, 5])
     font = pygame.font.SysFont(None, 40)
@@ -42,39 +22,63 @@ def show_info(cheese, mouse):
     gameDisplay.blit(text1,(50,810))
     gameDisplay.blit(text2,(50,855))	
 
-# Barra delle statistiche
 def draw_rect(color, x, y, width, height):
     pygame.draw.rect(gameDisplay, color, [x*width, y*height, width, height], 10)
     pygame.display.update()
     time.sleep(2)
 
+#-------------------------------------------------------------------------------------------------------------------------------------------------#
+# Pygame
+display_width, display_height = 800, 900
+pygame.init()
+pygame.display.set_caption('Tom & Jerry AI Agents')
+gameDisplay = pygame.display.set_mode((display_width,display_height))
+clock = pygame.time.Clock()
+
+# Definizione env, griglia e agenti
+map = Matrix(rows=10, columns=10)
+env = Env(gameDisplay, map)
+# Inizializzazione agenti
+cat = Agent(env, possibleActions = 4)
+mouse = Agent(env, possibleActions = 4)
+
+# Numero di epoche 
+num_episodes = 10000
+
+# Load della policy
+dir = '/gattoIntelligente/prova1/'
+mouse.load_policy(dir+'mouse.pickle')
+cat.load_policy(dir+'cat.pickle')
+
+# Statistiche
 total_mouse_caught = 0
 total_cheese_eaten = 0
-
-num_episodes = 100
-
-toccatemuro = 0
-toccate_ostacolo = 0
+total_toccatemuro_mouse = 0
+total_toccatemuro_cat = 0
+total_roccateostacolo_mouse = 0
+total_roccateostacolo_cat = 0
 
 # loop over episodes
 for i_episode in range(1, num_episodes+1):
-   
     state = env.reset()
     action_mouse = mouse.take_action(state['mouse'])
     action_cat = cat.take_action(state['cat'])
     
     # Render dell'environment
     env.render(i_episode)
-
     while True:
-        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()   # Close window
                 quit() 
 
-        next_state, reward, done, info, toccatemuro, toccate_ostacolo = env.step(action_mouse, action_cat, toccatemuro, toccate_ostacolo)
+        next_state, reward, done, info, toccate_muro_mouse, toccate_muro_cat, toccate_ostacolo_mouse, toccate_ostacolo_cat = env.step(action_mouse, action_cat)
         
+        total_toccatemuro_mouse += toccate_muro_mouse
+        total_toccatemuro_cat += toccate_muro_cat
+        total_roccateostacolo_mouse += toccate_ostacolo_mouse
+        total_roccateostacolo_cat += toccate_ostacolo_cat
+
         # Render dell'environment
         gameDisplay.fill(WHITE)         
         env.render(i_episode)
@@ -101,11 +105,11 @@ for i_episode in range(1, num_episodes+1):
         action_cat = cat.take_action(state['cat'])
        
         
-print(toccatemuro)
-print(total_cheese_eaten)
-print(total_mouse_caught)
+print('muro topo: ', total_toccatemuro_mouse)
+print('ostacolo topo: ', total_roccateostacolo_mouse)
+print('muro gatto: ', total_toccatemuro_cat)
+print('ostacolo gatto: ', total_roccateostacolo_cat)
+print('topo: ', total_cheese_eaten)
+print('gatto: ', total_mouse_caught)
 time.sleep(2)
 pygame.quit()
-
-        
-

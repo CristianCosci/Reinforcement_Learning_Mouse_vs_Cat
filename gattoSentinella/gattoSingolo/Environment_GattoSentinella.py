@@ -7,7 +7,7 @@ class Matrix:
 	def __init__(self, rows=5, columns=5):
 		self.ROWS = rows 
 		self.COLUMNS = columns
-		self.OBSTACLES = []#[3,0], [3,3], [3,6], [3,9], [5,1], [5,4], [5,7]
+		self.OBSTACLES = [3,0], [3,3], [3,6], [3,9], [5,1], [5,4], [5,7]
 
     
 #----------------------------------Classe Ambiente---------------------------------------------#
@@ -41,11 +41,11 @@ class Env():
             - il topo riceve come la distanza di manhattan dal topo e dal formaggio
         '''
         wall = self.checkWall()
-        #obsacles = self.checkObstacles(wall)
+        obsacles = self.checkObstacles(wall)
 
         self.STATE = {'mouse':((self.MOUSE_X - self.CAT_X) + (self.MOUSE_Y - self.CAT_Y),
             (self.MOUSE_X - self.CHEESE_X) + (self.MOUSE_Y -  self.CHEESE_Y),
-            wall)}
+            obsacles)}
     
         return self.STATE
 
@@ -55,8 +55,10 @@ class Env():
         Funzione per resettare l'ambiente alla situazione iniziale
         '''
         self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-1), np.random.randint(0,9))
+        #self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-1), np.random.randint(0,9))
         self.CAT_X, self.CAT_Y = ((self.WIDTH / 2) -1 ,np.random.randint(0, 9))
         self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint(0, 9))
+        #self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint(0, 9))
 
         self.MOVES['mouse'] = 100
         return self.get_state()
@@ -215,19 +217,20 @@ class Env():
         return min(distanza_X, distanza_Y)
     
     def checkWall(self):
+        visual = 1
         wall_position = 0
-        if self.MOUSE_X - 2 < 0:
+        if self.MOUSE_X - visual < 0:
             wall_position = 1        # wall on the left
-        if self.MOUSE_X + 2 > self.WIDTH-1:
+        if self.MOUSE_X + visual > self.WIDTH-1:
             wall_position = 2       # wall on the rigth
-        if self.MOUSE_Y - 2 < 0:
+        if self.MOUSE_Y - visual < 0:
             if wall_position == 1:
                 wall_position = 5   # wall on top e left
             elif wall_position == 2:
                 wall_position = 6   # wall on top e rigth
             else:
                 wall_position = 3   # wall on the top
-        if self.MOUSE_Y + 2 > self.HEIGHT-1:
+        if self.MOUSE_Y + visual > self.HEIGHT-1:
             if wall_position == 1:
                 wall_position = 7   # wall on bottom e left
             elif wall_position == 2:

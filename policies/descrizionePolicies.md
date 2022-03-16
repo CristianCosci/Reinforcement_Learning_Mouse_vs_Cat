@@ -174,7 +174,7 @@ Il problema sta che vede i muri prima e gli ostacoli no.
     - Muri toccati 780 con gamma = 0.85
 
 
-## **Gatto Doppio Misto con ostacoli**
+## **Gatto Doppio Misto con ostacoli** [[2,4], [4,2], [7,3], [6,6], [7,6], [6,7]]
 - Il topo viene generato nel quadrante in alto a sinistra della mappa.
 - I due gatti vengono generati a metà mappa e si muovono uno in orizzontale e uno in verticale. La posizione è generata casualmente.
 - Il formaggio viene generato nel quadrante in basso a destra della mappa.

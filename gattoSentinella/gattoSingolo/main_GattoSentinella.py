@@ -25,7 +25,7 @@ def show_info(cheese, mouse):
 def draw_rect(color, x, y, width, height):
     pygame.draw.rect(gameDisplay, color, [x*width, y*height, width, height], 10)
     pygame.display.update()
-    time.sleep(0)
+    #time.sleep(1)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------#
 # Pygame
@@ -44,7 +44,7 @@ mouse = Agent(env, possibleActions = 4)
 num_episodes = 10000
 
 #load the policy
-dir = 'policies/gattoSentinella/gattoSingolo/'
+dir = 'policies/gattoSentinella/gattoSingolo/ConOstacoli/'
 mouse.load_policy(dir+'mouse.pickle')
 
 # Statistiche
@@ -59,7 +59,7 @@ for i_episode in range(1, num_episodes+1):
     
     cat_direction = 2
 
-    #render the environment         
+    # Render dell'environment
     env.render(i_episode)
     while True:
         for event in pygame.event.get():
@@ -72,14 +72,14 @@ for i_episode in range(1, num_episodes+1):
         total_toccatemuro += toccate_muro
         total_roccateostacolo += toccate_ostacolo
         
-        #render the environment
+        # Render dell'environment
         gameDisplay.fill(WHITE)         
         env.render(i_episode)
         show_info(total_cheese_eaten, total_mouse_caught)
 
-        #updating the display
+        # Updating the display
         pygame.display.update()
-        clock.tick(999999999999999)
+        clock.tick(999999999)
         
         if done:
             if info['cheese_eaten']:
@@ -89,7 +89,7 @@ for i_episode in range(1, num_episodes+1):
             if info['mouse_caught']:
                 total_mouse_caught += 1
                 draw_rect(RED, info['x'], info['y'], info['width'], info['height'])    
-            #finish this episode    
+            # Terminazione episodio    
             break
        
         # Update state and action
@@ -103,6 +103,3 @@ print('topo: ', total_cheese_eaten)
 print('gatto: ', total_mouse_caught)
 time.sleep(2)
 pygame.quit()
-
-        
-

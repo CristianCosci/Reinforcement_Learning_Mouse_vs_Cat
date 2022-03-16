@@ -59,11 +59,10 @@ class Env():
         #self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 2)-1), np.random.randint(0, (self.HEIGHT // 2)-1))
         
         #self.CAT_X, self.CAT_Y = (np.random.randint(0, (self.WIDTH // 2)-1), np.random.randint((self.HEIGHT // 2)+1, self.HEIGHT))
-        self.CAT_X, self.CAT_Y = (self.WIDTH / 2, 0)
+        self.CAT_X, self.CAT_Y = (self.WIDTH-1, self.HEIGHT-1)
         
         # Formaggio
-        self.CHEESE_X, self.CHEESE_Y = (9, 5)
-        #self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 2)+1, self.WIDTH), np.random.randint(0, (self.HEIGHT // 2)-1))
+        self.CHEESE_X, self.CHEESE_Y = (np.random.randint(self.WIDTH // 2, self.WIDTH-1), np.random.randint(0, self.HEIGHT-1))
         #self.CHEESE_X, self.CHEESE_Y = np.random.randint(0, 9, 2, 'int')
         
         self.MOVES['mouse'] = 100
