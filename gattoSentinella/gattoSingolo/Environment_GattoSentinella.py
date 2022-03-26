@@ -7,7 +7,7 @@ class Matrix:
 	def __init__(self, rows=5, columns=5):
 		self.ROWS = rows 
 		self.COLUMNS = columns
-		self.OBSTACLES = [3,0], [3,3], [3,6], [3,9], [5,1], [5,4], [5,7]
+		self.OBSTACLES = []#[3,0], [3,3], [3,6], [3,9], [5,1], [5,4], [5,7]
 
     
 #----------------------------------Classe Ambiente---------------------------------------------#
@@ -41,11 +41,11 @@ class Env():
             - il topo riceve come la distanza di manhattan dal topo e dal formaggio
         '''
         wall = self.checkWall()
-        obsacles = self.checkObstacles(wall)
+        #obsacles = self.checkObstacles(wall)
 
         self.STATE = {'mouse':((self.MOUSE_X - self.CAT_X) + (self.MOUSE_Y - self.CAT_Y),
             (self.MOUSE_X - self.CHEESE_X) + (self.MOUSE_Y -  self.CHEESE_Y),
-            obsacles)}
+            wall)}
     
         return self.STATE
 
@@ -217,7 +217,7 @@ class Env():
         return min(distanza_X, distanza_Y)
     
     def checkWall(self):
-        visual = 1
+        visual = 2
         wall_position = 0
         if self.MOUSE_X - visual < 0:
             wall_position = 1        # wall on the left

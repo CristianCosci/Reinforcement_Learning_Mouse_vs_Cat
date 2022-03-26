@@ -44,7 +44,7 @@ mouse = Agent(env, possibleActions = 4)
 num_episodes = 10000
 
 #load the policy
-dir = 'policies/gattoSentinella/gattoSingolo/ConOstacoli/'
+dir = 'policies/gattoSentinella/gattoSingolo/SenzaOstacoli/'
 mouse.load_policy(dir+'mouse.pickle')
 
 # Statistiche

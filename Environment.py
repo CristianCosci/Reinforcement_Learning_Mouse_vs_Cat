@@ -55,14 +55,14 @@ class Env():
         '''
         Funzione per resettare l'ambiente alla situazione iniziale
         '''
-        self.MOUSE_X, self.MOUSE_Y = (0, 0)
-        #self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 2)-1), np.random.randint(0, (self.HEIGHT // 2)-1))
+        #self.MOUSE_X, self.MOUSE_Y = (0, 0)
+        self.MOUSE_X, self.MOUSE_Y = (0, np.random.randint(0, self.HEIGHT-1))
         
         #self.CAT_X, self.CAT_Y = (np.random.randint(0, (self.WIDTH // 2)-1), np.random.randint((self.HEIGHT // 2)+1, self.HEIGHT))
-        self.CAT_X, self.CAT_Y = (self.WIDTH-1, self.HEIGHT-1)
+        self.CAT_X, self.CAT_Y = (self.HEIGHT-1, np.random.randint(0, self.HEIGHT-1))
         
         # Formaggio
-        self.CHEESE_X, self.CHEESE_Y = (np.random.randint(self.WIDTH // 2, self.WIDTH-1), np.random.randint(0, self.HEIGHT-1))
+        self.CHEESE_X, self.CHEESE_Y = (np.random.randint(self.WIDTH // 3, self.WIDTH // 3 * 2), np.random.randint(self.HEIGHT // 3, self.HEIGHT // 3 * 2))
         #self.CHEESE_X, self.CHEESE_Y = np.random.randint(0, 9, 2, 'int')
         
         self.MOVES['mouse'] = 100

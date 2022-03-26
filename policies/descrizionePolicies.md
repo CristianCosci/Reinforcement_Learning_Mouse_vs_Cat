@@ -10,6 +10,7 @@
     - [Gatto Sentinella Doppio](#gatto-sentinella-doppio)
         - [Gatto doppio Verticale](#gatto-doppio-verticale)
         - [Gatto doppio Misto](#gatto-doppio-misto)
+    - [Gatto Intelligente](#)
 <hr>
 
 # **Gatto Sentinella**
@@ -192,3 +193,22 @@ Il problema sta che vede i muri prima e gli ostacoli no.
     - Ostacoli toccati 1146 con gamma = 0.85
 
 <hr>
+
+
+# **Gatto Intelligente**
+### Parametri di train
+- Prova
+    - 40k epoche
+    - 100 steps
+    - Gamma: gamma=0.85
+    - Lr: alpha = 0.1
+    - Eps: epsilon, eps_decay, eps_min = 1.0, 0.9994, 0.05
+    - Note:
+        Verranno fatti vari test di posizionamento per vedere come apprendono i due agenti
+
+## **Gatto Doppio Verticale**
+- Il topo viene generato nella parte sinistra della mappa in una posizione casuale sull'asse verticale x=0.
+- Il gatto viene generato in una posizione casuale nella parte destra della mappa sull'asse x = dimensione mappa
+- Lo stato tornato è dato da:
+    - Topo: dalle distanze di manatthan verso il gatto e il formaggio. Il topo vede il muro una cella prima.
+    - Gatto: distanza di manhattan verso il topo

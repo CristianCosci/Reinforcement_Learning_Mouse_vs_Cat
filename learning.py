@@ -43,10 +43,10 @@ cat = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)
 mouse = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)
 
 # Parametri di Qlearning
-epsilon, eps_decay, eps_min = 1.0, 0.9994, 0.05
+epsilon, eps_decay, eps_min = 1.0, 0.99989, 0.05
 
 # Numero di epoche di allenamento (epochs)
-num_episodes = 30000
+num_episodes = 40000
 
 # Statistiche per plot
 info_plot = True
@@ -111,7 +111,7 @@ for i_episode in range(1, num_episodes+1):
         show_stats(cheese_eaten, mouse_caught)
 
         pygame.display.update()
-        clock.tick(9999999999999999999999999)
+        clock.tick(99999999999999)
 
         if done:
             if info['cheese_eaten']:
