@@ -25,7 +25,7 @@ def show_info(cheese, mouse):
 def draw_rect(color, x, y, width, height):
     pygame.draw.rect(gameDisplay, color, [x*width, y*height, width, height], 10)
     pygame.display.update()
-    time.sleep(2)
+    time.sleep(0)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------#
 # Pygame
@@ -46,7 +46,7 @@ mouse = Agent(env, possibleActions = 4)
 num_episodes = 10000
 
 # Load della policy
-dir = '/gattoIntelligente/prova1/'
+dir = '/'
 mouse.load_policy(dir+'mouse.pickle')
 cat.load_policy(dir+'cat.pickle')
 
@@ -86,7 +86,7 @@ for i_episode in range(1, num_episodes+1):
 
         # Updating the display
         pygame.display.update()
-        clock.tick(12)
+        clock.tick(999999999)
         
         if done:
             if info['cheese_eaten']:

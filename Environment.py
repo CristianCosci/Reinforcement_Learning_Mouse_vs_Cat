@@ -7,7 +7,7 @@ class Matrix:
 	def __init__(self, rows=5, columns=5):
 		self.ROWS = rows 
 		self.COLUMNS = columns
-		self.OBSTACLES = [] #[[2,2], [2,7], [7,2], [7,7], [5,5]]
+		self.OBSTACLES = [3,3], [3,4], [3,5], [3,6], [4,6], [6,6], [6,5], [6,3], [5,3], [4,3] #[5,6], [6,4]
 
     
 #----------------------------------classe ambiente---------------------------------------------#
@@ -43,11 +43,13 @@ class Env():
         '''
         wall_mouse = self.checkWall('mouse')
         wall_cat = self.checkWall('cat')
+        obsacles_mouse = self.checkObstacles(wall_mouse, 'mouse')
+        obsacles_cat = self.checkObstacles(wall_cat, 'cat')
         '''self.STATE = {'mouse':(self.MOUSE_X - self.CAT_X, self.MOUSE_Y - self.CAT_Y, self.MOUSE_X - self.CHEESE_X, self.MOUSE_Y -  self.CHEESE_Y),\
                         'cat':(self.CAT_X - self.MOUSE_X, self.CAT_Y - self.MOUSE_Y)}  
         '''
-        self.STATE = {'mouse':((self.MOUSE_X - self.CAT_X) + (self.MOUSE_Y - self.CAT_Y), (self.MOUSE_X - self.CHEESE_X) + (self.MOUSE_Y -  self.CHEESE_Y), wall_mouse),
-                        'cat':((self.MOUSE_X - self.CAT_X) + (self.MOUSE_Y - self.CAT_Y), wall_cat)}  
+        self.STATE = {'mouse':((self.MOUSE_X - self.CAT_X) + (self.MOUSE_Y - self.CAT_Y), (self.MOUSE_X - self.CHEESE_X) + (self.MOUSE_Y -  self.CHEESE_Y), obsacles_mouse),
+                        'cat':((self.MOUSE_X - self.CAT_X) + (self.MOUSE_Y - self.CAT_Y), obsacles_cat)}  
         return self.STATE
 
 
@@ -55,15 +57,13 @@ class Env():
         '''
         Funzione per resettare l'ambiente alla situazione iniziale
         '''
-        #self.MOUSE_X, self.MOUSE_Y = (0, 0)
         self.MOUSE_X, self.MOUSE_Y = (0, np.random.randint(0, self.HEIGHT-1))
         
-        #self.CAT_X, self.CAT_Y = (np.random.randint(0, (self.WIDTH // 2)-1), np.random.randint((self.HEIGHT // 2)+1, self.HEIGHT))
         self.CAT_X, self.CAT_Y = (self.HEIGHT-1, np.random.randint(0, self.HEIGHT-1))
         
         # Formaggio
-        self.CHEESE_X, self.CHEESE_Y = (np.random.randint(self.WIDTH // 3, self.WIDTH // 3 * 2), np.random.randint(self.HEIGHT // 3, self.HEIGHT // 3 * 2))
-        #self.CHEESE_X, self.CHEESE_Y = np.random.randint(0, 9, 2, 'int')
+        #self.CHEESE_X, self.CHEESE_Y = (np.random.randint(self.WIDTH // 3, self.WIDTH // 3 * 2), np.random.randint(self.HEIGHT // 3, self.HEIGHT // 3 * 2))
+        self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3) + 1, (self.WIDTH // 3 * 2)), np.random.randint((self.HEIGHT // 3) + 1, (self.HEIGHT // 3 * 2)))
         
         self.MOVES['mouse'] = 100
         self.MOVES['cat'] = 100
@@ -273,6 +273,29 @@ class Env():
             else:
                 wall_position = 4   # wall on the bottom
 
+        return wall_position
+
+
+    def checkObstacles(self, wall_position, agent):
+        assert agent == 'cat' or agent == 'mouse'
+        if agent == 'cat':
+            x, y = self.CAT_X, self.CAT_Y
+        else:
+            x, y = self.MOUSE_X, self.MOUSE_Y
+
+        if wall_position == 0:
+            for obs in self.OBSTACLES:
+                if (x == obs[0]):
+                    if (y + 1) == obs[1]:
+                        wall_position = 4   # down
+                    elif (y - 1) == obs[1]:
+                        wall_position = 3   # up
+                elif (y == obs[1]):
+                    if (x + 1) == obs[0]:
+                        wall_position = 2   # right
+                    elif (x- 1) == obs[0]:
+                        wall_position = 1   # left
+        
         return wall_position
 
 
