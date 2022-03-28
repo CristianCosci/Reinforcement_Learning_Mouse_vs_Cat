@@ -47,7 +47,7 @@ mouse = Agent(env, possibleActions = 4)
 num_episodes = 100
 
 # Load della policy
-dir = '/'
+dir = 'gattoIntelligente/gattoCheese/'
 mouse.load_policy(dir+'mouse.pickle')
 cat.load_policy(dir+'cat.pickle')
 
@@ -61,6 +61,8 @@ total_roccateostacolo_cat = 0
 
 # loop over episodes
 for i_episode in range(1, num_episodes+1):
+    env.set_obstacles(env.load_obstacles(map.OBSTACLES))
+
     state = env.reset()
     old_state = state.copy()
     check_loop = 0

@@ -1,13 +1,14 @@
+from json import load
 import pygame
 import numpy as np 
 
 
 # Classe di comodo per rappresentare la griglia (mappa)
 class Matrix:
-	def __init__(self, rows=5, columns=5):
-		self.ROWS = rows 
-		self.COLUMNS = columns
-		self.OBSTACLES = [3,3], [3,4], [3,5], [3,6], [4,6], [6,6], [6,5], [6,3], [5,3], [4,3] #[5,6], [6,4]
+    def __init__(self, rows=5, columns=5):
+        self.ROWS = rows 
+        self.COLUMNS = columns
+        self.OBSTACLES = [3,3], [3,4], [3,5], [3,6], [4,6], [6,6], [6,5], [6,3], [5,3], [4,3], [5,6], [6,4]
 
     
 #----------------------------------classe ambiente---------------------------------------------#
@@ -29,11 +30,28 @@ class Env():
         self.MOVES = {'mouse':100,'cat':100}
 
         # Ostacoli
-        self.OBSTACLES = matrix.OBSTACLES
+        self.OBSTACLES = self.load_obstacles(matrix.OBSTACLES)
 
         # Cheese
         self.CHEESE_IMG = pygame.transform.scale(pygame.image.load('immagini/cheese.png'),(self.BLOCK_WIDTH, self.BLOCK_HEIGHT))
 
+
+    def load_obstacles(self, possible_obstacles):
+        obstacle_list = list()
+        i = 0
+        numeri = np.random.randint(0, 2, size=len(possible_obstacles))
+        #print(numeri)
+        for obs in possible_obstacles:
+            if numeri[i] == 1:
+                obstacle_list.append(obs)
+            i+= 1
+        
+        return tuple(obstacle_list)
+
+
+    def set_obstacles(self, obstacles):
+        self.OBSTACLES = obstacles
+        
 
     def get_state(self):
         '''

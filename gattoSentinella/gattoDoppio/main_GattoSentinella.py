@@ -25,7 +25,7 @@ def show_info(cheese, mouse):
 def draw_rect(color, x, y, width, height):
     pygame.draw.rect(gameDisplay, color, [x*width, y*height, width, height], 10)
     pygame.display.update()
-    time.sleep(1)
+    time.sleep(0)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------#
 # Pygame
@@ -55,6 +55,9 @@ total_roccateostacolo = 0
 
 # loop over episodes
 for i_episode in range(1, num_episodes+1):
+    #map = Matrix(rows=10, columns=10)
+    #env = Env(gameDisplay, map)
+
     state = env.reset()
     action_mouse = mouse.take_action(state['mouse'])
     
@@ -84,7 +87,7 @@ for i_episode in range(1, num_episodes+1):
 
         #updating the display
         pygame.display.update()
-        clock.tick(6)
+        clock.tick(999999)
         
         if done:
             if info['cheese_eaten']:

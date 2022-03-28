@@ -5,10 +5,20 @@ import numpy as np
 
 # classe di comodo per rappresentare la griglia (mappa)
 class Matrix:
-	def __init__(self, rows=5, columns=5):
-		self.ROWS = rows 
-		self.COLUMNS = columns
-		self.OBSTACLES = [[2,4], [4,2], [7,3], [6,6], [7,6], [6,7]]
+    def __init__(self, rows=5, columns=5):
+        self.ROWS = rows 
+        self.COLUMNS = columns
+        possible_obstacles = [[2,4], [4,2], [7,3], [6,6], [7,6], [6,7]]
+        obstacle_list = list()
+        i = 0
+        numeri = np.random.randint(0, 2, size=len(possible_obstacles))
+        #print(numeri)
+        for obs in possible_obstacles:
+            if numeri[i] == 1:
+                obstacle_list.append(obs)
+            i+= 1
+
+        self.OBSTACLES = [[2,4], [4,2], [7,3], [6,6], [7,6], [6,7]]#tuple(obstacle_list)
 
     
 #----------------------------------classe ambiente---------------------------------------------#
