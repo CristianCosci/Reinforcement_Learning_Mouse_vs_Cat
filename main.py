@@ -1,6 +1,7 @@
 
 #-------------------------Run this to test the agents----------------------------------------------#
 import pygame
+import numpy as np
 import time
 
 from Agent import Agent
@@ -43,7 +44,7 @@ cat = Agent(env, possibleActions = 4)
 mouse = Agent(env, possibleActions = 4)
 
 # Numero di epoche 
-num_episodes = 10000
+num_episodes = 100
 
 # Load della policy
 dir = '/'
@@ -61,6 +62,9 @@ total_roccateostacolo_cat = 0
 # loop over episodes
 for i_episode in range(1, num_episodes+1):
     state = env.reset()
+    old_state = state.copy()
+    check_loop = 0
+    loop = False
     action_mouse = mouse.take_action(state['mouse'])
     action_cat = cat.take_action(state['cat'])
     
@@ -86,7 +90,7 @@ for i_episode in range(1, num_episodes+1):
 
         # Updating the display
         pygame.display.update()
-        clock.tick(999999999)
+        clock.tick(999999999999999)
         
         if done:
             if info['cheese_eaten']:
@@ -98,13 +102,32 @@ for i_episode in range(1, num_episodes+1):
                 draw_rect(RED, info['x'], info['y'], info['width'], info['height'])    
             # Terminazione episodio    
             break
-       
+        
         # Update state and action
         state = next_state
-        action_mouse = mouse.take_action(state['mouse'])
-        action_cat = cat.take_action(state['cat'])
-       
-        
+        if loop:
+            action_mouse = np.random.randint(0, 5)
+            action_cat = np.random.randint(0,5)
+            if action_cat == 5 or action_mouse == 5:
+                print('ERROREEEEEEE')
+            loop = False
+        else:
+            action_mouse = mouse.take_action(state['mouse'])
+            action_cat = cat.take_action(state['cat'])
+
+        #'''
+        # Check if the two agents are in a stalemate
+        if old_state == next_state:
+            #print('Loop')
+            # break
+            loop = True
+        else:
+            if check_loop == 1:
+                old_state = state.copy()
+                check_loop = 0
+            else:
+                check_loop = 1
+        #'''
 print('muro topo: ', total_toccatemuro_mouse)
 print('ostacolo topo: ', total_roccateostacolo_mouse)
 print('muro gatto: ', total_toccatemuro_cat)

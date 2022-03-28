@@ -49,7 +49,7 @@ class Env():
                         'cat':(self.CAT_X - self.MOUSE_X, self.CAT_Y - self.MOUSE_Y)}  
         '''
         self.STATE = {'mouse':((self.MOUSE_X - self.CAT_X) + (self.MOUSE_Y - self.CAT_Y), (self.MOUSE_X - self.CHEESE_X) + (self.MOUSE_Y -  self.CHEESE_Y), obsacles_mouse),
-                        'cat':((self.MOUSE_X - self.CAT_X) + (self.MOUSE_Y - self.CAT_Y), obsacles_cat)}  
+                        'cat':((self.MOUSE_X - self.CAT_X) + (self.MOUSE_Y - self.CAT_Y), (self.CAT_X - self.CHEESE_X) + (self.CAT_Y -  self.CHEESE_Y), obsacles_cat)}  
         return self.STATE
 
 
