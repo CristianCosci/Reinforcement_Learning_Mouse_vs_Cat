@@ -60,6 +60,7 @@ cheese_eaten = 0
 
 # Learning effettivo
 for i_episode in range(1, num_episodes+1):
+    #env.set_obstacles(env.load_obstacles(map.OBSTACLES))
     if i_episode % 100 == 0:
         print("\rEpisode {}/{}".format(i_episode, num_episodes), end="")
         print()
@@ -102,7 +103,7 @@ for i_episode in range(1, num_episodes+1):
         show_stats(cheese_eaten, mouse_caught)
 
         pygame.display.update()
-        clock.tick(9999999999999)
+        clock.tick(1)
 
         if done:
             if info['cheese_eaten']:
