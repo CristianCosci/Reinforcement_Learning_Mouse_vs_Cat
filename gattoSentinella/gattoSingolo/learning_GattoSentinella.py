@@ -36,18 +36,18 @@ pygame.display.set_caption('Tom & Jerry AI Agents')
 display = pygame.display.set_mode((displayWidth, displayHeight))
 clock = pygame.time.Clock()
 
-# Definizione env, griglia e agente
-map = Matrix(rows=10, columns=10)
+# env, griglia e agent definitions
+map = Matrix(rows=10, columns=10, max_pct_obstacles=0.15)
 env = Env(display, map)
 mouse = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)
 
-# Parametri di Qlearning
+# Qlearning params
 epsilon, eps_decay, eps_min = 1.0, 0.9994, 0.05
 
-# Numero di epoche di allenamento (epochs)
+# Train epoch
 num_episodes = 10000
 
-# Statistiche per plot
+# Stas for plot
 info_plot = True
 total_rewards = np.zeros(num_episodes)
 total_toccateMuro = np.zeros(num_episodes)
@@ -58,9 +58,9 @@ total_cheese_eaten = np.zeros(num_episodes)
 mouse_caught = 0
 cheese_eaten = 0
 
-# Learning effettivo
+# Learning
 for i_episode in range(1, num_episodes+1):
-    #env.set_obstacles(env.load_obstacles(map.OBSTACLES))
+    env.set_obstacles(env.load_obstacles(map.OBSTACLES))
     if i_episode % 100 == 0:
         print("\rEpisode {}/{}".format(i_episode, num_episodes), end="")
         print()
@@ -97,13 +97,13 @@ for i_episode in range(1, num_episodes+1):
 
         mouse.Q_learn(state['mouse'], action_mouse, reward['mouse'], next_state['mouse'])
 
-        # Render dell'environment
+        # Render the environment
         display.fill(WHITE)         
         env.render(i_episode)
         show_stats(cheese_eaten, mouse_caught)
 
         pygame.display.update()
-        clock.tick(1)
+        clock.tick(99999999999999999)
 
         if done:
             if info['cheese_eaten']:
@@ -113,7 +113,7 @@ for i_episode in range(1, num_episodes+1):
             if info['mouse_caught']:
                 mouse_caught += 1
                 draw_stats_pannel(RED, info['x'], info['y'], info['width'], info['height'])   
-            # Terminazione episodio
+            # Episode termination
             break
 
         # Update state and action
@@ -127,7 +127,7 @@ for i_episode in range(1, num_episodes+1):
     total_toccate_ostacolo[i_episode-1] = ep_toccate_ostacolo
     
 
-# Plot statistiche
+# Plot stats
 if info_plot:
     plt.plot(total_rewards)
     plt.title('Reward')

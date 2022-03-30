@@ -35,36 +35,37 @@ pygame.display.set_caption('Tom & Jerry AI Agents')
 gameDisplay = pygame.display.set_mode((display_width,display_height))
 clock = pygame.time.Clock()
 
-# Definizione env, griglia e agente
-map = Matrix(rows=10, columns=10)
+# env, griglia e agent definition
+map = Matrix(rows=10, columns=10, max_pct_obstacles=0.15)
 env = Env(gameDisplay, map)
 mouse = Agent(env, possibleActions = 4)
 
-# Numero di epoche 
+# Epochs
 num_episodes = 10000
 
-#load the policy
-dir = 'policies/gattoSentinella/gattoSingolo/SenzaOstacoli/'
+# Load the policy
+dir = 'policies/gattoSentinella/gattoSingolo/'
 mouse.load_policy(dir+'mouse.pickle')
 
-# Statistiche
+# Stats
 total_mouse_caught = 0
 total_cheese_eaten = 0
 total_toccatemuro = 0
 total_roccateostacolo = 0
 
 for i_episode in range(1, num_episodes+1):
+    env.set_obstacles(env.load_obstacles(map.OBSTACLES))
     state = env.reset()
     action_mouse = mouse.take_action(state['mouse'])
     
     cat_direction = 2
 
-    # Render dell'environment
+    # Render the environment
     env.render(i_episode)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()   #close the window
+                pygame.quit() # Close the window
                 quit() 
 
         next_state, reward, done, info, cat_direction, toccate_muro, toccate_ostacolo= env.step(action_mouse, cat_direction)
@@ -72,14 +73,14 @@ for i_episode in range(1, num_episodes+1):
         total_toccatemuro += toccate_muro
         total_roccateostacolo += toccate_ostacolo
         
-        # Render dell'environment
+        # Render the environment
         gameDisplay.fill(WHITE)         
         env.render(i_episode)
         show_info(total_cheese_eaten, total_mouse_caught)
 
         # Updating the display
         pygame.display.update()
-        clock.tick(999999999)
+        clock.tick(99999999999)
         
         if done:
             if info['cheese_eaten']:
@@ -89,7 +90,7 @@ for i_episode in range(1, num_episodes+1):
             if info['mouse_caught']:
                 total_mouse_caught += 1
                 draw_rect(RED, info['x'], info['y'], info['width'], info['height'])    
-            # Terminazione episodio    
+            # Episode termination   
             break
        
         # Update state and action
