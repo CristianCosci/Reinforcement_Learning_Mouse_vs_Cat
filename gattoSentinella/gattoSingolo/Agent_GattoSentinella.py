@@ -36,12 +36,12 @@ class Agent:
         self.Q[state][action] += self.alpha*(reward + self.gamma*np.max(self.Q[next_state]) - self.Q[state][action])
 
     
-    def set_policy(self, saveQtable):
+    def set_policy(self, saveQtable, dir):
         '''
             setta la policy ottimale per l'agente
         '''
         if saveQtable:
-            self.saveQtableToCsv()
+            self.saveQtableToCsv(dir)
         
         policy = defaultdict(lambda: 0)
         for state, action in self.Q.items():
@@ -71,26 +71,26 @@ class Agent:
             salva una policy in seguito alla creazione (allenamento)
         '''
         if savePolicytable:
-            self.savePolicyToCsv()
+            self.savePolicyToCsv(dir)
             
         try:
             policy = dict(self.policy)
-            directory = "policies/"+ dir
+            directory = dir
             if not os.path.exists(directory):
                 os.makedirs(directory)
                 print('non esiste')
             else:
                 print('esiste')
                 
-            with open(f'{directory}/{name}.pickle','wb') as f:
+            with open(f'{directory}{name}.pickle','wb') as f:
                 pickle.dump(policy, f)
 
         except :
             print('not saved')
     
 
-    def saveQtableToCsv(self):
-        w = csv.writer(open("Qtable.csv", "w"))
+    def saveQtableToCsv(self, dir):
+        w = csv.writer(open(dir+"Qtable.csv", "w"))
         
         # loop over dictionary keys and values
         for key, val in self.Q.items():
@@ -99,9 +99,9 @@ class Agent:
             w.writerow([key, val])
 
 
-    def savePolicyToCsv(self):
+    def savePolicyToCsv(self, dir):
         policy = dict(self.policy)
-        w = csv.writer(open("Policy.csv", "w"))
+        w = csv.writer(open(dir+"Policy.csv", "w"))
 
         # loop over dictionary keys and values
         for key, val in policy.items():

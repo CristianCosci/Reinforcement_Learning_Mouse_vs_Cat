@@ -37,15 +37,15 @@ display = pygame.display.set_mode((displayWidth, displayHeight))
 clock = pygame.time.Clock()
 
 # env, griglia e agent definitions
-map = Matrix(rows=10, columns=10, max_pct_obstacles=0.15)
+map = Matrix(rows=10, columns=10, max_pct_obstacles=0.1)
 env = Env(display, map)
 mouse = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)
 
 # Qlearning params
-epsilon, eps_decay, eps_min = 1.0, 0.9994, 0.05
+epsilon, eps_decay, eps_min = 1.0, 0.9998, 0.05
 
 # Train epoch
-num_episodes = 10000
+num_episodes = 20000
 
 # Stas for plot
 info_plot = True
@@ -127,29 +127,29 @@ for i_episode in range(1, num_episodes+1):
     total_toccate_ostacolo[i_episode-1] = ep_toccate_ostacolo
     
 
+dir = 'policies/gattoSentinella/gattoSingolo/conOstacoli/'
 # Plot stats
 if info_plot:
     plt.plot(total_rewards)
     plt.title('Reward')
-    plt.savefig('reward.png')
+    plt.savefig(dir+'reward.png')
     plt.show()
     plt.plot(total_toccate_ostacolo)
-    plt.savefig('toccateOstacolo.png')
+    plt.savefig(dir+'toccateOstacolo.png')
     plt.show()
     plt.plot(total_toccateMuro)
-    plt.savefig('toccateMuro.png')
+    plt.savefig(dir+'toccateMuro.png')
     plt.show()
     plt.title('Mouse vs cat')
     plt.plot(total_mouse_caught, label='topo catturato', color='orange')
     plt.plot(total_cheese_eaten, label='formaggio mangiato', color='green')
     plt.legend()
-    plt.savefig('mouse_vs_cat.png')
+    plt.savefig(dir+'mouse_vs_cat.png')
     plt.show()
 
 print(mouse_caught)
 print(cheese_eaten)
 
-mouse.set_policy(saveQtable=False)
+mouse.set_policy(saveQtable=True, dir=dir)
 # Save the policy
-dir = 'gattoSentinella/gattoSingolo'
-mouse.save_policy(dir, 'mouse', savePolicytable=False)
+mouse.save_policy(dir, 'mouse', savePolicytable=True)

@@ -36,7 +36,7 @@ gameDisplay = pygame.display.set_mode((display_width,display_height))
 clock = pygame.time.Clock()
 
 # env, griglia e agent definition
-map = Matrix(rows=10, columns=10, max_pct_obstacles=0.15)
+map = Matrix(rows=10, columns=10, max_pct_obstacles=0)
 env = Env(gameDisplay, map)
 mouse = Agent(env, possibleActions = 4)
 
@@ -44,7 +44,7 @@ mouse = Agent(env, possibleActions = 4)
 num_episodes = 10000
 
 # Load the policy
-dir = 'policies/gattoSentinella/gattoSingolo/'
+dir = 'policies/gattoSentinella/gattoSingolo/senzaOstacoli/'
 mouse.load_policy(dir+'mouse.pickle')
 
 # Stats
