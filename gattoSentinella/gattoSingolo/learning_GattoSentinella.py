@@ -37,7 +37,8 @@ display = pygame.display.set_mode((displayWidth, displayHeight))
 clock = pygame.time.Clock()
 
 # env, griglia e agent definitions
-map = Matrix(rows=10, columns=10, max_pct_obstacles=0.1)
+pct_obstacles = 0.08
+map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles)
 env = Env(display, map)
 mouse = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)
 
@@ -60,7 +61,7 @@ cheese_eaten = 0
 
 # Learning
 for i_episode in range(1, num_episodes+1):
-    env.set_obstacles(env.load_obstacles(map.OBSTACLES))
+    env.set_obstacles(env.load_obstacles(map.OBSTACLES,pct_obstacles))
     if i_episode % 100 == 0:
         print("\rEpisode {}/{}".format(i_episode, num_episodes), end="")
         print()

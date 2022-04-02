@@ -1,33 +1,39 @@
+import numbers
 import pygame
 import numpy as np
 import random
+import itertools
+from itertools import product
 
 # Convenience class to represent the grid (map)
 class Matrix:
     def __init__(self, rows=5, columns=5, max_pct_obstacles = 0):
         self.ROWS = rows 
         self.COLUMNS = columns
-        range = rows -1
+        self.PCT_OBSTACLES = max_pct_obstacles
         if max_pct_obstacles > 0:
-            total = rows*columns
-            n = int(total / 100 * max_pct_obstacles * 100)
-            self.OBSTACLES = self.createObstacles(n, range)
+            self.OBSTACLES = self.createObstacles(self.ROWS, ((self.ROWS // 2) -1))
         else:
             self.OBSTACLES = []
 
 
-    def createObstacles(self, n, r):
-        res = [divmod(ele, r + 1) for ele in random.sample(range((r + 1) * (r + 1)), n)]
-        for obs in res:
-            if obs[0] == ((self.COLUMNS / 2)-1):
-                res.remove(obs)
-        return tuple(res)
+    def createObstacles(self, n, cat_axis):
+        possible_obstacles = []
+        for x in range(n):
+            if x == cat_axis:
+                pass
+            else:
+                for y in range(n):
+                    possible_obstacles.append((x, y))
+
+        return tuple(possible_obstacles)
 
 #----------------------------------Classe Ambiente---------------------------------------------#
 class Env():
     def __init__(self, display, matrix):
         self.HEIGHT = matrix.ROWS
         self.WIDTH = matrix.COLUMNS
+        self.PCT_OBS = matrix.PCT_OBSTACLES
 
         # Pygame setting
         self.DISPLAY = display
@@ -42,20 +48,18 @@ class Env():
         self.MOVES = {'mouse':100,'cat':100}
         
         # Obstacles
-        self.OBSTACLES = self.load_obstacles(matrix.OBSTACLES)
+        self.OBSTACLES = self.load_obstacles(matrix.OBSTACLES, self.PCT_OBS)
 
         # Cheese
         self.CHEESE_IMG = pygame.transform.scale(pygame.image.load('immagini/cheese.png'),(self.BLOCK_WIDTH, self.BLOCK_HEIGHT))        
 
 
-    def load_obstacles(self, possible_obstacles):
+    def load_obstacles(self, possible_obstacles, pct_obstacles):
+        n = int(pct_obstacles*100)
         obstacle_list = list()
-        i = 0
-        numeri = np.random.randint(0, 2, size=len(possible_obstacles))
-        for obs in possible_obstacles:
-            if numeri[i] == 1:
-                obstacle_list.append(obs)
-            i+= 1
+        numbers = random.sample(range(len(possible_obstacles)), n)
+        for i in numbers:
+            obstacle_list.append(possible_obstacles[i])
         
         return tuple(obstacle_list)
 
@@ -85,7 +89,7 @@ class Env():
 
     def reset(self):
         self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-1), np.random.randint(0,9))
-        self.CAT_X, self.CAT_Y = ((self.WIDTH / 2) -1 ,np.random.randint(0, 9))
+        self.CAT_X, self.CAT_Y = ((self.WIDTH // 2) -1 ,np.random.randint(0, 9))
         self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint(0, 9))
 
         self.checkRegularPosition()

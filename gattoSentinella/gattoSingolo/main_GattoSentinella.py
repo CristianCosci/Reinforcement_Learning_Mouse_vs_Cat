@@ -36,7 +36,8 @@ gameDisplay = pygame.display.set_mode((display_width,display_height))
 clock = pygame.time.Clock()
 
 # env, griglia e agent definition
-map = Matrix(rows=10, columns=10, max_pct_obstacles=0)
+pct_obstacles = 0.08
+map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles)
 env = Env(gameDisplay, map)
 mouse = Agent(env, possibleActions = 4)
 
@@ -44,7 +45,7 @@ mouse = Agent(env, possibleActions = 4)
 num_episodes = 10000
 
 # Load the policy
-dir = 'policies/gattoSentinella/gattoSingolo/senzaOstacoli/'
+dir = 'policies/gattoSentinella/gattoSingolo/conOstacoli/'
 mouse.load_policy(dir+'mouse.pickle')
 
 # Stats
@@ -54,7 +55,7 @@ total_toccatemuro = 0
 total_roccateostacolo = 0
 
 for i_episode in range(1, num_episodes+1):
-    env.set_obstacles(env.load_obstacles(map.OBSTACLES))
+    env.set_obstacles(env.load_obstacles(map.OBSTACLES,pct_obstacles))
     state = env.reset()
     action_mouse = mouse.take_action(state['mouse'])
     
@@ -80,7 +81,7 @@ for i_episode in range(1, num_episodes+1):
 
         # Updating the display
         pygame.display.update()
-        clock.tick(99999999999)
+        clock.tick(12)
         
         if done:
             if info['cheese_eaten']:
