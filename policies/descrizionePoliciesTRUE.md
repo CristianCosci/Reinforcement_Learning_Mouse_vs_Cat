@@ -38,19 +38,40 @@ Risultati di test su 10000 epoche:
 
 <hr>
 
-### **Senza Ostacoli**
+### **Con Ostacoli classico**
 Parametri di train:
 - epsilon, eps_decay, eps_min = 1.0, 0.9998, 0.05
 - num_episodes = 20000
-- Riempimento ostacoli 10%
+- Riempimento ostacoli 5%
 
 Risultati di train:
-- Vittorie gatto: 2144
-- Vittorie topo: 14995
+- Vittorie gatto: 2014
+- Vittorie topo: 15451
 - Info sui muri e gli ostacoli: Il topo impara a evitare i muri. Non ci sono info sugli ostacoli.
 
 Risultati di test su 10000 epoche:
-- Vittorie gatto: 0
-- Vittorie topo: 9970
-- Info sui muri e gli ostacoli: Muro -> 4313 ; Ostacolo niente info
+- Vittorie gatto: 48
+- Vittorie topo: 8136
+- Info sui muri e gli ostacoli: Muro -> 3865 ; Ostacolo -> 4201
+
+### **Con Ostacoli reward di -5**
+Parametri di train:
+- epsilon, eps_decay, eps_min = 1.0, 0.9998, 0.05
+- num_episodes = 20000
+- Riempimento ostacoli 5%
+
+Risultati di train:
+- Vittorie gatto: 1986
+- Vittorie topo: 15353
+- Info sui muri e gli ostacoli: Il topo impara a evitare i muri. Non ci sono info sugli ostacoli.
+
+Risultati di test su 10000 epoche:
+- Vittorie gatto: 10
+- Vittorie topo: 8412
+- Info sui muri e gli ostacoli: Muro -> 1462 ; Ostacolo 5656
+
+<hr>
+
+<hr>
+
 

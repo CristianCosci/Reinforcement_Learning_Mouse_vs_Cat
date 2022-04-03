@@ -36,8 +36,8 @@ pygame.display.set_caption('Tom & Jerry AI Agents')
 display = pygame.display.set_mode((displayWidth, displayHeight))
 clock = pygame.time.Clock()
 
-# env, griglia e agent definitions
-pct_obstacles = 0.08
+# env, grid and agent definitions
+pct_obstacles = 0.05
 map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles)
 env = Env(display, map)
 mouse = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)

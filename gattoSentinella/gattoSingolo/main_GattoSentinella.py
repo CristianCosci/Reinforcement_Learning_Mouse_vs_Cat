@@ -35,8 +35,8 @@ pygame.display.set_caption('Tom & Jerry AI Agents')
 gameDisplay = pygame.display.set_mode((display_width,display_height))
 clock = pygame.time.Clock()
 
-# env, griglia e agent definition
-pct_obstacles = 0.08
+# env, grid e agent definition
+pct_obstacles = 0.05
 map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles)
 env = Env(gameDisplay, map)
 mouse = Agent(env, possibleActions = 4)
@@ -45,7 +45,7 @@ mouse = Agent(env, possibleActions = 4)
 num_episodes = 10000
 
 # Load the policy
-dir = 'policies/gattoSentinella/gattoSingolo/conOstacoli/'
+dir = 'policies/gattoSentinella/gattoSingolo/conOstacoli_5/'
 mouse.load_policy(dir+'mouse.pickle')
 
 # Stats
@@ -81,7 +81,7 @@ for i_episode in range(1, num_episodes+1):
 
         # Updating the display
         pygame.display.update()
-        clock.tick(12)
+        clock.tick(99999999999999999999999)
         
         if done:
             if info['cheese_eaten']:

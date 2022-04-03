@@ -1,9 +1,6 @@
-import numbers
 import pygame
 import numpy as np
 import random
-import itertools
-from itertools import product
 
 # Convenience class to represent the grid (map)
 class Matrix:
@@ -55,6 +52,9 @@ class Env():
 
 
     def load_obstacles(self, possible_obstacles, pct_obstacles):
+        '''
+            Used to random choose n (pct_obstacles*100) obstacles from the possble obstacles
+        '''
         n = int(pct_obstacles*100)
         obstacle_list = list()
         numbers = random.sample(range(len(possible_obstacles)), n)
@@ -64,16 +64,19 @@ class Env():
         return tuple(obstacle_list)
 
 
-    def set_obstacles(self, obstacles):
+    def set_obstacles(self, obstacles): # Used to change the obstacles in the map
         self.OBSTACLES = obstacles
 
 
     def get_state(self):
+        '''
+            Return the state for the agent
+        '''
         wall = self.checkWall()
         obstacles_first = self.checkDoubleObstacles(wall)
-        if wall != obstacles_first:
+        if wall != obstacles_first:  # Used to avoid worthless operation in case there are not obstacles near the agent
             obstacles_second = self.checkDoubleObstacles(obstacles_first)
-            if obstacles_first != obstacles_second:
+            if obstacles_first != obstacles_second:  # Used to avoid worthless operation in case there are not more than 1 obstacle near the agent
                 obstacles = self.checkTripleObstacles(obstacles_second)
             else:
                 obstacles = obstacles_second
@@ -88,6 +91,9 @@ class Env():
 
 
     def reset(self):
+        '''
+            Used to reset all elements position in the environment
+        '''
         self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-1), np.random.randint(0,9))
         self.CAT_X, self.CAT_Y = ((self.WIDTH // 2) -1 ,np.random.randint(0, 9))
         self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint(0, 9))
@@ -111,6 +117,9 @@ class Env():
         
 
     def step(self, mouse_action, cat_direction):
+        '''
+            Principal method in wich all needed controls are do
+        '''
         done = False
         mouse_action_null = False
         mouse_out_of_bounds = False
@@ -118,7 +127,7 @@ class Env():
         reward = {'mouse': -1}
         toccate_ostacolo = 0
         toccate_muro = 0
-        info = {
+        info = {    # Dict that contains all the information to keep during the process
             'cheese_eaten': False,
             'mouse_caught': False,
             'x': -1, 'y': -1,\
@@ -127,24 +136,24 @@ class Env():
         }
 
         self.MOVES['mouse'] -= 1
-        # done if moves = 0
+        # Done if moves = 0
         if self.MOVES['mouse'] == 0:
             done = True
         
-        mouse_towards_obstacle = self.check_towards_obstacle(mouse_action, agent='mouse')
+        mouse_towards_obstacle = self.check_towards_obstacle(mouse_action, agent='mouse') # Check if agent went toward an obstacles
         if mouse_towards_obstacle:
             toccate_ostacolo +=1
-            reward['mouse'] = -20
-            mouse_action_null = True
+            reward['mouse'] = -5 #-20 #-5
+            mouse_action_null = True    # Used to don't move the agent
 
-        mouse_out_of_bounds = self.check_out_of_bounds(mouse_action, agent='mouse')
-        cat_out_of_bounds = self.check_out_of_bounds(cat_direction, agent='cat')
+        mouse_out_of_bounds = self.check_out_of_bounds(mouse_action, agent='mouse') # Check if the agent went out of map bounds
+        cat_out_of_bounds = self.check_out_of_bounds(cat_direction, agent='cat')    # Check if the cat went out of map bounds
 
         if mouse_out_of_bounds:
-            reward['mouse'] = -20
-            toccate_muro +=1
+            reward['mouse'] = -20 # Negative reward
+            toccate_muro +=1 # Count how many times the agent went out of map bounds
             mouse_action_null = True
-        if cat_out_of_bounds:
+        if cat_out_of_bounds: # If the cat went out of the map bounds change his direction
             if cat_direction == 2:
                 cat_direction = 3
             else:
@@ -227,45 +236,29 @@ class Env():
                 y_change = 1    #moving DOWN
         
         return x_change, y_change
-
-
-    def getWallDistance(self):
-        distanza_X = 0
-        if self.WIDTH - self.MOUSE_X < self.MOUSE_X:
-            distanza_X = self.WIDTH - self.MOUSE_X
-        else:
-            distanza_X = self.MOUSE_X
-        
-        distanza_Y = 0
-        if self.HEIGHT - self.MOUSE_Y < self.MOUSE_Y:
-            distanza_Y = self.HEIGHT - self.MOUSE_Y
-        else:
-            distanza_Y = self.MOUSE_Y
-        
-        return min(distanza_X, distanza_Y)
     
     
     def checkWall(self):
         visual = 1
         wall_position = 0
         if self.MOUSE_X - visual < 0:
-            wall_position = 1        # wall on the left
+            wall_position = 1        # wall on the LEFT
         if self.MOUSE_X + visual > self.WIDTH-1:
-            wall_position = 2       # wall on the rigth
+            wall_position = 2       # wall on the RIGHT
         if self.MOUSE_Y - visual < 0:
             if wall_position == 1:
-                wall_position = 5   # wall on top e left
+                wall_position = 5   # wall on TOP and LEFT
             elif wall_position == 2:
-                wall_position = 6   # wall on top e rigth
+                wall_position = 6   # wall on TOP and RIGHT
             else:
-                wall_position = 3   # wall on the top
+                wall_position = 3   # wall on the TOP
         if self.MOUSE_Y + visual > self.HEIGHT-1:
             if wall_position == 1:
-                wall_position = 7   # wall on bottom e left
+                wall_position = 7   # wall on DOWN and LEFT
             elif wall_position == 2:
-                wall_position = 8   # wall on bottom e right
+                wall_position = 8   # wall on DOWN e RIGHT
             else:
-                wall_position = 4   # wall on the bottom
+                wall_position = 4   # wall on the DOWN
 
         return wall_position
     
@@ -275,54 +268,54 @@ class Env():
             for obs in self.OBSTACLES:
                 if (self.MOUSE_X == obs[0]):
                     if (self.MOUSE_Y + 1) == obs[1]:
-                        wall_position = 4   # down
+                        wall_position = 4   # obstacle DOWN
                     elif (self.MOUSE_Y - 1) == obs[1]:
-                        wall_position = 3   # up
+                        wall_position = 3   # obstacle UP
                 elif (self.MOUSE_Y == obs[1]):
                     if (self.MOUSE_X + 1) == obs[0]:
-                        wall_position = 2   # right
+                        wall_position = 2   # obstacle RIGHT
                     elif (self.MOUSE_X - 1) == obs[0]:
-                        wall_position = 1   # left
+                        wall_position = 1   # obstacle LEFT
         elif wall_position == 1:
             for obs in self.OBSTACLES:
                 if (self.MOUSE_X == obs[0]):
                     if (self.MOUSE_Y + 1) == obs[1]:
-                        wall_position = 7   # down e left
+                        wall_position = 7   # obstacle DOWN and LEFT
                     elif (self.MOUSE_Y - 1) == obs[1]:
-                        wall_position = 5   # up e left
+                        wall_position = 5   # obstacle UP and LEFT
                 elif (self.MOUSE_Y == obs[1]):
                     if (self.MOUSE_X + 1) == obs[0]:
-                        wall_position = 9   # right e left
+                        wall_position = 9   # obstacle RIGHT and LEFT
         elif wall_position == 2:
             for obs in self.OBSTACLES:
                 if (self.MOUSE_X == obs[0]):
                     if (self.MOUSE_Y + 1) == obs[1]:
-                        wall_position = 8   # down e right
+                        wall_position = 8   # obstacle DOWN and RIGHT
                     elif (self.MOUSE_Y - 1) == obs[1]:
-                        wall_position = 6   # up e right
+                        wall_position = 6   # obstacle UP and RIGHT
                 elif (self.MOUSE_Y == obs[1]):
                     if (self.MOUSE_X - 1) == obs[0]:
-                        wall_position = 9   # left e right
+                        wall_position = 9   # obstacle LEFT and RIGHT
         elif wall_position == 3:
             for obs in self.OBSTACLES:
                 if (self.MOUSE_X == obs[0]):
                     if (self.MOUSE_Y + 1) == obs[1]:
-                        wall_position = 10   # down e up
+                        wall_position = 10   # obstacle DOWN and UP
                 elif (self.MOUSE_Y == obs[1]):
                     if (self.MOUSE_X + 1) == obs[0]:
-                        wall_position = 6   # right e up
+                        wall_position = 6   # obstacle RIGHT and UP
                     elif (self.MOUSE_X - 1) == obs[0]:
-                        wall_position = 5   # left e up
+                        wall_position = 5   # obstacle LEFT and UP
         elif wall_position == 4:
             for obs in self.OBSTACLES:
                 if (self.MOUSE_X == obs[0]):
                     if (self.MOUSE_Y - 1) == obs[1]:
-                        wall_position = 10   # up e down
+                        wall_position = 10   # obstacle UP and DOWN
                 elif (self.MOUSE_Y == obs[1]):
                     if (self.MOUSE_X + 1) == obs[0]:
-                        wall_position = 8   # right e down
+                        wall_position = 8   # obstacle RIGHT and DOWN
                     elif (self.MOUSE_X - 1) == obs[0]:
-                        wall_position = 7   # left e down
+                        wall_position = 7   # obstacle LEFT and DOWN
 
         return wall_position
 
@@ -332,48 +325,48 @@ class Env():
             for obs in self.OBSTACLES:
                 if (self.MOUSE_X == obs[0]):
                     if (self.MOUSE_Y + 1) == obs[1]:
-                        wall_position = 13   # down e up e left
+                        wall_position = 13   # obstacle DOWN and UP and LEFT
                 elif (self.MOUSE_Y == obs[1]):
                     if (self.MOUSE_X + 1) == obs[0]:
-                        wall_position = 11  # right e up e left
+                        wall_position = 11  # obstacle RIGHT and UP and LEFT
         elif wall_position == 6:
             for obs in self.OBSTACLES:
                 if (self.MOUSE_X == obs[0]):
                     if (self.MOUSE_Y + 1) == obs[1]:
-                        wall_position = 14   # down up e right
+                        wall_position = 14   # obstacle DOWN UP and RIGHT
                 elif (self.MOUSE_Y == obs[1]):
                     if (self.MOUSE_X - 1) == obs[0]:
-                        wall_position = 11   # left up e right
+                        wall_position = 11   # obstacle LEFT and UP and RIGHT
         if wall_position == 7:
             for obs in self.OBSTACLES:
                 if (self.MOUSE_X == obs[0]):
                     if (self.MOUSE_Y - 1) == obs[1]:
-                        wall_position = 13   # up down e left
+                        wall_position = 13   # obstacle UP and DOWN e LEFT
                 elif (self.MOUSE_Y == obs[1]):
                     if (self.MOUSE_X + 1) == obs[0]:
-                        wall_position = 12   # right down e left
+                        wall_position = 12   # obstacle RIGHT and DOWN e LEFT
         if wall_position == 8:
             for obs in self.OBSTACLES:
                 if (self.MOUSE_X == obs[0]):
                     if (self.MOUSE_Y - 1) == obs[1]:
-                        wall_position = 14   # up rigth e down
+                        wall_position = 14   # obstacle UP and RIGHT e DOWN
                 elif (self.MOUSE_Y == obs[1]):
                     if (self.MOUSE_X - 1) == obs[0]:
-                        wall_position = 12   # left right e down
+                        wall_position = 12   # obstacle LEFT and RIGHT e DOWN
         if wall_position == 9:
             for obs in self.OBSTACLES:
                 if (self.MOUSE_X == obs[0]):
                     if (self.MOUSE_Y + 1) == obs[1]:
-                        wall_position = 12   # down right e left
+                        wall_position = 12   # obstacle DOWN and RIGHT e LEFT
                     elif (self.MOUSE_Y - 1) == obs[1]:
-                        wall_position = 11   # up right e left
+                        wall_position = 11   # obstacle UP and RIGHT e LEFT
         if wall_position == 10:
             for obs in self.OBSTACLES:
                 if (self.MOUSE_Y == obs[1]):
                     if (self.MOUSE_X + 1) == obs[0]:
-                        wall_position = 14   # right up e down
+                        wall_position = 14   # obstacle RIGHT and UP e DOWN
                     elif (self.MOUSE_X - 1) == obs[0]:
-                        wall_position = 13   # left up e down
+                        wall_position = 13   # obstacle LEFT and UP e DOWN
         return wall_position
 
 
