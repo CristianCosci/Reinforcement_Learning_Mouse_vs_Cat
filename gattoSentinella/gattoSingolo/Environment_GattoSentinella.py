@@ -382,7 +382,6 @@ class Env():
                 self.checkRegularPosition()
         
 
-
     def display_episode(self,epsiode):
         font = pygame.font.SysFont(None, 25)
         text = font.render("Episode: "+str(epsiode), True, (0,0,220))

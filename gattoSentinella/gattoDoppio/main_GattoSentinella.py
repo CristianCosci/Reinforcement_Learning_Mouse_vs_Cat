@@ -35,29 +35,27 @@ pygame.display.set_caption('Tom & Jerry AI Agents')
 gameDisplay = pygame.display.set_mode((display_width,display_height))
 clock = pygame.time.Clock()
 
-# Definizione env, griglia e agente
-map = Matrix(rows=10, columns=10)
+# env, grid e agent definition
+pct_obstacles = 0.05
+map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles)
 env = Env(gameDisplay, map)
 mouse = Agent(env, possibleActions = 4)
 
-# Numero di epoche 
+# Epochs
 num_episodes = 10000
 
-#load the policy
+# Load the policy
 dir = 'policies/gattoSentinella/gattoDoppio/misto/ConOstacoli/'
 mouse.load_policy(dir+'mouse.pickle')
 
-# Statistiche
+# Stats
 total_mouse_caught = 0
 total_cheese_eaten = 0
 total_toccatemuro = 0
 total_roccateostacolo = 0
 
-# loop over episodes
 for i_episode in range(1, num_episodes+1):
-    #map = Matrix(rows=10, columns=10)
-    #env = Env(gameDisplay, map)
-
+    env.set_obstacles(env.load_obstacles(map.OBSTACLES,pct_obstacles))
     state = env.reset()
     action_mouse = mouse.take_action(state['mouse'])
     
@@ -66,7 +64,7 @@ for i_episode in range(1, num_episodes+1):
     #cat2_direction = 2
     cat2_direction = 0
 
-    #render the environment         
+    # Render the environment        
     env.render(i_episode)
     while True:
         for event in pygame.event.get():
@@ -74,18 +72,17 @@ for i_episode in range(1, num_episodes+1):
                 pygame.quit()   #close the window
                 quit() 
 
-        # Gatto sentinella doppio
         next_state, reward, done, info, cat1_direction, cat2_direction, toccate_muro, toccate_ostacolo = env.step(action_mouse, cat1_direction, cat2_direction)
 
         total_toccatemuro += toccate_muro
         total_roccateostacolo += toccate_ostacolo
 
-        #render the environment
+        # Render the environment
         gameDisplay.fill(WHITE)         
         env.render(i_episode)
         show_info(total_cheese_eaten, total_mouse_caught)
 
-        #updating the display
+        # Updating the display
         pygame.display.update()
         clock.tick(999999)
         
@@ -97,7 +94,7 @@ for i_episode in range(1, num_episodes+1):
             if info['mouse_caught']:
                 total_mouse_caught += 1
                 draw_rect(RED, info['x'], info['y'], info['width'], info['height'])    
-            #finish this episode    
+            # Episode termination   
             break
        
         # Update state and action
@@ -111,6 +108,3 @@ print('topo: ', total_cheese_eaten)
 print('gatto: ', total_mouse_caught)
 time.sleep(2)
 pygame.quit()
-
-        
-

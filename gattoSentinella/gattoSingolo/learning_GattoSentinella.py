@@ -61,12 +61,10 @@ cheese_eaten = 0
 
 # Learning
 for i_episode in range(1, num_episodes+1):
-    env.set_obstacles(env.load_obstacles(map.OBSTACLES,pct_obstacles))
+    env.set_obstacles(env.load_obstacles(map.OBSTACLES,pct_obstacles)) # Load different obstacles at each epoch
     if i_episode % 100 == 0:
         print("\rEpisode {}/{}".format(i_episode, num_episodes), end="")
         print()
-        #print("Muri toccati: {},    Ostacoli toccati: {}".format(toccatemuro,toccate_ostacolo))
-        #toccatemuro = 0
         sys.stdout.flush()
     
     epsilon = max(epsilon*eps_decay, eps_min)

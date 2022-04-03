@@ -8,7 +8,7 @@ import csv
 
 class Agent:
 
-    def __init__(self, env, possibleActions, alpha=0.1, gamma=0.85):
+    def __init__(self, env, possibleActions, alpha=0.1, gamma=0.99):
         self.env = env
         self.possibleActions = possibleActions
         self.gamma = gamma
@@ -18,9 +18,9 @@ class Agent:
 
     def get_action(self, state, epsilon):
         '''
-            Sceglie l'azione da eseguire:
-                - viene scelta la migliore mossa dalla Q-table con una probabilità di 1-epsilon
-                - altrimenti sceglie un'azione casuale
+            Choose the action to do:
+                - The best move is chosen from the Q-table with a probability of 1-epsilon
+                - otherwise he chooses a random action
         '''
         bias = random.random()
         if bias > epsilon:
@@ -31,18 +31,18 @@ class Agent:
 
     def Q_learn(self, state, action, reward, next_state):
         '''
-            aggiorna la Q-table
+            Upgrade the Q-table
         ''' 
         self.Q[state][action] += self.alpha*(reward + self.gamma*np.max(self.Q[next_state]) - self.Q[state][action])
 
     
-    def set_policy(self, saveQtable):
+    def set_policy(self, saveQtable, dir):
         '''
-            setta la policy ottimale per l'agente
+            Set the optimal policy for the agent
         '''
         if saveQtable:
-            self.saveQtableToCsv()
-
+            self.saveQtableToCsv(dir)
+        
         policy = defaultdict(lambda: 0)
         for state, action in self.Q.items():
             policy[state] = np.argmax(action)
@@ -51,14 +51,14 @@ class Agent:
         
     def take_action(self,state):
         '''
-            sceglie un'azione secondo la policy
+            Choose the action to do accordirg to the policy
         '''
         return self.policy[state]
 
     
     def load_policy(self, directory):
         '''
-            carica una policy esistente
+            Load an existing policy
         '''
         with open(directory, 'rb') as f:
             policy_new = pickle.load(f)
@@ -68,28 +68,29 @@ class Agent:
 
     def save_policy(self, dir, name, savePolicytable):
         '''
-            salva una policy in seguito alla creazione (allenamento)
+            Save a policy after the learning process
         '''
         if savePolicytable:
-            self.savePolicyToCsv()
-
+            self.savePolicyToCsv(dir)
+            
         try:
             policy = dict(self.policy)
-            directory = "policies/"+ dir
+            directory = dir
             if not os.path.exists(directory):
                 os.makedirs(directory)
                 print('non esiste')
             else:
                 print('esiste')
                 
-            with open(f'{directory}/{name}.pickle','wb') as f:
+            with open(f'{directory}{name}.pickle','wb') as f:
                 pickle.dump(policy, f)
+
         except :
             print('not saved')
+    
 
-
-    def saveQtableToCsv(self):
-        w = csv.writer(open("Qtable.csv", "w"))
+    def saveQtableToCsv(self, dir):
+        w = csv.writer(open(dir+"Qtable.csv", "w"))
         
         # loop over dictionary keys and values
         for key, val in self.Q.items():
@@ -98,9 +99,9 @@ class Agent:
             w.writerow([key, val])
 
 
-    def savePolicyToCsv(self):
+    def savePolicyToCsv(self, dir):
         policy = dict(self.policy)
-        w = csv.writer(open("Policy.csv", "w"))
+        w = csv.writer(open(dir+"Policy.csv", "w"))
 
         # loop over dictionary keys and values
         for key, val in policy.items():
