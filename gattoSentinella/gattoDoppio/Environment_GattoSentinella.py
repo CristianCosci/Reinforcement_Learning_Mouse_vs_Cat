@@ -4,33 +4,53 @@ import random
 
 # Convenience class to represent the grid (map)
 class Matrix:
-    def __init__(self, rows=5, columns=5, max_pct_obstacles = 0):
+    def __init__(self, rows=5, columns=5, max_pct_obstacles = 0, cat2_mode='verticale'):
         self.ROWS = rows 
         self.COLUMNS = columns
         self.PCT_OBSTACLES = max_pct_obstacles
+
+        if cat2_mode == 'verticale':
+            cat1 = (self.COLUMNS // 3)
+            cat2 = (self.COLUMNS // 3 * 2)
+        elif cat2_mode == 'misto':
+            cat1 = (self.COLUMNS // 3)+2
+            cat2 = ((self.ROWS // 3 * 2)-1 ) # y
+
         if max_pct_obstacles > 0:
-            self.OBSTACLES = self.createObstacles(self.ROWS, ((self.ROWS // 2) -1))
+            self.OBSTACLES = self.createObstacles(self.ROWS, cat1, cat2, cat2_mode)
         else:
             self.OBSTACLES = []
 
 
-    def createObstacles(self, n, cat_axis):
+    def createObstacles(self, n, cat1_axis, cat2_axis, cat2_mode):
         possible_obstacles = []
-        for x in range(n):
-            if x == cat_axis:
-                pass
-            else:
-                for y in range(n):
-                    possible_obstacles.append((x, y))
+        if cat2_mode == 'verticale':
+            for x in range(n):
+                if x == cat1_axis or x == cat2_axis:
+                    pass
+                else:
+                    for y in range(n):
+                        possible_obstacles.append((x, y))
+        elif cat2_mode == 'misto':
+            for x in range(n):
+                if x == cat1_axis:
+                    pass
+                else:
+                    for y in range(n):
+                        if y == cat2_axis:
+                            pass
+                        else:
+                            possible_obstacles.append((x, y))
 
         return tuple(possible_obstacles)
 
 #----------------------------------classe ambiente---------------------------------------------#
 class Env():
-    def __init__(self, display, matrix):
+    def __init__(self, display, matrix, cat2_mode):
         self.HEIGHT = matrix.ROWS
         self.WIDTH = matrix.COLUMNS
         self.PCT_OBS = matrix.PCT_OBSTACLES
+        self.CAT2_MODE = cat2_mode
 
         # Setto informazioni finestra pygame
         self.DISPLAY = display  # Inizializzato con pygame nel main
@@ -56,7 +76,8 @@ class Env():
         '''
             Used to random choose n (pct_obstacles*100) obstacles from the possble obstacles
         '''
-        n = int(pct_obstacles*100)
+        n = int(len(possible_obstacles) * pct_obstacles)
+        #print(n)
         obstacle_list = list()
         numbers = random.sample(range(len(possible_obstacles)), n)
         for i in numbers:
@@ -97,23 +118,19 @@ class Env():
         '''
             Used to reset all elements position in the environment
         '''
-        #self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-1), np.random.randint(0,9)) #doppio gatto verticale SENZA ostacoli
-        #self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-2), np.random.randint(0,9)) #doppio gatto verticale e CON ostacoli
-        #self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )+1), np.random.randint(0, (self.HEIGHT // 3)+1)) #doppio gatto misto SENZA ostacoli
-        self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )), np.random.randint(0, (self.HEIGHT // 3))) #doppio gatto misto CON ostacoli
-
-        #Gatto sentinella doppio
-        #self.CAT1_X, self.CAT1_Y = ((self.WIDTH // 3), np.random.randint(0, 9)) #doppio gatto verticale
-        #self.CAT2_X, self.CAT2_Y = ((self.WIDTH // 3 * 2), np.random.randint(0, 9)) #doppio gatto verticale
-        self.CAT1_X, self.CAT1_Y = ((self.WIDTH // 3)+2, np.random.randint(0, 9)) #doppio gatto misto SENZA ostacoli
-        self.CAT2_X, self.CAT2_Y = (np.random.randint(0, 9), (self.HEIGHT // 3 * 2)-1) #doppio gatto misto SENZA ostacoli
-
-        # Formaggio
-        #self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint(0, 9)) #doppio gatto verticale SENZA ostacoli
-        #self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+2, 9), np.random.randint(0, 9)) #doppio gatto verticale CON ostacoli
-        #self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2), 9), np.random.randint((self.HEIGHT // 3 * 2), 9)) #doppio gatto misto SENZA ostacoli
-        self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint((self.HEIGHT // 3 * 2)+1, 9)) #doppio gatto misto CON ostacoli
-
+        #Gatto sentinella doppio # to do
+        if self.CAT2_MODE == 'verticale':
+            self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-1), np.random.randint(0,9)) #doppio gatto verticale e CON ostacoli
+            self.CAT1_X, self.CAT1_Y = ((self.WIDTH // 3), np.random.randint(0, 9)) #doppio gatto verticale
+            self.CAT2_X, self.CAT2_Y = ((self.WIDTH // 3 * 2), np.random.randint(0, 9)) #doppio gatto verticale
+            self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint(0, 9)) #doppio gatto verticale CON ostacoli
+        elif self.CAT2_MODE == 'misto':
+            self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )), np.random.randint(0, (self.HEIGHT // 3))) #doppio gatto misto CON ostacoli
+            self.CAT1_X, self.CAT1_Y = ((self.WIDTH // 3)+2, np.random.randint(0, 9)) #doppio gatto misto SENZA ostacoli
+            self.CAT2_X, self.CAT2_Y = (np.random.randint(0, 9), (self.HEIGHT // 3 * 2)-1) #doppio gatto misto SENZA ostacoli
+            self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint((self.HEIGHT // 3 * 2)+1, 9)) #doppio gatto misto CON ostacoli
+        
+        self.checkRegularPosition(0)
         self.MOVES['mouse'] = 100
         return self.get_state()
 
@@ -181,19 +198,20 @@ class Env():
                 cat1_direction = 3
             else:
                 cat1_direction = 2
-        '''
-        #Gatto doppio verticale
-        if cat2_out_of_bounds:
-            if cat2_direction == 2:
-                cat2_direction = 3
-            else:
-                cat2_direction = 2
-        '''
-        if cat2_out_of_bounds:
-            if cat2_direction == 0:
-                cat2_direction = 1
-            else:
-                cat2_direction = 0
+        
+        if self.CAT2_MODE == 'verticale':
+            #Gatto doppio verticale
+            if cat2_out_of_bounds:
+                if cat2_direction == 2:
+                    cat2_direction = 3
+                else:
+                    cat2_direction = 2
+        elif self.CAT2_MODE == 'misto':
+            if cat2_out_of_bounds:
+                if cat2_direction == 0:
+                    cat2_direction = 1
+                else:
+                    cat2_direction = 0
         
         self.update_positions(mouse_action, cat1_direction, cat2_direction, mouse_action_null)
 
@@ -418,16 +436,24 @@ class Env():
         return wall_position
 
 
-    def checkRegularPosition(self):
+    def checkRegularPosition(self, recursion):
+        if recursion > 20: # Raise an exception if there are more than 20 tries to reposition agent
+            raise Exception
         for obs in self.OBSTACLES:
             if self.CHEESE_X == obs[0] and self.CHEESE_Y == obs[1]:
-                self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint(0, 9))
-                self.checkRegularPosition()
+                if self.CAT2_MODE == 'verticale':
+                    self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint(0, 9)) #doppio gatto verticale CON ostacoli
+                elif self.CAT2_MODE == 'misto':
+                   self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint((self.HEIGHT // 3 * 2)+1, 9)) #doppio gatto misto CON ostacoli
+                self.checkRegularPosition(recursion+1)
         
         for obs in self.OBSTACLES:
             if self.MOUSE_X == obs[0] and self.MOUSE_Y == obs[1]:
-                self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-1), np.random.randint(0,9))
-                self.checkRegularPosition()
+                if self.CAT2_MODE == 'verticale':
+                    self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )-1), np.random.randint(0,9)) #doppio gatto verticale e CON ostacoli
+                elif self.CAT2_MODE == 'misto':
+                    self.MOUSE_X, self.MOUSE_Y = (np.random.randint(0, (self.WIDTH // 3 )), np.random.randint(0, (self.HEIGHT // 3))) #doppio gatto misto CON ostacoli
+                self.checkRegularPosition(recursion+1)
 
                 
     def display_episode(self,epsiode):

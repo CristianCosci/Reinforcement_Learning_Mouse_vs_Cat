@@ -38,12 +38,13 @@ clock = pygame.time.Clock()
 
 # env, grid and agent definitions
 pct_obstacles = 0.05
-map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles)
-env = Env(display, map)
+cat2_mode = 'verticale'
+map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles, cat2_mode=cat2_mode)
+env = Env(display, map, cat2_mode)
 mouse = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)
 
 # Parametri di Qlearning
-epsilon, eps_decay, eps_min = 1.0, 0.99975, 0.05
+epsilon, eps_decay, eps_min = 1.0, 0.999868, 0.05
 
 # Train epoch
 num_episodes = 30000
@@ -74,8 +75,10 @@ for i_episode in range(1, num_episodes+1):
 
     # Gatto sentinella doppio
     cat1_direction = 2
-    #cat2_direction = 2 # gatto doppio verticale
-    cat2_direction = 0
+    if cat2_mode == 'verticale':
+        cat2_direction = 2
+    elif cat2_mode == 'misto':
+        cat2_direction = 0
 
     ep_rewards = 0
     ep_toccateMuro = 0
@@ -105,7 +108,7 @@ for i_episode in range(1, num_episodes+1):
         show_stats(cheese_eaten, mouse_caught)
 
         pygame.display.update()
-        clock.tick(99999999999999999999)
+        clock.tick(6)
 
         if done:
             if info['cheese_eaten']:

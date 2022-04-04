@@ -3,8 +3,8 @@ import numpy as np
 
 eps_start = 1.0
 eps_min = 0.05
-eps_decay = 0.9998
-epochs = 20000
+eps_decay = 0.999868
+epochs = 30000
 pct = 0
 stop = 0
 df = np.zeros(epochs)
