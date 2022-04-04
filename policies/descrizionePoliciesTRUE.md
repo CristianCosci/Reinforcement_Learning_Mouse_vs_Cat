@@ -80,11 +80,11 @@ Risultati di test su 10000 epoche:
 Parametri di train:
 - epsilon, eps_decay, eps_min =  1.0, 0.999868, 0.05
 - num_episodes = 30000
-- Riempimento ostacoli 5%
+- Riempimento ostacoli 4%
 
 Risultati di train:
-- Vittorie gatto: 
-- Vittorie topo: 
+- Vittorie gatto: 7739
+- Vittorie topo: 17198
 - Info sui muri e gli ostacoli: Il topo impara a evitare i muri. Non ci sono info sugli ostacoli.
 
 Risultati di test su 10000 epoche:

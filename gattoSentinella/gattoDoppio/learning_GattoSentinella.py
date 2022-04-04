@@ -37,7 +37,7 @@ display = pygame.display.set_mode((displayWidth, displayHeight))
 clock = pygame.time.Clock()
 
 # env, grid and agent definitions
-pct_obstacles = 0.05
+pct_obstacles = 0.04
 cat2_mode = 'verticale'
 map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles, cat2_mode=cat2_mode)
 env = Env(display, map, cat2_mode)
@@ -108,7 +108,7 @@ for i_episode in range(1, num_episodes+1):
         show_stats(cheese_eaten, mouse_caught)
 
         pygame.display.update()
-        clock.tick(6)
+        clock.tick(99999999999999999999)
 
         if done:
             if info['cheese_eaten']:
@@ -132,7 +132,7 @@ for i_episode in range(1, num_episodes+1):
     total_toccate_ostacolo[i_episode-1] = ep_toccate_ostacolo
 
 
-dir = 'policies/gattoSentinella/gattoSingolo/conOstacoli/'
+dir = 'policies/gattoSentinella/gattoDoppio/verticale/'
 # Plot stats
 if info_plot:
     plt.plot(total_rewards)
