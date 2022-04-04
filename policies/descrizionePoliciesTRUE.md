@@ -78,8 +78,8 @@ Risultati di test su 10000 epoche:
 
 ### **Gatto doppio verticale**
 Parametri di train:
-- epsilon, eps_decay, eps_min = 
-- num_episodes = 
+- epsilon, eps_decay, eps_min =  1.0, 0.999868, 0.05
+- num_episodes = 30000
 - Riempimento ostacoli 5%
 
 Risultati di train:
