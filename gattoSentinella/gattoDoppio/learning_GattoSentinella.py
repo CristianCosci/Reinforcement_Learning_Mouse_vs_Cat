@@ -38,7 +38,7 @@ clock = pygame.time.Clock()
 
 # env, grid and agent definitions
 pct_obstacles = 0.04
-cat2_mode = 'verticale'
+cat2_mode = 'misto'
 map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles, cat2_mode=cat2_mode)
 env = Env(display, map, cat2_mode)
 mouse = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)
@@ -132,7 +132,7 @@ for i_episode in range(1, num_episodes+1):
     total_toccate_ostacolo[i_episode-1] = ep_toccate_ostacolo
 
 
-dir = 'policies/gattoSentinella/gattoDoppio/verticale/'
+dir = 'policies/gattoSentinella/gattoDoppio/misto/'
 # Plot stats
 if info_plot:
     plt.plot(total_rewards)

@@ -37,7 +37,7 @@ clock = pygame.time.Clock()
 
 # env, grid e agent definition
 pct_obstacles = 0.04
-cat2_mode = 'verticale'
+cat2_mode = 'misto'
 map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles, cat2_mode=cat2_mode)
 env = Env(gameDisplay, map, cat2_mode)
 mouse = Agent(env, possibleActions=4)
