@@ -36,16 +36,20 @@ gameDisplay = pygame.display.set_mode((display_width,display_height))
 clock = pygame.time.Clock()
 
 # env, grid e agent definition
-pct_obstacles = 0.05
-map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles)
-env = Env(gameDisplay, map)
-mouse = Agent(env, possibleActions = 4)
-
+pct_obstacles = 0.04
+cat2_mode = 'verticale'
+map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles, cat2_mode=cat2_mode)
+env = Env(gameDisplay, map, cat2_mode)
+mouse = Agent(env, possibleActions=4)
 # Epochs
 num_episodes = 10000
 
 # Load the policy
-dir = 'policies/gattoSentinella/gattoDoppio/misto/ConOstacoli/'
+if cat2_mode == 'verticale':
+    dir = 'policies/gattoSentinella/gattoDoppio/verticale/'
+else:
+    dir = 'policies/gattoSentinella/gattoDoppio/misto/'
+
 mouse.load_policy(dir+'mouse.pickle')
 
 # Stats
@@ -55,14 +59,16 @@ total_toccatemuro = 0
 total_roccateostacolo = 0
 
 for i_episode in range(1, num_episodes+1):
-    env.set_obstacles(env.load_obstacles(map.OBSTACLES,pct_obstacles))
+    env.set_obstacles(env.load_obstacles(map.OBSTACLES,pct_obstacles)) # Load different obstacles at each epoch
     state = env.reset()
     action_mouse = mouse.take_action(state['mouse'])
     
     # Gatto sentinella doppio
     cat1_direction = 2
-    #cat2_direction = 2
-    cat2_direction = 0
+    if cat2_mode == 'verticale':
+        cat2_direction = 2
+    elif cat2_mode == 'misto':
+        cat2_direction = 0
 
     # Render the environment        
     env.render(i_episode)
@@ -84,7 +90,7 @@ for i_episode in range(1, num_episodes+1):
 
         # Updating the display
         pygame.display.update()
-        clock.tick(999999)
+        clock.tick(9999999999999999999999999999)
         
         if done:
             if info['cheese_eaten']:

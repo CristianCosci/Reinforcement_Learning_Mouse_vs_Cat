@@ -44,10 +44,10 @@ env = Env(display, map, cat2_mode)
 mouse = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)
 
 # Parametri di Qlearning
-epsilon, eps_decay, eps_min = 1.0, 0.999868, 0.05
+epsilon, eps_decay, eps_min = 1.0, 0.9999, 0.05
 
 # Train epoch
-num_episodes = 30000
+num_episodes = 40000
 
 # Stas for plot
 info_plot = True

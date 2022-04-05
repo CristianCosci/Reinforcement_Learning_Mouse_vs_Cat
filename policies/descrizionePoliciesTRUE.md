@@ -78,19 +78,19 @@ Risultati di test su 10000 epoche:
 
 ### **Gatto doppio verticale**
 Parametri di train:
-- epsilon, eps_decay, eps_min =  1.0, 0.999868, 0.05
-- num_episodes = 30000
+- epsilon, eps_decay, eps_min =  1.0, 0.9999, 0.05
+- num_episodes = 40000
 - Riempimento ostacoli 4%
 
 Risultati di train:
-- Vittorie gatto: 7739
-- Vittorie topo: 17198
+- Vittorie gatto: 9706
+- Vittorie topo: 24073
 - Info sui muri e gli ostacoli: Il topo impara a evitare i muri. Non ci sono info sugli ostacoli.
 
 Risultati di test su 10000 epoche:
-- Vittorie gatto: 
-- Vittorie topo:
-- Info sui muri e gli ostacoli: Muro ->  ; Ostacolo
+- Vittorie gatto: 263
+- Vittorie topo: 7053
+- Info sui muri e gli ostacoli: Muro -> 2527 ; Ostacolo 2567
 
 
 ### **Gatto doppio misto**
