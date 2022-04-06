@@ -36,19 +36,21 @@ pygame.display.set_caption('Tom & Jerry AI Agents')
 display = pygame.display.set_mode((displayWidth, displayHeight))
 clock = pygame.time.Clock()
 
-# Definizione env, griglia e agenti
-map = Matrix(rows=10, columns=10)
+# env, grid and agent definitions
+pct_obstacles = 0.05
+map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles)
 env = Env(display, map)
-cat = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)
 mouse = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)
+cat = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)
 
-# Parametri di Qlearning
+
+# Qlearning params
 epsilon, eps_decay, eps_min = 1.0, 0.99992, 0.05
 
-# Numero di epoche di allenamento (epochs)
+# Train epoch
 num_episodes = 50000
 
-# Statistiche per plot
+# Stas for plot
 info_plot = True
 total_rewards_mouse = np.zeros(num_episodes)
 total_rewards_cat = np.zeros(num_episodes)
@@ -64,7 +66,7 @@ cheese_eaten = 0
 
 # Learning effettivo
 for i_episode in range(1, num_episodes+1):
-    env.set_obstacles(env.load_obstacles(map.OBSTACLES))
+    env.set_obstacles(env.load_obstacles(map.OBSTACLES,pct_obstacles)) # Load different obstacles at each epoch
     if i_episode % 100 == 0:
         print("\rEpisode {}/{}".format(i_episode, num_episodes), end="")
         print()
@@ -85,7 +87,7 @@ for i_episode in range(1, num_episodes+1):
     ep_toccate_ostacolo_mouse = 0
     ep_toccate_ostacolo_cat = 0
 
-    #render the environment         
+    # Render the environment        
     env.render(i_episode)
 
     while True:
@@ -106,7 +108,7 @@ for i_episode in range(1, num_episodes+1):
         mouse.Q_learn(state['mouse'], action_mouse, reward['mouse'], next_state['mouse'])
         cat.Q_learn(state['cat'], action_cat, reward['cat'], next_state['cat'])
 
-        #render the environment
+        # Render the environment
         display.fill(WHITE)         
         env.render(i_episode)
         show_stats(cheese_eaten, mouse_caught)
@@ -140,41 +142,41 @@ for i_episode in range(1, num_episodes+1):
     total_toccate_ostacolo_cat[i_episode-1] = ep_toccate_ostacolo_cat
 
 
-# Plot statistiche
+dir = 'policies/gattoSentinella/gattoSingolo/conOstacoli/'
+# Plot stats
 if info_plot:
     plt.plot(total_rewards_mouse)
     plt.title('Reward')
-    plt.savefig('reward_mouse.png')
+    plt.savefig(dir+'reward_mouse.png')
     plt.show()
     plt.plot(total_rewards_cat)
     plt.title('Reward')
-    plt.savefig('reward_cat.png')
+    plt.savefig(dir+'reward_cat.png')
     plt.show()
     plt.plot(total_toccate_ostacolo_mouse)
-    plt.savefig('toccateOstacolo_mouse.png')
+    plt.savefig(dir+'toccateOstacolo_mouse.png')
     plt.show()
     plt.plot(total_toccate_ostacolo_cat)
-    plt.savefig('toccateOstacolo_cat.png')
+    plt.savefig(dir+'toccateOstacolo_cat.png')
     plt.show()
     plt.plot(total_toccateMuro_mouse)
-    plt.savefig('toccateMuro_mouse.png')
+    plt.savefig(dir+'toccateMuro_mouse.png')
     plt.show()
     plt.plot(total_toccateMuro_cat)
-    plt.savefig('toccateMuro_cat.png')
+    plt.savefig(dir+'toccateMuro_cat.png')
     plt.show()
     plt.title('Mouse vs cat')
     plt.plot(total_mouse_caught, label='topo catturato', color='orange')
     plt.plot(total_cheese_eaten, label='formaggio mangiato', color='green')
     plt.legend()
-    plt.savefig('mouse_vs_cat.png')
+    plt.savefig(dir+'mouse_vs_cat.png')
     plt.show()
 
 print(mouse_caught)
 print(cheese_eaten)
 
-cat.set_policy(saveQtable=True)
-mouse.set_policy(saveQtable=True)
+cat.set_policy(saveQtable=True, dir=dir)
+mouse.set_policy(saveQtable=True, dir=dir)
 # Save the policy
-dir = '/'
 cat.save_policy(dir, 'cat', savePolicytable=True)
 mouse.save_policy(dir, 'mouse', savePolicytable=True)

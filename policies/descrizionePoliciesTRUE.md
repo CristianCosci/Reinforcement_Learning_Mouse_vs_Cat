@@ -86,6 +86,7 @@ Risultati di train:
 - Vittorie gatto: 9706
 - Vittorie topo: 24073
 - Info sui muri e gli ostacoli: Il topo impara a evitare i muri e gli ostacoli.
+
 Risultati di test su 10000 epoche:
 - Vittorie gatto: 263
 - Vittorie topo: 7053
@@ -105,5 +106,5 @@ Risultati di train:
 
 Risultati di test su 10000 epoche:
 - Vittorie gatto: 239
-- Vittorie topo:8027
+- Vittorie topo: 8027
 - Info sui muri e gli ostacoli: Muro -> 949 ; Ostacolo 2197
