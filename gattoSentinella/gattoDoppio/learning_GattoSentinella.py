@@ -132,7 +132,8 @@ for i_episode in range(1, num_episodes+1):
     total_toccate_ostacolo[i_episode-1] = ep_toccate_ostacolo
 
 
-dir = 'policies/gattoSentinella/gattoDoppio/misto/'
+dir = 'policies/gattoSentinella/gattoDoppio/'
+dir += (cat2_mode + '/')
 # Plot stats
 if info_plot:
     plt.plot(total_rewards)

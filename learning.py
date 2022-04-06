@@ -37,9 +37,10 @@ display = pygame.display.set_mode((displayWidth, displayHeight))
 clock = pygame.time.Clock()
 
 # env, grid and agent definitions
-pct_obstacles = 0.05
+pct_obstacles = 0.07
+cat_mode = 'classico'
 map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles)
-env = Env(display, map)
+env = Env(display, map, cat_mode)
 mouse = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)
 cat = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)
 
@@ -142,7 +143,8 @@ for i_episode in range(1, num_episodes+1):
     total_toccate_ostacolo_cat[i_episode-1] = ep_toccate_ostacolo_cat
 
 
-dir = 'policies/gattoSentinella/gattoSingolo/conOstacoli/'
+dir = 'policies/gattoIntelligente/'
+dir += (cat_mode + '/')
 # Plot stats
 if info_plot:
     plt.plot(total_rewards_mouse)

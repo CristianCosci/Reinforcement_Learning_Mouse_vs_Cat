@@ -3,16 +3,21 @@ import random
 
 n = 10
 possible_obstacles = []
-print(type(possible_obstacles))
-# Initialize lists
 for x in range(n):
-    if x == 4:
+    if x == 9 or x == 0:
         pass
     else:
         for y in range(n):
-            possible_obstacles.append((x, y))
-obstacle_list = list()
-print(range(len(possible_obstacles)))
-numeri = random.sample(range(len(possible_obstacles)), n)
-for i in numeri:
-    obstacle_list.append(possible_obstacles[i])
+            possible_obstacles.append([x, y])
+
+possible_cheese_positions = [4,4], [4,5], [5,4], [5,5]
+possible_obstacles_new = possible_obstacles.copy()
+for obs in possible_obstacles:
+    if obs in possible_cheese_positions:
+        possible_obstacles_new.remove(obs)
+    
+#print(possible_obstacles)
+#print(tuple(possible_obstacles_new))
+
+if [4,4][0] == (4,4)[0]:
+    print('ok')

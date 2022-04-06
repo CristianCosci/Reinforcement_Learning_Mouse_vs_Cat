@@ -45,11 +45,8 @@ mouse = Agent(env, possibleActions=4)
 num_episodes = 10000
 
 # Load the policy
-if cat2_mode == 'verticale':
-    dir = 'policies/gattoSentinella/gattoDoppio/verticale/'
-else:
-    dir = 'policies/gattoSentinella/gattoDoppio/misto/'
-
+dir = 'policies/gattoSentinella/gattoDoppio/'
+dir += (cat2_mode + '/')
 mouse.load_policy(dir+'mouse.pickle')
 
 # Stats

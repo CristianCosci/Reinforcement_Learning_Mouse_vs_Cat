@@ -108,3 +108,31 @@ Risultati di test su 10000 epoche:
 - Vittorie gatto: 239
 - Vittorie topo: 8027
 - Info sui muri e gli ostacoli: Muro -> 949 ; Ostacolo 2197
+
+<hr>
+
+<hr>
+
+<hr>
+
+# **Gatto Intelligente**
+
+### **Classico**
+Parametri di train:
+- epsilon, eps_decay, eps_min = 1.0, 0.99992, 0.05
+- num_episodes = 50000
+- Riempimento ostacoli 7%
+
+Risultati di train:
+- Vittorie gatto: 6396
+- Vittorie topo: 36422
+- Info sui muri e gli ostacoli: Sia il topo che il gatto imparano a evitare i muri e gli ostacoli.
+
+Risultati di test su 10000 epoche evitando i loop con break:
+- Vittorie gatto: 239
+- Vittorie topo: 2658
+
+Risultati di test su 10000 epoche evitando i loop con randomize:
+- Vittorie gatto: 10
+- Vittorie topo: 8412
+- Info sui muri e gli ostacoli: Muro -> 1462 ; Ostacolo 5656

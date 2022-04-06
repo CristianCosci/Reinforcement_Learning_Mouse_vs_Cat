@@ -36,22 +36,25 @@ pygame.display.set_caption('Tom & Jerry AI Agents')
 gameDisplay = pygame.display.set_mode((display_width,display_height))
 clock = pygame.time.Clock()
 
-# Definizione env, griglia e agenti
-map = Matrix(rows=10, columns=10)
-env = Env(gameDisplay, map)
-# Inizializzazione agenti
+# env, grid e agent definition
+pct_obstacles = 0.07
+gestione_loop = 'randomize' # break, none, randomize
+cat_mode = 'classico'
+map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles)
+env = Env(gameDisplay, map, cat_mode)
 cat = Agent(env, possibleActions = 4)
 mouse = Agent(env, possibleActions = 4)
 
 # Numero di epoche 
-num_episodes = 100
+num_episodes = 10000
 
-# Load della policy
-dir = 'gattoIntelligente/gattoCheese/'
+# Load the policies
+dir = 'policies/gattoIntelligente/'
+dir += (cat_mode + '/')
 mouse.load_policy(dir+'mouse.pickle')
 cat.load_policy(dir+'cat.pickle')
 
-# Statistiche
+# Stats
 total_mouse_caught = 0
 total_cheese_eaten = 0
 total_toccatemuro_mouse = 0
@@ -61,16 +64,18 @@ total_roccateostacolo_cat = 0
 
 # loop over episodes
 for i_episode in range(1, num_episodes+1):
-    env.set_obstacles(env.load_obstacles(map.OBSTACLES))
-
+    env.set_obstacles(env.load_obstacles(map.OBSTACLES,pct_obstacles)) # Load different obstacles at each epoch
     state = env.reset()
-    old_state = state.copy()
-    check_loop = 0
+
     loop = False
+    if gestione_loop == 'break' or gestione_loop == 'randomize':
+        old_state = state.copy()
+        check_loop = 0
+
     action_mouse = mouse.take_action(state['mouse'])
     action_cat = cat.take_action(state['cat'])
     
-    # Render dell'environment
+    # Render the environment
     env.render(i_episode)
     while True:
         for event in pygame.event.get():
@@ -85,14 +90,14 @@ for i_episode in range(1, num_episodes+1):
         total_roccateostacolo_mouse += toccate_ostacolo_mouse
         total_roccateostacolo_cat += toccate_ostacolo_cat
 
-        # Render dell'environment
+        # Render the environment
         gameDisplay.fill(WHITE)         
         env.render(i_episode)
         show_info(total_cheese_eaten, total_mouse_caught)
 
         # Updating the display
         pygame.display.update()
-        clock.tick(999999999999999)
+        clock.tick(9999999999999999999999999)
         
         if done:
             if info['cheese_eaten']:
@@ -109,27 +114,29 @@ for i_episode in range(1, num_episodes+1):
         state = next_state
         if loop:
             action_mouse = np.random.randint(0, 5)
-            action_cat = np.random.randint(0,5)
-            if action_cat == 5 or action_mouse == 5:
-                print('ERROREEEEEEE')
+            action_cat = np.random.randint(0, 5)
             loop = False
         else:
             action_mouse = mouse.take_action(state['mouse'])
             action_cat = cat.take_action(state['cat'])
 
-        #'''
+        
         # Check if the two agents are in a stalemate
-        if old_state == next_state:
-            #print('Loop')
-            # break
-            loop = True
-        else:
-            if check_loop == 1:
-                old_state = state.copy()
-                check_loop = 0
+        if gestione_loop == 'break' or gestione_loop == 'randomize':
+            if old_state == next_state:
+                #print('Loop')
+                if gestione_loop == 'break':
+                    break
+                elif gestione_loop == 'randomize':
+                    loop = True
             else:
-                check_loop = 1
-        #'''
+                if check_loop == 1:
+                    old_state = state.copy()
+                    check_loop = 0
+                else:
+                    check_loop = 1
+        
+
 print('muro topo: ', total_toccatemuro_mouse)
 print('ostacolo topo: ', total_roccateostacolo_mouse)
 print('muro gatto: ', total_toccatemuro_cat)
