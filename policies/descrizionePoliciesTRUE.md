@@ -128,11 +128,31 @@ Risultati di train:
 - Vittorie topo: 36422
 - Info sui muri e gli ostacoli: Sia il topo che il gatto imparano a evitare i muri e gli ostacoli.
 
-Risultati di test su 10000 epoche evitando i loop con break:
+Risultati di test su 10000 epoche evitando i loop con break: todo
 - Vittorie gatto: 239
 - Vittorie topo: 2658
 
-Risultati di test su 10000 epoche evitando i loop con randomize:
+Risultati di test su 10000 epoche evitando i loop con randomize:todo
+- Vittorie gatto: 838
+- Vittorie topo: 6139
+- Info sui muri e gli ostacoli: Muro -> topo:10220 gatto:1365 ; Ostacolo -> topo:3917 gatto:2167
+
+### **knowCheese**
+Parametri di train:
+- epsilon, eps_decay, eps_min = 1.0, 0.99992, 0.05
+- num_episodes = 50000
+- Riempimento ostacoli 7%
+
+Risultati di train:
+- Vittorie gatto: 6050
+- Vittorie topo: 36661
+- Info sui muri e gli ostacoli: Sia il topo che il gatto imparano a evitare i muri e gli ostacoli.
+
+Risultati di test su 10000 epoche evitando i loop con break: to do
+- Vittorie gatto: 239
+- Vittorie topo: 2658
+
+Risultati di test su 10000 epoche evitando i loop con randomize:todo
 - Vittorie gatto: 838
 - Vittorie topo: 6139
 - Info sui muri e gli ostacoli: Muro -> topo:10220 gatto:1365 ; Ostacolo -> topo:3917 gatto:2167

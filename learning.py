@@ -38,7 +38,7 @@ clock = pygame.time.Clock()
 
 # env, grid and agent definitions
 pct_obstacles = 0.07
-cat_mode = 'classico'
+cat_mode = 'knowCheese'
 map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles)
 env = Env(display, map, cat_mode)
 mouse = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)
@@ -46,10 +46,10 @@ cat = Agent(env, possibleActions=4, alpha = 0.1, gamma = 0.85)
 
 
 # Qlearning params
-epsilon, eps_decay, eps_min = 1.0, 0.99992, 0.05
+epsilon, eps_decay, eps_min = 1.0, 0.99995, 0.05
 
 # Train epoch
-num_episodes = 50000
+num_episodes = 80000
 
 # Stas for plot
 info_plot = True
@@ -144,7 +144,7 @@ for i_episode in range(1, num_episodes+1):
 
 
 dir = 'policies/gattoIntelligente/'
-dir += (cat_mode + '/')
+dir += (cat_mode + '/' + 'prova80k/')
 # Plot stats
 if info_plot:
     plt.plot(total_rewards_mouse)
