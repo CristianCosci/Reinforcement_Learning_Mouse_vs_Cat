@@ -12,7 +12,7 @@ class Matrix:
             self.OBSTACLES = self.createObstacles(self.ROWS, (self.ROWS-1), 0)
         else:
             self.OBSTACLES = []
-
+    
 
     def createObstacles(self, n, cat_axis, mouse_axis):
         possible_obstacles = []
@@ -34,11 +34,12 @@ class Matrix:
 
 #----------------------------------classe ambiente---------------------------------------------#
 class Env():
-    def __init__(self, display, matrix, cat_mode):
+    def __init__(self, display, matrix, cat_mode, map_mode):
         self.HEIGHT = matrix.ROWS
         self.WIDTH = matrix.COLUMNS
         self.PCT_OBS = matrix.PCT_OBSTACLES
         self.CAT_MODE = cat_mode
+        self.MAP_MODE = map_mode
 
         # Pygame setting
         self.DISPLAY = display
@@ -69,12 +70,23 @@ class Env():
         for i in numbers:
             obstacle_list.append(possible_obstacles[i])
         
+        if self.MAP_MODE == 'walls':
+            obstacle_list = self.load_walls(obstacle_list)
+
         return tuple(obstacle_list)
 
 
     def set_obstacles(self, obstacles): # Used to change the obstacles in the map
         self.OBSTACLES = obstacles
         
+
+    def load_walls(self, obstacles_list):
+        walls = [3,4], [3,5], [6,4], [6,5], [3,3], [6,6], [4,3], [5,6]
+        for i in range(len(walls)):
+            if walls[i] not in obstacles_list:
+                obstacles_list.append(walls[i])
+        
+        return obstacles_list
 
     def get_state(self):
         '''
@@ -197,6 +209,7 @@ class Env():
         if self.MOUSE_X == self.CHEESE_X and self.MOUSE_Y == self.CHEESE_Y:
             done = True
             reward['mouse'] = 200
+            reward['cat'] = -200
             info['cheese_eaten'], info['x'], info['y'] = True,  self.MOUSE_X, self.MOUSE_Y
         
         # Cat ha mangiato mouse
