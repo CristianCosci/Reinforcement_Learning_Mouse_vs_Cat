@@ -38,7 +38,7 @@ clock = pygame.time.Clock()
 
 # env, grid and agent definitions
 cat_mode = 'knowCheese'
-map_mode = '0'
+map_mode = 'walls'
 if map_mode == 'walls':
     pct_obstacles = 0.04
 else:
