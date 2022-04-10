@@ -37,8 +37,8 @@ display = pygame.display.set_mode((displayWidth, displayHeight))
 clock = pygame.time.Clock()
 
 # env, grid and agent definitions
-cat_mode = 'knowCheese'
-map_mode = 'walls'
+cat_mode = 'knowCheese' # 'knowCheese' or 'classico'
+map_mode = 'walls' # 'walls' or ''
 if map_mode == 'walls':
     pct_obstacles = 0.04
 else:
@@ -69,7 +69,6 @@ total_cheese_eaten = np.zeros(num_episodes)
 mouse_caught = 0
 cheese_eaten = 0
 
-# Learning effettivo
 for i_episode in range(1, num_episodes+1):
     env.set_obstacles(env.load_obstacles(map.OBSTACLES,pct_obstacles)) # Load different obstacles at each epoch
     if i_episode % 100 == 0:
@@ -129,7 +128,7 @@ for i_episode in range(1, num_episodes+1):
             if info['mouse_caught']:
                 mouse_caught += 1
                 draw_stats_pannel(RED, info['x'], info['y'], info['width'], info['height'])    
-            # Terminazione episodio  
+            # Break episode
             break
        
         # Update state and action
@@ -148,8 +147,11 @@ for i_episode in range(1, num_episodes+1):
 
 
 dir = 'policies/gattoIntelligente/'
-dir += (cat_mode + '/' + 'walls/')
-#dir += (cat_mode + '/')
+if map_mode == 'walls':
+    dir += (cat_mode + '/' + 'walls/')
+else:
+    dir += (cat_mode + '/')
+    
 # Plot stats
 if info_plot:
     plt.plot(total_rewards_mouse)

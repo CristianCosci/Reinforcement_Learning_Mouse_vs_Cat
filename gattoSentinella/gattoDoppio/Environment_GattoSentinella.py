@@ -23,6 +23,9 @@ class Matrix:
 
 
     def createObstacles(self, n, cat1_axis, cat2_axis, cat2_mode):
+        '''
+            Used to create all possible obstacles.
+        '''
         possible_obstacles = []
         if cat2_mode == 'verticale':
             for x in range(n):
@@ -92,7 +95,12 @@ class Env():
 
     def get_state(self):
         '''
-            Return the state for the agent
+            Return the state for the agent:
+                Mouse:
+                    - Manhattan distance between mouse and cat 1
+                    - Manhattan distance between mouse and cat 2
+                    - Manhattan distance between mouse and cheese
+                    - Info about walls and obstacles in their neighborood
         '''
         wall = self.checkWall()
         obstacles_first = self.checkDoubleObstacles(wall)
@@ -154,7 +162,7 @@ class Env():
     
     def step(self, mouse_action, cat1_direction, cat2_direction):
         '''
-            Principal method in wich all needed controls are do
+            Reward update, change angents' position and do some controls about position changes.
         '''
         done = False
         mouse_action_null = False

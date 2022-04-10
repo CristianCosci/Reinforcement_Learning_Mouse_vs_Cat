@@ -15,6 +15,9 @@ class Matrix:
 
 
     def createObstacles(self, n, cat_axis):
+        '''
+            Used to create all possible obstacles.
+        '''
         possible_obstacles = []
         for x in range(n):
             if x == cat_axis:
@@ -70,7 +73,11 @@ class Env():
 
     def get_state(self):
         '''
-            Return the state for the agent
+            Return the state for the agent:
+                Mouse:
+                    - Manhattan distance between mouse and cat
+                    - Manhattan distance between mouse and cheese
+                    - Info about walls and obstacles in their neighborood
         '''
         wall = self.checkWall()
         obstacles_first = self.checkDoubleObstacles(wall)
@@ -118,7 +125,7 @@ class Env():
 
     def step(self, mouse_action, cat_direction):
         '''
-            Principal method in wich all needed controls are do
+            Reward update, change angents' position and do some controls about position changes.
         '''
         done = False
         mouse_action_null = False
@@ -143,7 +150,7 @@ class Env():
         mouse_towards_obstacle = self.check_towards_obstacle(mouse_action, agent='mouse') # Check if agent went toward an obstacles
         if mouse_towards_obstacle:
             toccate_ostacolo +=1
-            reward['mouse'] = -5 #-20 #-5
+            reward['mouse'] = -20 #-20 #-5 it depends on mode choosed
             mouse_action_null = True    # Used to don't move the agent
 
         mouse_out_of_bounds = self.check_out_of_bounds(mouse_action, agent='mouse') # Check if the agent went out of map bounds

@@ -15,6 +15,9 @@ class Matrix:
     
 
     def createObstacles(self, n, cat_axis, mouse_axis):
+        '''
+            Used to create all possible obstacles.
+        '''
         possible_obstacles = []
         for x in range(n):
             if x == mouse_axis or x == cat_axis:
@@ -81,6 +84,9 @@ class Env():
         
 
     def load_walls(self, obstacles_list):
+        '''
+            If 'walls' mode is used add more obstacles to the map.
+        '''
         walls = [3,4], [3,5], [6,4], [6,5], [3,3], [6,6], [4,3], [5,6]
         for i in range(len(walls)):
             if walls[i] not in obstacles_list:
@@ -90,7 +96,15 @@ class Env():
 
     def get_state(self):
         '''
-            Return the state for the agent
+            Return the state for the agent:
+                Mouse:
+                    - Manhattan distance between mouse and cat
+                    - Manhattan distance between mouse and cheese
+                    - Info about walls and obstacles in their neighborood
+                Cat:
+                    - Manhattan distance between mouse and cat
+                    - Manhattan distance between cat and cheese (it depends on mode used)
+                    - Info about walls and obstacles in their neighborood
         '''
         wall_mouse = self.checkWall('mouse')
         obstacles_mouse_first = self.checkDoubleObstacles(wall_mouse, 'mouse')
@@ -155,7 +169,7 @@ class Env():
     
     def step(self, mouse_action, cat_action):
         '''
-            Principal method in wich all needed controls are do
+            Reward update, change angents' position and do some controls about position changes.
         '''
         done = False
         mouse_action_null = False
@@ -205,14 +219,14 @@ class Env():
 
         self.update_positions(mouse_action, cat_action, mouse_action_null, cat_action_null)
 
-        # Mouse ha mangiato il formaggio
+        # Mouse eaten cheese
         if self.MOUSE_X == self.CHEESE_X and self.MOUSE_Y == self.CHEESE_Y:
             done = True
             reward['mouse'] = 200
             #reward['cat'] = -200
             info['cheese_eaten'], info['x'], info['y'] = True,  self.MOUSE_X, self.MOUSE_Y
         
-        # Cat ha mangiato mouse
+        # Cat eaten mouse
         if self.CAT_X == self.MOUSE_X and self.CAT_Y == self.MOUSE_Y:
             done = True
             reward['cat'] = 200
@@ -260,7 +274,7 @@ class Env():
         return out_of_bounds
             
     
-    def update_positions(self, mouse_action, cat_action, mouse_action_null, cat_action_null):
+    def update_positions(self, mouse_action, cat_action, mouse_action_null, cat_action_null): # Update agents' position
         x_change_mouse, y_change_mouse = self.get_changes(mouse_action, mouse_action_null)
         x_change_cat, y_change_cat = self.get_changes(cat_action, cat_action_null)
 
@@ -271,7 +285,7 @@ class Env():
         self.CAT_Y += y_change_cat 
         
 
-    def get_changes(self, action, action_null):
+    def get_changes(self, action, action_null): # Get changes by action choosed
         x_change, y_change = 0, 0
         if not action_null:
             if action == 0:
@@ -287,6 +301,9 @@ class Env():
 
 
     def checkWall(self, agent):
+        '''
+            Check if there is one or two walls in the agent's neighborood
+        '''
         assert agent == 'cat' or agent == 'mouse'
         if agent == 'cat':
             x, y = self.CAT_X, self.CAT_Y
@@ -318,6 +335,9 @@ class Env():
 
 
     def checkDoubleObstacles(self, wall_position, agent):
+        '''
+            Check if there is one or two obstacles in the agent's neighborood
+        '''
         assert agent == 'cat' or agent == 'mouse'
         if agent == 'cat':
             x, y = self.CAT_X, self.CAT_Y
@@ -381,6 +401,9 @@ class Env():
 
 
     def checkTripleObstacles(self, wall_position, agent):
+        '''
+            Check if there are three obstacles in the agent's neighborood
+        '''
         assert agent == 'cat' or agent == 'mouse'
         if agent == 'cat':
             x, y = self.CAT_X, self.CAT_Y

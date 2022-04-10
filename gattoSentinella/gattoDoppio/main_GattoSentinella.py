@@ -25,7 +25,7 @@ def show_info(cheese, mouse):
 def draw_rect(color, x, y, width, height):
     pygame.draw.rect(gameDisplay, color, [x*width, y*height, width, height], 10)
     pygame.display.update()
-    time.sleep(0)
+    time.sleep(0.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------#
 # Pygame
@@ -37,7 +37,7 @@ clock = pygame.time.Clock()
 
 # env, grid e agent definition
 pct_obstacles = 0.04
-cat2_mode = 'misto'
+cat2_mode = 'verticale' # 'verticale' or 'misto'
 map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles, cat2_mode=cat2_mode)
 env = Env(gameDisplay, map, cat2_mode)
 mouse = Agent(env, possibleActions=4)
@@ -87,7 +87,7 @@ for i_episode in range(1, num_episodes+1):
 
         # Updating the display
         pygame.display.update()
-        clock.tick(9999999999999999999999999999)
+        clock.tick(12)
         
         if done:
             if info['cheese_eaten']:

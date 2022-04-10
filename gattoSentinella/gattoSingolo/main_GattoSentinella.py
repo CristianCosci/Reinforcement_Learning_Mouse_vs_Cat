@@ -25,7 +25,7 @@ def show_info(cheese, mouse):
 def draw_rect(color, x, y, width, height):
     pygame.draw.rect(gameDisplay, color, [x*width, y*height, width, height], 10)
     pygame.display.update()
-    #time.sleep(1)
+    time.sleep(0.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------#
 # Pygame
@@ -36,7 +36,12 @@ gameDisplay = pygame.display.set_mode((display_width,display_height))
 clock = pygame.time.Clock()
 
 # env, grid e agent definition
-pct_obstacles = 0.05
+mode = 'conOstacoli'
+if mode == 'conOstacoli' or mode == 'conOstacoli_5': # if mode = 'conOstacoli_5 need to change the reward in the environment to -5 instead of -20 for other two mode
+    pct_obstacles = 0.05
+    
+elif mode == 'senzaOstacoli':
+    pct_obstacles = 0 # 0 or 0.05 value are pre trained in policies repo
 map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles)
 env = Env(gameDisplay, map)
 mouse = Agent(env, possibleActions = 4)
@@ -45,7 +50,7 @@ mouse = Agent(env, possibleActions = 4)
 num_episodes = 10000
 
 # Load the policy
-dir = 'policies/gattoSentinella/gattoSingolo/conOstacoli_5/'
+dir = 'policies/gattoSentinella/gattoSingolo/' + mode + '/'
 mouse.load_policy(dir+'mouse.pickle')
 
 # Stats
@@ -81,7 +86,7 @@ for i_episode in range(1, num_episodes+1):
 
         # Updating the display
         pygame.display.update()
-        clock.tick(99999999999999999999999)
+        clock.tick(12)
         
         if done:
             if info['cheese_eaten']:

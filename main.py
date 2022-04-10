@@ -7,7 +7,7 @@ import time
 from Agent import Agent
 from Environment import Env, Matrix 
 
-# Definizione colori
+# Colors
 ORANGE = (255, 165, 0)
 GREEN = (0, 150, 0)
 WHITE = (255,255,255)
@@ -38,8 +38,13 @@ clock = pygame.time.Clock()
 
 # env, grid e agent definition
 pct_obstacles = 0.07
-gestione_loop = 'randomize' # break, none, randomize
-cat_mode = 'classico'
+gestione_loop = 'randomize' # break, none, randomize -> It is used to speed the test phase:
+                                                        # If is in 'none' there is no control on stalmate and the agent loop over 100 steps also if there is a stalmate
+                                                        # If is 'randomize' at each stalmate situation the agent take a random choose on action to exectute
+                                                        # If is 'break' when agent enter stalmate the episode will break
+                                                        # The stalmate situation is probably caused because the agent prefer to do stalmate instead of losing the game
+                                                        # Only when also cat is an intelligent aget because his action are intelligent
+cat_mode = 'classico'               
 map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles)
 env = Env(gameDisplay, map, cat_mode)
 cat = Agent(env, possibleActions = 4)
@@ -106,8 +111,7 @@ for i_episode in range(1, num_episodes+1):
             
             if info['mouse_caught']:
                 total_mouse_caught += 1
-                draw_rect(RED, info['x'], info['y'], info['width'], info['height'])    
-            # Terminazione episodio    
+                draw_rect(RED, info['x'], info['y'], info['width'], info['height'])  
             break
         
         # Update state and action
