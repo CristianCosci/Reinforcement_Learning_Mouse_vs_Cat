@@ -223,7 +223,6 @@ class Env():
         if self.MOUSE_X == self.CHEESE_X and self.MOUSE_Y == self.CHEESE_Y:
             done = True
             reward['mouse'] = 200
-            #reward['cat'] = -200
             info['cheese_eaten'], info['x'], info['y'] = True,  self.MOUSE_X, self.MOUSE_Y
         
         # Cat eaten mouse

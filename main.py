@@ -37,16 +37,20 @@ gameDisplay = pygame.display.set_mode((display_width,display_height))
 clock = pygame.time.Clock()
 
 # env, grid e agent definition
-pct_obstacles = 0.07
-gestione_loop = 'randomize' # break, none, randomize -> It is used to speed the test phase:
+gestione_loop = 'break' # break, none, randomize -> It is used to speed the test phase:
                                                         # If is in 'none' there is no control on stalmate and the agent loop over 100 steps also if there is a stalmate
                                                         # If is 'randomize' at each stalmate situation the agent take a random choose on action to exectute
                                                         # If is 'break' when agent enter stalmate the episode will break
                                                         # The stalmate situation is probably caused because the agent prefer to do stalmate instead of losing the game
                                                         # Only when also cat is an intelligent aget because his action are intelligent
-cat_mode = 'classico'               
+cat_mode = 'knowCheese'
+map_mode = ''
+if map_mode == 'walls':
+    pct_obstacles = 0.04
+else:
+    pct_obstacles = 0.07               
 map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles)
-env = Env(gameDisplay, map, cat_mode)
+env = Env(gameDisplay, map, cat_mode, map_mode)
 cat = Agent(env, possibleActions = 4)
 mouse = Agent(env, possibleActions = 4)
 
