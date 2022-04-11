@@ -146,11 +146,9 @@ for i_episode in range(1, num_episodes+1):
     total_toccate_ostacolo_cat[i_episode-1] = ep_toccate_ostacolo_cat
 
 
-dir = 'policies/gattoIntelligente/'
+dir = 'policies/gattoIntelligente/' + cat_mode + '/'
 if map_mode == 'walls':
-    dir += (cat_mode + '/' + 'walls/')
-else:
-    dir += (cat_mode + '/')
+    dir += 'walls/'
     
 # Plot stats
 if info_plot:

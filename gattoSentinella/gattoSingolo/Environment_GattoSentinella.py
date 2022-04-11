@@ -378,6 +378,10 @@ class Env():
 
 
     def checkRegularPosition(self):
+        '''
+            Method used to check if agents are placed in the same position as an obstacle.
+            If successful, the agent or cheese is repositioned (and is checked again if the position is regular)
+        '''
         for obs in self.OBSTACLES:
             if self.CHEESE_X == obs[0] and self.CHEESE_Y == obs[1]:
                 self.CHEESE_X, self.CHEESE_Y = (np.random.randint((self.WIDTH // 3 * 2)+1, 9), np.random.randint(0, 9))

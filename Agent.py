@@ -31,7 +31,7 @@ class Agent:
 
     def Q_learn(self, state, action, reward, next_state):
         '''
-            Upgrade the Q-table
+            Update the Q-table
         ''' 
         self.Q[state][action] += self.alpha*(reward + self.gamma*np.max(self.Q[next_state]) - self.Q[state][action])
 
@@ -47,23 +47,6 @@ class Agent:
         for state, action in self.Q.items():
             policy[state] = np.argmax(action)
         self.policy = policy
-    
-        
-    def take_action(self,state):
-        '''
-            Choose the action to do accordirg to the policy
-        '''
-        return self.policy[state]
-
-    
-    def load_policy(self, directory):
-        '''
-            Load an existing policy
-        '''
-        with open(directory, 'rb') as f:
-            policy_new = pickle.load(f)
-        self.policy = defaultdict(lambda:0, policy_new)  #salvata come defaultdict
-        print('policy Loaded')
 
 
     def save_policy(self, dir, name, savePolicytable):
@@ -108,3 +91,20 @@ class Agent:
 
             # write every key and value to file
             w.writerow([key, val])
+
+        
+    def load_policy(self, directory):
+        '''
+            Load an existing policy
+        '''
+        with open(directory, 'rb') as f:
+            policy_new = pickle.load(f)
+        self.policy = defaultdict(lambda:0, policy_new)  #salvata come defaultdict
+        print('policy Loaded')
+
+        
+    def take_action(self,state):
+        '''
+            Choose the action to do accordirg to the policy
+        '''
+        return self.policy[state]

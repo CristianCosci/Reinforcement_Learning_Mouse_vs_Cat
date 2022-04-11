@@ -87,7 +87,7 @@ class Env():
         '''
             If 'walls' mode is used add more obstacles to the map.
         '''
-        walls = [3,4], [3,5], [6,4], [6,5], [3,3], [6,6], [4,3], [5,6]
+        walls = [3,4], [3,5], [3,6], [4,6], [6,4], [6,5], [3,3], [6,6], [4,3], [6,3]
         for i in range(len(walls)):
             if walls[i] not in obstacles_list:
                 obstacles_list.append(walls[i])
