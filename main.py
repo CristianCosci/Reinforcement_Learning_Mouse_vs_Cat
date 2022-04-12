@@ -44,7 +44,7 @@ gestione_loop = 'break' # break, none, randomize -> It is used to speed the test
                                                         # The stalmate situation is probably caused because the agent prefer to do stalmate instead of losing the game
                                                         # Only when also cat is an intelligent aget because his action are intelligent
 cat_mode = 'knowCheese'
-map_mode = ''
+map_mode = 'walls'
 if map_mode == 'walls':
     pct_obstacles = 0.04
 else:
