@@ -171,8 +171,8 @@ Risultati di train:
 - Info sui muri e gli ostacoli: Sia il topo che il gatto imparano a evitare i muri e gli ostacoli.
 
 Risultati di test su 10000 epoche evitando i loop con break:
-- Vittorie gatto: 75
-- Vittorie topo: 12
+- Vittorie gatto: 12
+- Vittorie topo: 75
 - Info sui muri e gli ostacoli: Muro -> topo:2256 gatto:75 ; Ostacolo -> topo:995 gatto:215
 
 Risultati di test su 10000 epoche evitando i loop con randomize:
