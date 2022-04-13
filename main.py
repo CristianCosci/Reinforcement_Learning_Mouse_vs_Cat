@@ -37,7 +37,7 @@ gameDisplay = pygame.display.set_mode((display_width,display_height))
 clock = pygame.time.Clock()
 
 # env, grid e agent definition
-gestione_loop = 'break' # break, none, randomize -> It is used to speed the test phase:
+gestione_loop = 'randomize' # break, none, randomize -> It is used to speed the test phase:
                                                         # If is in 'none' there is no control on stalmate and the agent loop over 100 steps also if there is a stalmate
                                                         # If is 'randomize' at each stalmate situation the agent take a random choose on action to exectute
                                                         # If is 'break' when agent enter stalmate the episode will break

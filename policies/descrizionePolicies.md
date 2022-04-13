@@ -175,7 +175,7 @@ Risultati di test su 10000 epoche evitando i loop con break:
 - Vittorie topo: 12
 - Info sui muri e gli ostacoli: Muro -> topo:2256 gatto:75 ; Ostacolo -> topo:995 gatto:215
 
-Risultati di test su 10000 epoche evitando i loop con randomize:todo
-- Vittorie gatto: 838
-- Vittorie topo: 6139
-- Info sui muri e gli ostacoli: Muro -> topo:10220 gatto:1365 ; Ostacolo -> topo:3917 gatto:2167
+Risultati di test su 10000 epoche evitando i loop con randomize:
+- Vittorie gatto: 364
+- Vittorie topo: 815
+- Info sui muri e gli ostacoli: Muro -> topo:8599 gatto:5684 ; Ostacolo -> topo:19779 gatto:7614
