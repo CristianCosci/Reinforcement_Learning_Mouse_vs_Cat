@@ -38,4 +38,4 @@ For other explanation see the report in the `report/` dir. <br>
 
 *For any problem or help open an issues or contact me: cuccatto7@gmail.com*
 
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FCristianCosci%2F15puzzleGame_OCaml&count_bg=%23FF00C1&title_bg=%23555555&icon=ocaml.svg&icon_color=%23E7E7E7&title=Help&edge_flat=false)](https://hits.seeyoufarm.com)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FCristianCosci%2FMouse_vs_Cat_AI_Reinforcement_Learning&count_bg=%239705A8&title_bg=%233102FF&icon=python.svg&icon_color=%23C2C407&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
