@@ -1,7 +1,7 @@
 # **Mouse vs Cat | Reinforcement Learning**
 This project is an implementation of the classic cat versus mouse problem. I have created 3 possible game instances:
 1. the **mouse is an intelligent agent** (must be trained) and the cat is a sentinel and is part of the environment
-2. the ***mouse is a smart agent and there are 2 sentry cats** (you can choose two game modes for cats 'misto' or 'verticale'
+2. the **mouse is a smart agent and there are 2 sentry cats** (you can choose two game modes for cats 'misto' or 'verticale'
 3. **both agents are intelligent**
 
 ![examples](./immagini/both_intelligent.png)
