@@ -28,7 +28,7 @@ virtualenv rl
 source rl/bin/activate
 ```
 
-### Install al the requirements dependencies (file in `utils/` directory)
+### Install all the requirements dependencies (file in `utils/` directory)
 ```bash
 pip install -r utils/requirements.txt
 ```
