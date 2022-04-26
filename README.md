@@ -28,7 +28,7 @@ virtualenv rl
 source rl/bin/activate
 ```
 
-### Install al the requirements dependencies (file in `utils/` directory)
+### Install all the requirements dependencies (file in `utils/` directory)
 ```bash
 pip install -r utils/requirements.txt
 ```
@@ -37,3 +37,5 @@ For other explanation see the report in the `report/` dir. <br>
 <br>
 
 *For any problem or help open an issues or contact me: cuccatto7@gmail.com*
+
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FCristianCosci%2FMouse_vs_Cat_AI_Reinforcement_Learning&count_bg=%239705A8&title_bg=%233102FF&icon=python.svg&icon_color=%23C2C407&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
