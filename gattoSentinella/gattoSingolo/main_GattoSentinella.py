@@ -39,9 +39,9 @@ clock = pygame.time.Clock()
 mode = 'conOstacoli'
 if mode == 'conOstacoli' or mode == 'conOstacoli_5': # if mode = 'conOstacoli_5 need to change the reward in the environment to -5 instead of -20 for other two mode
     pct_obstacles = 0.05
-    
 elif mode == 'senzaOstacoli':
     pct_obstacles = 0 # 0 or 0.05 value are pre trained in policies repo
+
 map = Matrix(rows=10, columns=10, max_pct_obstacles=pct_obstacles)
 env = Env(gameDisplay, map)
 mouse = Agent(env, possibleActions = 4)

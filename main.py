@@ -5,7 +5,7 @@ import numpy as np
 import time
 
 from Agent import Agent
-from Environment import Env, Matrix 
+from Environment import Env, Matrix
 
 # Colors
 ORANGE = (255, 165, 0)
@@ -26,7 +26,7 @@ def show_info(cheese, mouse):
 def draw_rect(color, x, y, width, height):
     pygame.draw.rect(gameDisplay, color, [x*width, y*height, width, height], 10)
     pygame.display.update()
-    time.sleep(0)
+    time.sleep(0.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------#
 # Pygame
@@ -43,8 +43,8 @@ gestione_loop = 'randomize' # break, none, randomize -> It is used to speed the 
                                                         # If is 'break' when agent enter stalmate the episode will break
                                                         # The stalmate situation is probably caused because the agent prefer to do stalmate instead of losing the game
                                                         # Only when also cat is an intelligent aget because his action are intelligent
-cat_mode = 'knowCheese'
-map_mode = 'walls'
+cat_mode = 'knowCheese' # 'knowCheese' or 'classico'
+map_mode = 'walls' # 'walls' or '' ---> (walls mode only if cat_mode = knowCheese)
 if map_mode == 'walls':
     pct_obstacles = 0.04
 else:
@@ -106,7 +106,7 @@ for i_episode in range(1, num_episodes+1):
 
         # Updating the display
         pygame.display.update()
-        clock.tick(9999999999999999999999999)
+        clock.tick(12)
         
         if done:
             if info['cheese_eaten']:
