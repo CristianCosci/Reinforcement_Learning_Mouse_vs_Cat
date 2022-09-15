@@ -4,7 +4,7 @@ This project is an implementation of the classic cat versus mouse problem. I hav
 2. the **mouse is a smart agent and there are 2 sentry cats** (you can choose two game modes for cats 'misto' or 'verticale'
 3. **both agents are intelligent**
 
-<img src="./immagini/both_intelligent.png" alt="drawing" width="600"/>
+<img src="./immagini/tom&jerry.gif" alt="drawing" width="600"/>
 
 The two instances with sentinel cats (1 and 2) are in the appropriate directory `gattoSentinella`. <br>
 It is possible to use a fill percentage for obstacles (See directly in the code to understand how it works). <br>
